@@ -9,8 +9,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -22,35 +23,35 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-@Table(name="Study courses")
+@Table(name="StudentProgramCourse")
 @Entity
-public class StudyCourses {
+public class StudentProgramCourse {
 	@Setter(value = AccessLevel.NONE)
-	@Column(name = "CourseID")
+	@Column(name = "StudentProgramCourseID")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long courseID;
+	private long studentProgramCourseID;
 	
 	@NotNull
-	@Column(name = "Title")
-	private String courseTitle;
-	
-	@NotNull
-	@Column(name = "Credits")
-	private int credits;
+	@Min(1)
+	@Max(10)
+	@Column(name="Mark")
+	private int mark;
 	
 	//----------Table connections-----------------------
-	@OneToMany(mappedBy = "course")
-	private Collection<Test> courseTests;
+	@ManyToOne
+	@JoinTable(name="StudentID")
+	private Students student;
 	
-	
-	@OneToMany(mappedBy = "course")
-	private Collection<StudentProgramCourse> studentProgramCourse;
-	
+	@ManyToOne
+	@JoinTable(name="CourseID")
+	private StudyCourses course;
 	//--------------------------------------------------
 	
-	public StudyCourses(String title, int credits) {
-		setCourseTitle(title);
-		setCredits(credits);
+	public StudentProgramCourse(int mark, Students student, StudyCourses course) {
+		setStudent(student);
+		setCourse(course);
+		setMark(mark);
 	}
+	
 }

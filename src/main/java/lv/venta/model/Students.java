@@ -55,6 +55,9 @@ public class Students {
 	//----------2. Table connections---------------------------------------
 	@OneToMany(mappedBy="student")
 	private Collection<StudentProgram> studentProgram;
+	
+	@OneToMany(mappedBy="student")
+	private Collection<StudentProgramCourse> studentProgramCourse;
 	//------------------------------------------------------------------
 	
 	//3. Constructor

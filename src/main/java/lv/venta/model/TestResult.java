@@ -8,11 +8,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,34 +21,26 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-@Table(name="Study courses")
+@Table(name="TestResults")
 @Entity
-public class TestTask {
+public class TestResult {
 	@Setter(value = AccessLevel.NONE)
-	@Column(name = "TaskID")
+	@Column(name = "ResultID")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long taskID;
+	private long resultID;
 	
 	@NotNull
-	@Pattern(regexp="[A-za-z.,_:; ]{5,150}")
-	@Column(name = "TaskDescription")
-	private String taskDescription;
+	@Column(name = "Comments")
+	private String comments;
 	
 	@NotNull
-	@Column(name="MaxPointsAmount")
-	private int maxPoints;
+	@Column(name="Minus")
+	private double minus;
 	
-	//---------Tables connections---------------------------
+	//-----------Table Connections-------------------------------------
 	@ManyToOne
-	@JoinColumn(name="TestID")
-	private Test test;
+	@JoinColumn(name="TaskID")
+	private TestTask task;
 	
-	
-	//-----------------------------------------------------
-	
-	public TestTask(String description, int points) {
-		setTaskDescription(description);
-		setMaxPoints(points);
-	}
 }

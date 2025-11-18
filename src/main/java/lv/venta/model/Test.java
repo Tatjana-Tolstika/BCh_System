@@ -1,13 +1,12 @@
 package lv.venta.model;
 
-import java.util.Collection;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -20,28 +19,30 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-@Table(name="Study courses")
+@Table(name="Lecturers")
 @Entity
-public class StudyCourses {
+public class Test {
+	
 	@Setter(value = AccessLevel.NONE)
-	@Column(name = "CourseID")
+	@Column(name = "TestID")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long courseID;
+	private long testID;
 	
 	@NotNull
-	@Column(name = "Title")
-	private String courseTitle;
+	@Column(name = "TestTitle")
+	private String testTitle;
 	
 	@NotNull
-	@Column(name = "Credits")
-	private int credits;
+	@Column(name = "Description")
+	private String testDescription;
 	
-	@OneToMany(mappedBy="course")
-	private Collection<Test> courseTests;
+	@NotNull
+	@Column(name = "TotalPoints")
+	private int points;
 	
-	public StudyCourses(String title, int credits) {
-		setCourseTitle(title);
-		setCredits(credits);
-	}
+	//----------Table connection-----------------
+	@ManyToOne
+	@JoinColumn(name= "CourseID")
+	private StudyCourses course;
 }

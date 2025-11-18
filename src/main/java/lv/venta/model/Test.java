@@ -45,4 +45,11 @@ public class Test {
 	@ManyToOne
 	@JoinColumn(name= "CourseID")
 	private StudyCourses course;
+	//-------------------------------------------
+	
+	public Test(String title, String description, int points) {
+		setTestTitle(title);
+		setTestDescription(description);
+		setPoints(points);
+	}
 }

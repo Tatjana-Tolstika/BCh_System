@@ -50,6 +50,7 @@ public class Students {
 	private String email;
 	
 	//------------------------------------------------------------------
+	//2. Constructor
 	public Students(String studentName ,String studentSurname , long matriculationNr, String email) {
 		setStudentName(studentName);
 		setStudentSurname(studentSurname);

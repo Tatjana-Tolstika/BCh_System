@@ -1,0 +1,50 @@
+package lv.venta.model;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
+@Table(name="Study program")
+@Entity
+public class StudyProgram {
+	//1. Variables
+		@Setter(value = AccessLevel.NONE)
+		@Column(name = "ProgramID")
+		@Id
+		@GeneratedValue(strategy = GenerationType.AUTO)
+		private long programID;
+		
+		@NotNull
+		@Pattern(regexp = "[A-Za-z ]+")
+		@Column(name = "Title")
+		private String title;
+		
+		@NotNull
+		@Column(name = "Degree")
+		private String degree;
+		
+		@NotNull
+		@Pattern(regexp = "[A-Z]+")
+		@Column(name = "Abbreviation")
+		private String abbreviation;
+		
+		public StudyProgram(String title, String degree, String abbreviation) {
+			setTitle(title);
+			setDegree(degree);
+			setAbbreviation(abbreviation);
+		}
+}

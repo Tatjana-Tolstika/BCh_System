@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -37,6 +39,12 @@ public class TestTask {
 	@NotNull
 	@Column(name="MaxPointsAmount")
 	private int maxPoints;
+	
+	//---------Tables connections---------------------------
+	@ManyToOne
+	@JoinColumn(name="TestID")
+	private Test test;
+	//-----------------------------------------------------
 	
 	public TestTask(String description, int points) {
 		setTaskDescription(description);

@@ -31,19 +31,19 @@ public class StudyProgram {
 		@NotNull
 		@Pattern(regexp = "[A-Za-z ]+")
 		@Column(name = "Title")
-		private String title;
+		private String programTitle;
 		
 		@NotNull
 		@Column(name = "Degree")
 		private String degree;
 		
 		@NotNull
-		@Pattern(regexp = "[A-Z]+")
+		@Pattern(regexp = "[A-sZ]+")
 		@Column(name = "Abbreviation")
 		private String abbreviation;
 		
 		public StudyProgram(String title, String degree, String abbreviation) {
-			setTitle(title);
+			setProgramTitle(title);
 			setDegree(degree);
 			setAbbreviation(abbreviation);
 		}

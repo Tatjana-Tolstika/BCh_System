@@ -52,7 +52,7 @@ public class StudentProgramCourse {
 	private Collection<TestResult> testResult;
 	//--------------------------------------------------
 	
-	public StudentProgramCourse(int mark, Students student, StudyCourses course) {
+	public StudentProgramCourse(Students student, StudyCourses course, int mark) {
 		setStudent(student);
 		setCourse(course);
 		setMark(mark);

@@ -34,13 +34,13 @@ public class TestTask {
 	private long taskID;
 	
 	@NotNull
-	@Pattern(regexp="[A-za-z.,_:; ]{5,150}")
+	@Pattern(regexp="[A-za-z.,_:; ]{5,200}")
 	@Column(name = "TaskDescription")
 	private String taskDescription;
 	
 	@NotNull
 	@Column(name="MaxPointsAmount")
-	private int maxPoints;
+	private double maxPoints;
 	
 	//---------Tables connections---------------------------
 	@ManyToOne
@@ -53,7 +53,8 @@ public class TestTask {
 	
 	//-----------------------------------------------------
 	
-	public TestTask(String description, int points) {
+	public TestTask(CourseTests test, String description, double points) {
+		setTest(test);
 		setTaskDescription(description);
 		setMaxPoints(points);
 	}

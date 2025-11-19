@@ -44,7 +44,7 @@ public class TestTask {
 	//---------Tables connections---------------------------
 	@ManyToOne
 	@JoinColumn(name="TestID")
-	private Test test;
+	private CourseTests test;
 	
 	
 	//-----------------------------------------------------

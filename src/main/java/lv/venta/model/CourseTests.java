@@ -24,7 +24,7 @@ import lombok.ToString;
 @ToString
 @Table(name="Lecturers")
 @Entity
-public class Test {
+public class CourseTests {
 	
 	@Setter(value = AccessLevel.NONE)
 	@Column(name = "TestID")
@@ -53,7 +53,7 @@ public class Test {
 	private Collection<TestTask> tasksForTest;
 	//-------------------------------------------
 	
-	public Test(String title, String description, int points) {
+	public CourseTests(String title, String description, int points) {
 		setTestTitle(title);
 		setTestDescription(description);
 		setPoints(points);

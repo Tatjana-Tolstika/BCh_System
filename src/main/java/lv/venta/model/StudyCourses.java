@@ -41,7 +41,7 @@ public class StudyCourses {
 	
 	//----------Table connections-----------------------
 	@OneToMany(mappedBy = "course")
-	private Collection<Test> courseTests;
+	private Collection<CourseTests> courseTests;
 	
 	
 	@OneToMany(mappedBy = "course")

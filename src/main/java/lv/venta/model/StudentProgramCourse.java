@@ -46,6 +46,9 @@ public class StudentProgramCourse {
 	@ManyToOne
 	@JoinTable(name="CourseID")
 	private StudyCourses course;
+	
+	@OneToMany(mappedBy="student")
+	private Collection<TestResult> testResult;
 	//--------------------------------------------------
 	
 	public StudentProgramCourse(int mark, Students student, StudyCourses course) {

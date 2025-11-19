@@ -1,7 +1,5 @@
 package lv.venta.model;
 
-import java.util.Collection;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -42,5 +40,18 @@ public class TestResult {
 	@ManyToOne
 	@JoinColumn(name="TaskID")
 	private TestTask task;
+	
+	@ManyToOne
+	@JoinColumn(name="StudentProgramCourseID")
+	private StudentProgramCourse student;
+	
+	//------------------------------------------------------------------
+	
+	public TestResult(String comments, double minus, TestTask task, StudentProgramCourse student) {
+		setComments(comments);
+		setMinus(minus);
+		setTask(task);
+		setStudent(student);
+	}
 	
 }

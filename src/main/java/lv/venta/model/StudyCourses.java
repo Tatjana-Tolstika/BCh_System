@@ -1,14 +1,14 @@
 package lv.venta.model;
 
+
 import java.util.Collection;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
@@ -22,29 +22,29 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-@Table(name="Study courses")
+@Table(name="study_courses")
 @Entity
 public class StudyCourses {
 	@Setter(value = AccessLevel.NONE)
-	@Column(name = "CourseID")
+	@Column(name = "course_id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long courseID;
 	
 	@NotNull
-	@Column(name = "Title")
+	@Column(name = "course_title")
 	private String courseTitle;
 	
 	@NotNull
-	@Column(name = "Credits")
+	@Column(name = "credits")
 	private int credits;
 	
 	//----------Table connections-----------------------
-	@OneToMany(mappedBy = "course")
+	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
 	private Collection<CourseTests> courseTests;
 	
 	
-	@OneToMany(mappedBy = "course")
+	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
 	private Collection<StudentProgramCourse> studentProgramCourse;
 	
 	//--------------------------------------------------

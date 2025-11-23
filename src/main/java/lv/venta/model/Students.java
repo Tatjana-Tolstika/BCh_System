@@ -1,7 +1,9 @@
 package lv.venta.model;
 
+
 import java.util.Collection;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,42 +23,44 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-@Table(name="Students")
+@Table(name="students")
 @Entity
 
 public class Students {
 
 	//1. Variables
 	@Setter(value = AccessLevel.NONE)
-	@Column(name = "StudentID")
+	@Column(name = "student_id")
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long studentId;
 	
 	@NotNull
-	@Pattern(regexp="[A-Za-z]+")
-	@Column(name = "Name")
+	@Pattern(regexp="[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž]+")
+	@Column(name = "name")
 	private String studentName;
 	
 	@NotNull
-	@Pattern(regexp="[A-Za-z]+")
-	@Column(name = "Surname")
+	@Pattern(regexp="[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž]+")
+	@Column(name = "surname")
 	private String studentSurname;
 	
 	@NotNull
-	@Column(name = "MatriculationNr")
+	@Column(name = "matriculation_nr")
 	private long matriculationNr;
 	
 	@NotNull
 	@Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
-	@Column(name = "Email")
+	@Column(name = "email")
 	private String email;
 	
 	//----------2. Table connections---------------------------------------
-	@OneToMany(mappedBy="student")
+	@OneToMany(mappedBy="student", cascade = CascadeType.ALL)
+	@ToString.Exclude
 	private Collection<StudentProgram> studentProgram;
 	
-	@OneToMany(mappedBy="student")
+	@OneToMany(mappedBy="student", cascade = CascadeType.ALL)
+	@ToString.Exclude
 	private Collection<StudentProgramCourse> studentProgramCourse;
 	//------------------------------------------------------------------
 	

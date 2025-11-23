@@ -1,7 +1,9 @@
 package lv.venta.model;
 
+
 import java.util.Collection;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,35 +23,35 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-@Table(name="Study program")
+@Table(name="study_program")
 @Entity
 public class StudyProgram {
 	//1. Variables
 		@Setter(value = AccessLevel.NONE)
-		@Column(name = "ProgramID")
+		@Column(name = "program_id")
 		@Id
 		@GeneratedValue(strategy = GenerationType.AUTO)
 		private long programID;
 		
 		@NotNull
-		@Pattern(regexp = "[A-Za-z ]+")
-		@Column(name = "Title")
+		@Pattern(regexp = "[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž ]+")
+		@Column(name = "program_title")
 		private String programTitle;
 		
 		@NotNull
-		@Column(name = "Degree")
+		@Column(name = "program_degree")
 		private String degree;
 		
 		@NotNull
-		@Pattern(regexp = "[A-sZ]+")
-		@Column(name = "Abbreviation")
+		@Pattern(regexp = "[A-Z]+")
+		@Column(name = "abbreviation")
 		private String abbreviation;
 		
 		//------------------Table connections------------------------
-		@OneToMany(mappedBy="studyProgram")
+		@OneToMany(mappedBy="studyProgram", cascade = CascadeType.ALL)
 		private Collection<StudentProgram> studentProgram;
 		
-		//-----------------------------------------------------------
+//		//-----------------------------------------------------------
 		
 		public StudyProgram(String title, String degree, String abbreviation) {
 			setProgramTitle(title);

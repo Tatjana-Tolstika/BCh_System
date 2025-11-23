@@ -1,7 +1,10 @@
 package lv.venta.model;
 
+
+
 import java.util.Collection;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,6 +15,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,37 +26,39 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-@Table(name="Lecturers")
+@Table(name = "tests")
 @Entity
 public class CourseTests {
-	
+
 	@Setter(value = AccessLevel.NONE)
-	@Column(name = "TestID")
+	@Column(name = "test_id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long testID;
-	
+
 	@NotNull
-	@Column(name = "TestTitle")
+	@Column(name = "test_title")
 	private String testTitle;
-	
+
 	@NotNull
-	@Column(name = "Description")
+	@Column(name = "description")
+	//@Pattern(regexp="[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž0-9.,_:;()\\\\s]{5,1000}") //allow any symbols from 5 to 1000
+	@Size(min = 5, max = 10000)
 	private String testDescription;
-	
+
 	@NotNull
-	@Column(name = "TotalPoints")
-	private int points;
-	
-	//----------Table connection-----------------
+	@Column(name = "total_points", nullable = false)
+	private int points = 0;
+
+	// ----------Table connection-----------------//
 	@ManyToOne
-	@JoinColumn(name= "CourseID")
+	@JoinColumn(name = "course_id")
 	private StudyCourses course;
-	
-	@OneToMany(mappedBy = "test")
+
+	@OneToMany(mappedBy = "test", cascade = CascadeType.ALL)
 	private Collection<TestTask> tasksForTest;
-	//-------------------------------------------
-	
+	// -------------------------------------------
+
 	public CourseTests(String title, String description, int points) {
 		setTestTitle(title);
 		setTestDescription(description);

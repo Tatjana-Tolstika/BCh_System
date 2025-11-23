@@ -18,27 +18,27 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-@Table(name="Lecturers")
+@Table(name="lecturers")
 @Entity
 public class Lecturers {
 	@Setter(value = AccessLevel.NONE)
-	@Column(name = "LecturersID")
+	@Column(name = "lecturers_id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long lecturersID;
 	
 	@NotNull
-	@Pattern(regexp="[A-Za-z]+")
-	@Column(name = "LecturerName")
+	@Pattern(regexp="[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž]+")
+	@Column(name = "lecturer_name")
 	private String lecturerName;
 	
 	@NotNull
-	@Pattern(regexp="[A-Za-z]+")
-	@Column(name = "LecturerSurname")
+	@Pattern(regexp="[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž]+")
+	@Column(name = "lecturer_surname")
 	private String lecturerSurname;
 	
 	@NotNull
-	@Column(name = "LecturerDegree")
+	@Column(name = "lecturer_degree")
 	private String lecturerDegree;
 	
 	public Lecturers(String name, String surname, String degree) {

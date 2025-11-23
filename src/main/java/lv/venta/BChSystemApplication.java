@@ -44,7 +44,7 @@ public class BChSystemApplication {
 				Lecturers lect2 = new Lecturers("Karina", "Šķirmante", "Mg.sc.Comp");
 				Lecturers lect3 = new Lecturers("Estere", "Vitola", "Mg.sc.Pead");
 				Lecturers lect4 = new Lecturers("Kristaps", "Blumbergs", "Mg.sc");
-				Lecturers lect5 = new Lecturers("Artūrs", "Orbidans", "Mg.sc");
+				Lecturers lect5 = new Lecturers("Arturs", "Orbidans", "Mg.sc");
 				lecturersRepo.saveAll(Arrays.asList(lect1, lect2, lect3, lect4, lect5));
 				
 				Students st1 = new Students("Tatjana", "Tolstika", 230000001, "s23tolstatj@venta.lv");
@@ -67,20 +67,20 @@ public class BChSystemApplication {
 				programRepo.saveAll(Arrays.asList(prog1,prog2,prog3));
 				
 				StudentProgram studProg1 = new StudentProgram(st1, prog1, 3);
-				StudentProgram studProg2 = new StudentProgram(st2, prog1, 3);
+				StudentProgram studProg2 = new StudentProgram( st2, prog1,3); 
 				StudentProgram studProg3 = new StudentProgram(st3, prog1, 2);
 				StudentProgram studProg4 = new StudentProgram(st4, prog3, 2);
 				StudentProgram studProg5 = new StudentProgram(st5, prog2, 3);
 				studentProgRepo.saveAll(Arrays.asList(studProg1, studProg2, studProg3, studProg4, studProg5));
 				
-				StudentProgramCourse spc1 = new StudentProgramCourse(st1, course1, 8);
-				StudentProgramCourse spc2 = new StudentProgramCourse(st1, course3, 9);
+				StudentProgramCourse spc1 = new StudentProgramCourse(st1, course1,8); 
+				StudentProgramCourse spc2 = new StudentProgramCourse(st1, course3, 9); 
 				StudentProgramCourse spc3 = new StudentProgramCourse(st2, course4, 8);
 				StudentProgramCourse spc4 = new StudentProgramCourse(st3, course4, 9);
 				StudentProgramCourse spc5 = new StudentProgramCourse(st3, course1, 10);
 				StudentProgramCourse spc6 = new StudentProgramCourse(st5, course5, 10);
 				StudentProgramCourse spc7 = new StudentProgramCourse(st4, course2, 7);
-				StudentProgramCourse spc8 = new StudentProgramCourse(st5, course2, 8);
+				StudentProgramCourse spc8 = new StudentProgramCourse(st5, course2,8); 
 				studentProgCourseRepo.saveAll(Arrays.asList(spc1,spc2,spc3,spc4,spc5,spc6,spc7,spc8));
 				
 				//------------------About Tests-----------------------------------------------------------------------------
@@ -223,11 +223,11 @@ public class BChSystemApplication {
 						+ "Random principa. Ja ir nepieciešams, ieviest papildus masīvus.", 3.5);
 				taskRepo.saveAll(Arrays.asList(task1,task2,task3,task4,task5,task6));
 				
-				TestResult result1 = new TestResult("Comment 1", 0.5, task1, spc1);
+				TestResult result1 = new TestResult("Comment 1", 0.1, task1, spc1);
 				TestResult result2 = new TestResult("Comment 1", 0, task2, spc1);
 				TestResult result3 = new TestResult("Comment 1", 0, task3, spc1);
-				TestResult result4 = new TestResult("Comment 1", 0.6, task4, spc1);
-				TestResult result5 = new TestResult("Comment 1", 0.8, task5, spc1);
+				TestResult result4 = new TestResult("Comment 1", 0.1, task4, spc1);
+				TestResult result5 = new TestResult("Comment 1", 0.2, task5, spc1);
 				TestResult result6 = new TestResult("Comment 1", 0, task6, spc1);
 				resultRepo.saveAll(Arrays.asList(result1,result2,result3,result4,result5,result6));
 				

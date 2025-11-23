@@ -19,26 +19,26 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-@Table(name="StudentInProgram")
+@Table(name="student_in_program")
 @Entity
 public class StudentProgram {
 	@Setter(value = AccessLevel.NONE)
-	@Column(name = "StudentProgramID")
+	@Column(name = "student_program_id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long studentProgramID;
 	
 	@NotNull
-	@Column(name = "Course")
+	@Column(name = "course")
 	private int course;
 	
 	//-----------Table connections--------------
 	@ManyToOne
-	@JoinColumn(name="StudentID")
+	@JoinColumn(name="student_id")
 	private Students student;
 	
 	@ManyToOne
-	@JoinColumn(name="ProgramID")
+	@JoinColumn(name="program_id")
 	private StudyProgram studyProgram;
 	
 	//---------------------------------------------

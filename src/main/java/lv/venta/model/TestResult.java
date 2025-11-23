@@ -19,31 +19,31 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-@Table(name="TestResults")
+@Table(name="test_results")
 @Entity
 public class TestResult {
 	@Setter(value = AccessLevel.NONE)
-	@Column(name = "ResultID")
+	@Column(name = "result_id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long resultID;
 	
 	@NotNull
-	@Column(name = "Comments")
+	@Column(name = "comments")
 	private String comments;
 	
 	@NotNull
-	@Column(name="Minus")
+	@Column(name="minus")
 	private double minus;
 	
 	//-----------Table Connections-------------------------------------
 	@ManyToOne
-	@JoinColumn(name="TaskID")
+	@JoinColumn(name="task_id")
 	private TestTask task;
 	
 	@ManyToOne
-	@JoinColumn(name="StudentProgramCourseID")
-	private StudentProgramCourse student;
+	@JoinColumn(name="student_program_course_id")
+	private StudentProgramCourse studentProgramCourse;
 	
 	//------------------------------------------------------------------
 	
@@ -51,7 +51,7 @@ public class TestResult {
 		setComments(comments);
 		setMinus(minus);
 		setTask(task);
-		setStudent(student);
+		setStudentProgramCourse(student);
 	}
 	
 }

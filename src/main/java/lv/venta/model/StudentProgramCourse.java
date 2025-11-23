@@ -1,13 +1,16 @@
 package lv.venta.model;
 
+
+
 import java.util.Collection;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -24,11 +27,11 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-@Table(name="StudentProgramCourse")
+@Table(name="student_program_course")
 @Entity
 public class StudentProgramCourse {
 	@Setter(value = AccessLevel.NONE)
-	@Column(name = "StudentProgramCourseID")
+	@Column(name = "student_program_course_id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long studentProgramCourseID;
@@ -36,20 +39,20 @@ public class StudentProgramCourse {
 	@NotNull
 	@Min(1)
 	@Max(10)
-	@Column(name="Mark")
+	@Column(name="mark")
 	private int mark;
 	
 	//----------Table connections-----------------------
 	@ManyToOne
-	@JoinTable(name="StudentID")
+	@JoinColumn(name="student_id")
 	private Students student;
 	
 	@ManyToOne
-	@JoinTable(name="CourseID")
+	@JoinColumn(name="course_id")
 	private StudyCourses course;
 	
-	@OneToMany(mappedBy="student")
-	private Collection<TestResult> testResult;
+	@OneToMany(mappedBy="studentProgramCourse" , cascade = CascadeType.ALL)
+	private Collection<TestResult> testResult ;
 	//--------------------------------------------------
 	
 	public StudentProgramCourse(Students student, StudyCourses course, int mark) {

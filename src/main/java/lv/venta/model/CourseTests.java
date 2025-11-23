@@ -47,8 +47,8 @@ public class CourseTests {
 	private String testDescription;
 
 	@NotNull
-	@Column(name = "total_points", nullable = false)
-	private int points = 0;
+	@Column(name = "total_points")
+	private int points;
 
 	// ----------Table connection-----------------//
 	@ManyToOne

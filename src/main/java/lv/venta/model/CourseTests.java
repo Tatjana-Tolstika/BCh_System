@@ -15,6 +15,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -42,7 +43,7 @@ public class CourseTests {
 
 	@NotNull
 	@Column(name = "description")
-	//@Pattern(regexp="[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž0-9.,_:;()\\\\s]{5,1000}") //allow any symbols from 5 to 1000
+	//@Pattern(regexp="[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž0-9.,_:;()!;%:?*+=`'<>/]+") 
 	@Size(min = 5, max = 10000)
 	private String testDescription;
 
@@ -59,9 +60,10 @@ public class CourseTests {
 	private Collection<TestTask> tasksForTest;
 	// -------------------------------------------
 
-	public CourseTests(String title, String description, int points) {
+	public CourseTests(String title, String description, int points, StudyCourses course) {
 		setTestTitle(title);
 		setTestDescription(description);
 		setPoints(points);
+		setCourse(course);
 	}
 }

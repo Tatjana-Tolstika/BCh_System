@@ -14,6 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -35,7 +36,7 @@ public class TestTask {
 	private long taskID;
 	
 	@NotNull
-//	@Pattern(regexp="[A-za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž.,_:; ]{5,500}")
+	//@Pattern(regexp="[A-za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž.,_:; ]{5,500}")
 	@Size(min = 5, max = 10000)
 	@Column(name = "task_description")
 	private String taskDescription;

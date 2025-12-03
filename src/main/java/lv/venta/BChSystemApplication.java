@@ -96,9 +96,9 @@ public class BChSystemApplication {
 						+ "Par katras klases realizāciju norādīts maksimālais punktu skaits pie ideālas klases realizācijas (norādīts kā\n"
 						+ "parametrs: max). Par katru neizpildīto vai nepareizi izpildīto punktu un par katru nerealizēto vai nepareizi\n"
 						+ "realizēto pārbaudi, tiek noņemts punktu skaits no maksimālā (norādīts kā parametrs: neizpilde).\n"
-						+ "Iespējamā UML klašu diagramma punktu 1.-6. izpildei atrodama dokumenta pielikumā Nr.1.", 10);
+						+ "Iespējamā UML klašu diagramma punktu 1.-6. izpildei atrodama dokumenta pielikumā Nr.1.",10, course2);
 				
-				CourseTests test2 = new CourseTests("JAVA_KD2", "Apraksts", 10);
+				CourseTests test2 = new CourseTests("JAVA_KD2", "Apraksts",10, course1);
 				courseTestRepo.saveAll(Arrays.asList(test1, test2));
 				
 				TestTask task1 = new TestTask(test1,"Enum EnergyType, kurā glabājat informāciju par enerģijas tipiem - kā transportlīdzeklis uzņem\n"
@@ -224,11 +224,11 @@ public class BChSystemApplication {
 				taskRepo.saveAll(Arrays.asList(task1,task2,task3,task4,task5,task6));
 				
 				TestResult result1 = new TestResult("Comment 1", 0.1, task1, spc1);
-				TestResult result2 = new TestResult("Comment 1", 0, task2, spc1);
-				TestResult result3 = new TestResult("Comment 1", 0, task3, spc1);
-				TestResult result4 = new TestResult("Comment 1", 0.1, task4, spc1);
-				TestResult result5 = new TestResult("Comment 1", 0.2, task5, spc1);
-				TestResult result6 = new TestResult("Comment 1", 0, task6, spc1);
+				TestResult result2 = new TestResult("Comment 2", 0, task2, spc1);
+				TestResult result3 = new TestResult("Comment 3", 0, task3, spc1);
+				TestResult result4 = new TestResult("Comment 4", 0.1, task4, spc1);
+				TestResult result5 = new TestResult("Comment 5", 0.2, task5, spc1);
+				TestResult result6 = new TestResult("Comment 6", 0, task6, spc1);
 				resultRepo.saveAll(Arrays.asList(result1,result2,result3,result4,result5,result6));
 				
 				

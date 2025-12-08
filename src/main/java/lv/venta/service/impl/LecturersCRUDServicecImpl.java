@@ -1,11 +1,13 @@
 package lv.venta.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import lv.venta.model.Lecturers;
 import lv.venta.repo.ILecturersRepo;
 import lv.venta.service.ILecturersCRUDService;
 
+@Service
 public class LecturersCRUDServicecImpl implements ILecturersCRUDService{
 	@Autowired
 	private ILecturersRepo lecturersRepo;
@@ -18,7 +20,7 @@ public class LecturersCRUDServicecImpl implements ILecturersCRUDService{
 				throw new Exception("Incorrect input parameters!");
 			}
 			
-			if(lecturersRepo.existsByNameAndSurnameAndDegree(name,surname,degree)) {
+			if(lecturersRepo.existsByLecturerNameAndLecturerSurnameAndLecturerDegree(name,surname,degree)) {
 				throw new Exception("Student you want to create already exists!");
 			}
 			else {

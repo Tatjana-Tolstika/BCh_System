@@ -1,5 +1,6 @@
 package lv.venta.service;
 
+
 import lv.venta.model.Lecturers;
 
 public interface ILecturersCRUDService {

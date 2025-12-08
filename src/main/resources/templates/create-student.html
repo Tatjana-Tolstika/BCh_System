@@ -2,17 +2,17 @@
 	
 	<body>
 	<p>Please enter a new student: </p>
-		<form action="#" th:action="@{/doctor/crud/add}" th:object="${doctor}" method="post">
+		<form action="#" th:action="@{/students/crud/add}" th:object="${student}" method="post">
 			<table>
 				<tr>
 					<td>Name: </td>
-					<td><input type="text" th:field="*{name}"></td>
-					<td th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
+					<td><input type="text" th:field="*{studentName}"></td>
+					<td th:if="${#fields.hasErrors('studentName')}" th:errors="*{studentName}"></td>
 				</tr>
 					<tr></tr>
 					<td>Surname: </td>
-					<td><input type="text" th:field="*{surname}"></td>
-					<td th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></td>
+					<td><input type="text" th:field="*{studentSurname}"></td>
+					<td th:if="${#fields.hasErrors('studentSurname')}" th:errors="*{studentSurname}"></td>
 										
 				</tr>
 					<tr>

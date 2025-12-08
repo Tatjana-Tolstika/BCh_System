@@ -1,11 +1,14 @@
 package lv.venta.service.impl;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import lv.venta.model.Students;
 import lv.venta.repo.IStudentsRepo;
 import lv.venta.service.IStudentsCRUDService;
-
+@Service
 public class StudentsCRUDServiceImpl implements IStudentsCRUDService {
 	@Autowired
 	private IStudentsRepo studentsRepo;
@@ -19,7 +22,7 @@ public class StudentsCRUDServiceImpl implements IStudentsCRUDService {
 			throw new Exception("Incorrect input parameters!");
 		}
 		
-		if(studentsRepo.existsByNameAndSurnameAndMatriculationNrAndEmail(name,surname,matriculationNr, email)) {
+		if(studentsRepo.existsByStudentNameAndStudentSurnameAndMatriculationNrAndEmail(name,surname,matriculationNr, email)) {
 			throw new Exception("Student you want to create already exists!");
 		}
 		else {
@@ -32,9 +35,9 @@ public class StudentsCRUDServiceImpl implements IStudentsCRUDService {
 	@Override 
 	public Students retrieveById(long id) throws Exception{
 		if(id < 0) {
-			throw new Exception("Choose correect ID!");
+			throw new Exception("Choose correct ID!");
 		}
-		if(!studentsRepo.existsById(id)) {
+		if(!studentsRepo.existsByStudentId(id)) {
 			throw new Exception("Student with ID [ " + id + " ] doesn't exists!");
 		}
 		Students retrievedStudent = studentsRepo.findById(id).get();
@@ -76,7 +79,14 @@ public class StudentsCRUDServiceImpl implements IStudentsCRUDService {
 	
 	//===========================END OF CRUD==================================================================
 	
-	
+	@Override 
+	public ArrayList<Students> selectAllStudents() throws Exception{
+		if(studentsRepo.count() == 0) {
+			throw new Exception("Students list is empty!");
+		}
+		ArrayList<Students> result = (ArrayList<Students>) studentsRepo.findAll();
+		return result;
+	}
 	
 	
 }

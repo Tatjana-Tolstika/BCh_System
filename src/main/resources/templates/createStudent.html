@@ -1,0 +1,41 @@
+<html xmlns:th=" https://www.thymeleaf.org">
+	
+	<body>
+	<p>Please enter a new student: </p>
+		<form action="#" th:action="@{/doctor/crud/add}" th:object="${doctor}" method="post">
+			<table>
+				<tr>
+					<td>Name: </td>
+					<td><input type="text" th:field="*{name}"></td>
+					<td th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
+				</tr>
+					<tr></tr>
+					<td>Surname: </td>
+					<td><input type="text" th:field="*{surname}"></td>
+					<td th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></td>
+										
+				</tr>
+					<tr>
+					<td>MatriculationNr: </td>
+					<td><input type="text" th:field="*{matriculationNr}"></td>
+					<td th:if="${#fields.hasErrors('matriculationNr')}" th:errors="*{matriculationNr}"></td>
+										
+				</tr>
+				<tr>
+					<td>Email: </td>
+					<td><input type="email" th:field="*{email}"></td>
+					<td th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></td>
+													
+				</tr>
+				
+				<tr>
+					<td><input type="submit" name="Saglabat"></td>
+				</tr>
+				
+				
+			</table>
+		</form>
+		
+	</body>
+
+</html>

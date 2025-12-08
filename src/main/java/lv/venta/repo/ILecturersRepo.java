@@ -6,4 +6,6 @@ import lv.venta.model.Lecturers;
 
 public interface ILecturersRepo extends CrudRepository<Lecturers, Long> {
 
+	public abstract boolean existsByNameAndSurnameAndDegree(String name, String surname, String degree);
+
 }

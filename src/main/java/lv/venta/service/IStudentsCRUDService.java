@@ -10,6 +10,8 @@ public interface IStudentsCRUDService {
 
 	public abstract Students retrieveById(long Id) throws Exception;
 
+	public abstract void updateStudentById(long id, String name, String surname, String email, long matriculationNr) throws Exception;
+
 	
 
 }

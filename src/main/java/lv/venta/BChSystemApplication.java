@@ -47,11 +47,11 @@ public class BChSystemApplication {
 				Lecturers lect5 = new Lecturers("Arturs", "Orbidans", "Mg.sc");
 				lecturersRepo.saveAll(Arrays.asList(lect1, lect2, lect3, lect4, lect5));
 				
-				Students st1 = new Students("Tatjana", "Tolstika", 230000001, "s23tolstatj@venta.lv");
-				Students st2 = new Students("Kristiana", "Felša", 230000002, "s23felskrist@venta.lv");
-				Students st3 = new Students("Amanda","Rebuka", 23000003,"s23rebuaman@venta.lv");
-				Students st4 = new Students("Baiba", "Kvizikeviča", 23000004, "s23kvizibaib@venta.lv");
-				Students st5 = new Students("Marta", "Dzelme", 23000005, "s23dzelmart@venta.lv");
+				Students st1 = new Students("Tatjana", "Tolstika", "230000001", "s23tolstatj@venta.lv");
+				Students st2 = new Students("Kristiana", "Felša", "230000002", "s23felskrist@venta.lv");
+				Students st3 = new Students("Amanda","Rebuka", "23000003","s23rebuaman@venta.lv");
+				Students st4 = new Students("Baiba", "Kvizikeviča", "23000004", "s23kvizibaib@venta.lv");
+				Students st5 = new Students("Marta", "Dzelme", "23000005", "s23dzelmart@venta.lv");
 				studentsRepo.saveAll(Arrays.asList(st1, st2, st3, st4, st5));
 				
 				StudyCourses course1 = new StudyCourses("Programmēšana tīmeklī JAVA", 6);

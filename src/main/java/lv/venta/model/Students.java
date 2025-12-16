@@ -47,7 +47,8 @@ public class Students {
 	
 	@NotNull
 	@Column(name = "matriculation_nr")
-	private long matriculationNr;
+	@Pattern(regexp="[0-9]{4,10}")
+	private String matriculationNr;
 	
 	@NotNull
 	@Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
@@ -65,7 +66,7 @@ public class Students {
 	//------------------------------------------------------------------
 	
 	//3. Constructor
-	public Students(String studentName ,String studentSurname , long matriculationNr, String email) {
+	public Students(String studentName ,String studentSurname , String matriculationNr, String email) {
 		setStudentName(studentName);
 		setStudentSurname(studentSurname);
 		setMatriculationNr(matriculationNr);

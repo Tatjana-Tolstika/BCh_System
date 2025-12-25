@@ -17,8 +17,8 @@ public class StudentsCRUDServiceImpl implements IStudentsCRUDService {
 	
 	//----------------CREATE-------------------------------------------------------------
 	@Override
-	public void CreateStudent(String name, String surname, long matriculationNr, String email ) throws Exception {
-		if(name == null || surname == null || email == null || matriculationNr < 1000000 ) {
+	public void CreateStudent(String name, String surname, String matriculationNr, String email ) throws Exception {
+		if(name == null || surname == null || email == null || matriculationNr ==null ) {
 			throw new Exception("Incorrect input parameters!");
 		}
 		
@@ -47,21 +47,21 @@ public class StudentsCRUDServiceImpl implements IStudentsCRUDService {
 	//------------------------------------------------------------------------------------
 	//---------------UPDATE---------------------------------------------------------------
 	@Override 
-	public void updateStudentById(long id, String name, String surname, String email, long matriculationNr) throws Exception{
+	public void updateStudentById(long id, String name, String surname, String email, String matriculationNr) throws Exception{
 		Students studentForUpdate = retrieveById(id);
-		if(name == null || surname == null || email == null || !email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\\\.[a-zA-Z]{2,}$") || matriculationNr == 0) {
+		if(name == null || surname == null || email == null || !email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$") || matriculationNr == null || !matriculationNr.matches("[0-9]{4,10}")) {
 			throw new Exception ("Incorrect input parameters!");
 		}
-		if(studentForUpdate.getStudentName() != name) {
+		if(!studentForUpdate.getStudentName().equals(name)) {
 			studentForUpdate.setStudentName(name);
 		}
-		if(studentForUpdate.getStudentSurname() != surname) {
+		if(!studentForUpdate.getStudentSurname().equals(surname)) {
 			studentForUpdate.setStudentSurname(surname);
 		}
-		if(studentForUpdate.getMatriculationNr() != matriculationNr) {
+		if(!studentForUpdate.getMatriculationNr().equals(matriculationNr)) {
 			studentForUpdate.setMatriculationNr(matriculationNr);
 		}
-		if (studentForUpdate.getEmail() != email) {
+		if (!studentForUpdate.getEmail().equals(email)) {
 			studentForUpdate.setEmail(email);
 		}
 		
@@ -73,6 +73,7 @@ public class StudentsCRUDServiceImpl implements IStudentsCRUDService {
 	@Override 
 	public void DeleteStudent(long id)throws Exception{
 		Students person = retrieveById(id);
+		
 		studentsRepo.delete(person);
 	}
 	//--------------------------------------------------------------------------------------
@@ -87,6 +88,8 @@ public class StudentsCRUDServiceImpl implements IStudentsCRUDService {
 		ArrayList<Students> result = (ArrayList<Students>) studentsRepo.findAll();
 		return result;
 	}
+	
+	
 	
 	
 }

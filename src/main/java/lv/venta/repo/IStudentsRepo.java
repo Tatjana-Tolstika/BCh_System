@@ -8,7 +8,7 @@ public interface IStudentsRepo extends CrudRepository<Students, Long>{
 
 
 	public abstract boolean existsByStudentNameAndStudentSurnameAndMatriculationNrAndEmail(String name, String surname,
-			long matriculationNr, String email);
+			String matriculationNr, String email);
 
 	public abstract boolean existsByStudentId(long id);
 

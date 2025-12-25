@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -54,4 +55,40 @@ public class StudentsCRUDController {
 		return "redirect:/students/crud/all";
 	}
 	//----------------------------------------------------------------
+	//------------------UPDATE----------------------------------------
+	@GetMapping("/update/{id}") //localhost:8081/students/crud/update/5
+	public String getControllerUpdateStudentById(@PathVariable(name = "id") long id, Model model) {
+		try {
+		Students studentToUpdate = studentsService.retrieveById(id);
+		model.addAttribute("student", studentToUpdate);
+		return "update-student";
+		}
+		catch (Exception e) {
+			model.addAttribute("package", e.getMessage());
+			return "show-error";
+		}
+	}
+	
+	@PostMapping("/update/{id}")
+	public String postConstrollerUpdateStudentById(@PathVariable(name = "id") long id, @Valid Students student, BindingResult result, Model model) {
+		if(result.hasErrors()) {
+			try{
+				return "update-student";
+			}catch (Exception e) {
+				model.addAttribute("package", e.getMessage());
+				return "show-error";
+			}
+		}
+		
+		try {
+			studentsService.updateStudentById(id, student.getStudentName(), student.getStudentSurname(), student.getEmail(), student.getMatriculationNr());
+			return "redirect:/students/crud/all";
+		}
+		catch(Exception e) {
+			model.addAttribute("package", e.getMessage());
+			return "show-error";
+		}
+		
+		
+	}
 }

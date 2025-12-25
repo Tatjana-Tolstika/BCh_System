@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<body>
+
+<p>Lūdzu rediģējiet eksistējošo studentu:</p>
+
+<form action="#" th:action="@{/students/crud/update/{id}(id=${student.studentId})}"
+      th:object="${student}"
+      method="post">
+
+    <!-- Obligāts lauks atjaunošanai -->
+    <input type="hidden" th:field="*{studentId}"/>
+
+    <table>
+        <tr>
+            <td>Vārds:</td>
+            <td><input type="text" th:field="*{studentName}"/></td>
+            <td th:if="${#fields.hasErrors('studentName')}"
+                th:errors="*{studentName}"></td>
+        </tr>
+
+        <tr>
+            <td>Uzvārds:</td>
+            <td><input type="text" th:field="*{studentSurname}"/></td>
+            <td th:if="${#fields.hasErrors('studentSurname')}"
+                th:errors="*{studentSurname}"></td>
+        </tr>
+
+        <tr>
+            <td>Matriculācijas Nr:</td>
+            <td><input type="text" th:field="*{matriculationNr}"/></td>
+            <td th:if="${#fields.hasErrors('matriculationNr')}"
+                th:errors="*{matriculationNr}"></td>
+        </tr>
+
+        <tr>
+            <td>E-pasts:</td>
+            <td><input type="text" th:field="*{email}"/></td>
+            <td th:if="${#fields.hasErrors('email')}"
+                th:errors="*{email}"></td>
+        </tr>
+
+        <tr>
+            <td>
+                <input type="submit" value="Saglabāt izmaiņas"/>
+            </td>
+        </tr>
+    </table>
+
+</form>
+
+</body>
+</html>

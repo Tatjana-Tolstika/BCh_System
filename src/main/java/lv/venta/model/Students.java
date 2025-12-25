@@ -56,13 +56,10 @@ public class Students {
 	private String email;
 	
 	//----------2. Table connections---------------------------------------
-	@OneToMany(mappedBy="student", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="student", cascade = CascadeType.ALL, orphanRemoval = true)
 	@ToString.Exclude
 	private Collection<StudentProgram> studentProgram;
 	
-	@OneToMany(mappedBy="student", cascade = CascadeType.ALL)
-	@ToString.Exclude
-	private Collection<StudentProgramCourse> studentProgramCourse;
 	//------------------------------------------------------------------
 	
 	//3. Constructor

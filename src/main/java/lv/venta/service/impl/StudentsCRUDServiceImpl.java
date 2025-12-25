@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lv.venta.model.Students;
+
 import lv.venta.repo.IStudentsRepo;
 import lv.venta.service.IStudentsCRUDService;
 @Service
 public class StudentsCRUDServiceImpl implements IStudentsCRUDService {
 	@Autowired
 	private IStudentsRepo studentsRepo;
+
 	
 	//=======================CRUD====================================================================================
 	
@@ -70,12 +72,26 @@ public class StudentsCRUDServiceImpl implements IStudentsCRUDService {
 	//------------------------------------------------------------------------------------
 	
 	//--------------DELETE----------------------------------------------------------------
-	@Override 
-	public void DeleteStudent(long id)throws Exception{
-		Students person = retrieveById(id);
-		
-		studentsRepo.delete(person);
+//	@Override 
+//	public void DeleteStudent(long id)throws Exception{
+//		Students person = retrieveById(id);
+//		ArrayList<StudentProgram> entriesProg = studProgRepo.findByStudentId(person);
+//		ArrayList<StudentProgramCourse> entriesProgCourse = studProgCourseRepo.findByStudentId(person);
+//		if(!entriesProg.isEmpty()) {
+//			studProgRepo.deleteAll(entriesProg);
+//		}
+//		else if(!entriesProgCourse.isEmpty()) {
+//			studProgCourseRepo.deleteAll(entriesProgCourse);
+//		}
+//		studentsRepo.delete(person);
+//	}
+
+	@Override
+	public void DeleteStudentById(long id) throws Exception {
+	    Students student = retrieveById(id);
+	    studentsRepo.delete(student);
 	}
+
 	//--------------------------------------------------------------------------------------
 	
 	//===========================END OF CRUD==================================================================

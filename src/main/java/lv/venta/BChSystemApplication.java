@@ -73,14 +73,14 @@ public class BChSystemApplication {
 				StudentProgram studProg5 = new StudentProgram(st5, prog2, 3);
 				studentProgRepo.saveAll(Arrays.asList(studProg1, studProg2, studProg3, studProg4, studProg5));
 				
-				StudentProgramCourse spc1 = new StudentProgramCourse(st1, course1,8); 
-				StudentProgramCourse spc2 = new StudentProgramCourse(st1, course3, 9); 
-				StudentProgramCourse spc3 = new StudentProgramCourse(st2, course4, 8);
-				StudentProgramCourse spc4 = new StudentProgramCourse(st3, course4, 9);
-				StudentProgramCourse spc5 = new StudentProgramCourse(st3, course1, 10);
-				StudentProgramCourse spc6 = new StudentProgramCourse(st5, course5, 10);
-				StudentProgramCourse spc7 = new StudentProgramCourse(st4, course2, 7);
-				StudentProgramCourse spc8 = new StudentProgramCourse(st5, course2,8); 
+				StudentProgramCourse spc1 = new StudentProgramCourse(studProg1, course1,8); 
+				StudentProgramCourse spc2 = new StudentProgramCourse(studProg1, course3, 9); 
+				StudentProgramCourse spc3 = new StudentProgramCourse(studProg2, course4, 8);
+				StudentProgramCourse spc4 = new StudentProgramCourse(studProg3, course4, 9);
+				StudentProgramCourse spc5 = new StudentProgramCourse(studProg3, course1, 10);
+				StudentProgramCourse spc6 = new StudentProgramCourse(studProg5, course5, 10);
+				StudentProgramCourse spc7 = new StudentProgramCourse(studProg4, course2, 7);
+				StudentProgramCourse spc8 = new StudentProgramCourse(studProg5, course2,8); 
 				studentProgCourseRepo.saveAll(Arrays.asList(spc1,spc2,spc3,spc4,spc5,spc6,spc7,spc8));
 				
 				//------------------About Tests-----------------------------------------------------------------------------

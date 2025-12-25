@@ -91,4 +91,21 @@ public class StudentsCRUDController {
 		
 		
 	}
+	//-------------------------------------------------------------------------------------
+	
+	//-------------------DELETE-------------------------------------------------------------------------------
+	@GetMapping("/delete/{id}")//localhost:8081/students/crud/delete/3
+	public String getControllerDeleteStudentById(@PathVariable(name = "id") long id, Model model)
+	{
+		try {
+			studentsService.DeleteStudentById(id);
+			model.addAttribute("package", studentsService.selectAllStudents());
+			return "redirect:/students/crud/all";
+			
+		} catch (Exception e) {
+			model.addAttribute("package", e.getMessage());
+			return "show-error";
+		}
+		
+	}
 }

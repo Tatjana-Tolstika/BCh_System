@@ -44,19 +44,19 @@ public class StudentProgramCourse {
 	
 	//----------Table connections-----------------------
 	@ManyToOne
-	@JoinColumn(name="student_id")
-	private Students student;
-	
+	@JoinColumn(name="student_program_id", nullable = false)
+	private StudentProgram studentProgram;
+
 	@ManyToOne
 	@JoinColumn(name="course_id")
 	private StudyCourses course;
 	
-	@OneToMany(mappedBy="studentProgramCourse" , cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="studentProgramCourse" , cascade = CascadeType.ALL, orphanRemoval = true)
 	private Collection<TestResult> testResult ;
 	//--------------------------------------------------
 	
-	public StudentProgramCourse(Students student, StudyCourses course, int mark) {
-		setStudent(student);
+	public StudentProgramCourse(StudentProgram student, StudyCourses course, int mark) {
+		setStudentProgram(student);
 		setCourse(course);
 		setMark(mark);
 	}

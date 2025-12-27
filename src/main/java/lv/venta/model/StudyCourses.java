@@ -43,11 +43,11 @@ public class StudyCourses {
 	private int credits;
 	
 	//----------Table connections-----------------------
-	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Collection<CourseTests> courseTests;
 	
 	
-	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Collection<StudentProgramCourse> studentProgramCourse;
 	
 	@ManyToMany(mappedBy = "courses")

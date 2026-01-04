@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -42,7 +43,24 @@ public class LecturersCRUDController {
 			return "redirect:/lecturers/crud/all";
 		}
 		//----------------------------------------------------------------
+		
+		//-------------------DELETE-------------------------------------------------------------------------------
+		@GetMapping("/delete/{id}")//localhost:8081/lecturers/crud/delete/3
+		public String getControllerDeleteLecturerById(@PathVariable(name = "id") long id, Model model)
+		{
+			try {
+				lecturersService.DeleteLecturer(id);
+				model.addAttribute("package", lecturersService.selectAllLecturers());
+				return "redirect:/lecturers/crud/all";
+				
+			} catch (Exception e) {
+				model.addAttribute("package", e.getMessage());
+				return "show-error";
+			}
+			
+		}
 	
+		//----------------------------------------------------------------
 	@GetMapping("/all") //localhost:8081/lecturers/crud/all
 	public String getConstrollerGetAllStudents(Model model) {
 		try {

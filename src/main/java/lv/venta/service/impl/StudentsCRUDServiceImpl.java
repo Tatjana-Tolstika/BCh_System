@@ -74,7 +74,7 @@ public class StudentsCRUDServiceImpl implements IStudentsCRUDService {
 	//--------------DELETE----------------------------------------------------------------
 
 	@Override
-	public void DeleteStudentById(long id) throws Exception {
+	public void deleteStudentById(long id) throws Exception {
 	    Students student = retrieveById(id);
 	    studentsRepo.delete(student);
 	}

@@ -10,7 +10,7 @@ public interface IStudentsCRUDService {
 
 	public abstract void CreateStudent(String name, String surname, String matriculationNr, String email) throws Exception;
 
-	public abstract void DeleteStudentById(long id) throws Exception;
+	public abstract void deleteStudentById(long id) throws Exception;
 
 	public abstract Students retrieveById(long Id) throws Exception;
 

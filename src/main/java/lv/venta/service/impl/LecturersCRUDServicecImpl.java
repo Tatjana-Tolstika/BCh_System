@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lv.venta.model.Lecturers;
-import lv.venta.model.Students;
 import lv.venta.repo.ILecturersRepo;
 import lv.venta.service.ILecturersCRUDService;
 
@@ -68,7 +67,7 @@ public class LecturersCRUDServicecImpl implements ILecturersCRUDService{
 	//------------------------------------------------------------------------------------
 	//--------------DELETE----------------------------------------------------------------
 		@Override 
-		public void DeleteLecturer(long id)throws Exception{
+		public void deleteLecturer(long id)throws Exception{
 			Lecturers person = retrieveLecturerById(id);
 			lecturersRepo.delete(person);
 		}

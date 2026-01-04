@@ -13,7 +13,7 @@ public interface ILecturersCRUDService {
 
 	public abstract void updateLecturerById(long id, String name, String surname, String degree) throws Exception;
 
-	public abstract void DeleteLecturer(long id) throws Exception;
+	public abstract void deleteLecturer(long id) throws Exception;
 
 	public abstract ArrayList<Lecturers> selectAllLecturers() throws Exception;
 

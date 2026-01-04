@@ -40,7 +40,7 @@ public class StudyProgram {
 		
 		@NotNull
 		@Column(name = "program_degree")
-		private String degree;
+		private String programDegree;
 		
 		@NotNull
 		@Pattern(regexp = "[A-Z]+")
@@ -48,14 +48,14 @@ public class StudyProgram {
 		private String abbreviation;
 		
 		//------------------Table connections------------------------
-		@OneToMany(mappedBy="studyProgram", cascade = CascadeType.ALL)
+		@OneToMany(mappedBy="studyProgram", cascade = CascadeType.ALL, orphanRemoval = true)
 		private Collection<StudentProgram> studentProgram;
 		
 //		//-----------------------------------------------------------
 		
 		public StudyProgram(String title, String degree, String abbreviation) {
 			setProgramTitle(title);
-			setDegree(degree);
+			setProgramDegree(degree);
 			setAbbreviation(abbreviation);
 		}
 }

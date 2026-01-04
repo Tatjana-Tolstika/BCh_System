@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.validation.Valid;
 import lv.venta.model.Lecturers;
-import lv.venta.model.Students;
 import lv.venta.service.ILecturersCRUDService;
 
 @Controller
@@ -50,7 +49,7 @@ public class LecturersCRUDController {
 		public String getControllerDeleteLecturerById(@PathVariable(name = "id") long id, Model model)
 		{
 			try {
-				lecturersService.DeleteLecturer(id);
+				lecturersService.deleteLecturer(id);
 				model.addAttribute("package", lecturersService.selectAllLecturers());
 				return "redirect:/lecturers/crud/all";
 				
@@ -112,15 +111,4 @@ public class LecturersCRUDController {
 		}
 	}
 }
-//======================================CRUD=======================================================
-	//-------------------------------CREATE-----------------------------------
-	
-	//-----------------------------------------------------------------------
-	//------------------------------DELETE---------------------------------
-	//-----------------------------------------------------------------------
-	//-----------------------------RETRIEVE-----------------------------------
-	//-----------------------------------------------------------------------
-	//--------------------------UPDATE---------------------------------------
-	//-----------------------------------------------------------------------
-	
-	//=================================================================================================
+

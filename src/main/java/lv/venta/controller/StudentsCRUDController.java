@@ -98,7 +98,7 @@ public class StudentsCRUDController {
 	public String getControllerDeleteStudentById(@PathVariable(name = "id") long id, Model model)
 	{
 		try {
-			studentsService.DeleteStudentById(id);
+			studentsService.deleteStudentById(id);
 			model.addAttribute("package", studentsService.selectAllStudents());
 			return "redirect:/students/crud/all";
 			

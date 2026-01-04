@@ -7,7 +7,7 @@ import lv.venta.model.Lecturers;
 
 public interface ILecturersCRUDService {
 
-	public abstract void CreateLecturer(String name, String surname, String degree) throws Exception;
+	public abstract void createLecturer(String name, String surname, String degree) throws Exception;
 
 	public abstract Lecturers retrieveLecturerById(long id) throws Exception;
 

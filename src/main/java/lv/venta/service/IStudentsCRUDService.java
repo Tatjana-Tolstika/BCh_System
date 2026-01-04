@@ -8,7 +8,7 @@ import lv.venta.model.Students;
 
 public interface IStudentsCRUDService {
 
-	public abstract void CreateStudent(String name, String surname, String matriculationNr, String email) throws Exception;
+	public abstract void createStudent(String name, String surname, String matriculationNr, String email) throws Exception;
 
 	public abstract void deleteStudentById(long id) throws Exception;
 

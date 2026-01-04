@@ -19,7 +19,7 @@ public class StudentsCRUDServiceImpl implements IStudentsCRUDService {
 	
 	//----------------CREATE-------------------------------------------------------------
 	@Override
-	public void CreateStudent(String name, String surname, String matriculationNr, String email ) throws Exception {
+	public void createStudent(String name, String surname, String matriculationNr, String email ) throws Exception {
 		if(name == null || surname == null || email == null || matriculationNr ==null ) {
 			throw new Exception("Incorrect input parameters!");
 		}

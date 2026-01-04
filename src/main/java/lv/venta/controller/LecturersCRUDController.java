@@ -34,7 +34,7 @@ public class LecturersCRUDController {
 				return "create-lecturer";
 			}
 			try {
-				lecturersService.CreateLecturer(lecturer.getLecturerName(), lecturer.getLecturerSurname(), lecturer.getLecturerDegree());
+				lecturersService.createLecturer(lecturer.getLecturerName(), lecturer.getLecturerSurname(), lecturer.getLecturerDegree());
 			}
 			catch(Exception e) {
 				model.addAttribute("package", e.getMessage());

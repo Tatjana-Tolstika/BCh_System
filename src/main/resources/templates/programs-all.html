@@ -1,0 +1,16 @@
+<html xmlns:th="https://www.thymeleaf.org">
+	<body>
+		<p>Programs: </p>
+		<table border="1px">
+			<tr th:each="tempP: ${program}">
+			
+				<td th:text = "${tempP.getProgramTitle()}"></td>
+				<td th:text = "${tempP.getProgramDegree()}"></td>
+				<td th:text = "${tempP.getAbbreviation()}"></td>
+				
+			</tr>
+		</table>
+	</body>	
+
+
+</html>

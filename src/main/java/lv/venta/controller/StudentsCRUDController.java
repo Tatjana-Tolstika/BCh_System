@@ -46,7 +46,7 @@ public class StudentsCRUDController {
 			return "create-student";
 		}
 		try {
-			studentsService.CreateStudent(student.getStudentName(), student.getStudentSurname(), student.getMatriculationNr(), student.getEmail());
+			studentsService.createStudent(student.getStudentName(), student.getStudentSurname(), student.getMatriculationNr(), student.getEmail());
 		}
 		catch(Exception e) {
 			model.addAttribute("package", e.getMessage());

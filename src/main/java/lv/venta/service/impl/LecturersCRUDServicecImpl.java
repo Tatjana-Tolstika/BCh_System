@@ -17,7 +17,7 @@ public class LecturersCRUDServicecImpl implements ILecturersCRUDService{
 	//========================CRUD=============================================
 	//----------------CREATE-------------------------------------------------------------
 		@Override
-		public void CreateLecturer(String name, String surname, String degree ) throws Exception {
+		public void createLecturer(String name, String surname, String degree ) throws Exception {
 			if(name == null || surname == null || degree == null || !name.matches("[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž]+")|| !surname.matches("[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž]+")) {
 				throw new Exception("Incorrect input parameters!");
 			}

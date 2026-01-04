@@ -31,7 +31,7 @@ public class StudyProgram {
 		@Column(name = "program_id")
 		@Id
 		@GeneratedValue(strategy = GenerationType.AUTO)
-		private long programID;
+		private long programId;
 		
 		@NotNull
 		@Pattern(regexp = "[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž ]+")

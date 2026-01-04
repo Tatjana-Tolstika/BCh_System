@@ -13,14 +13,14 @@
 
     <table>
         <tr>
-            <td>Vārds:</td>
+            <td>Name:</td>
             <td><input type="text" th:field="*{lecturerName}"/></td>
             <td th:if="${#fields.hasErrors('lecturerName')}"
                 th:errors="*{lecturerName}"></td>
         </tr>
 
         <tr>
-            <td>Uzvārds:</td>
+            <td>Surname:</td>
             <td><input type="text" th:field="*{lecturerSurname}"/></td>
             <td th:if="${#fields.hasErrors('lecturerSurname')}"
                 th:errors="*{lecturerSurname}"></td>
@@ -36,7 +36,7 @@
 
         <tr>
             <td>
-                <input type="submit" value="Saglabāt izmaiņas"/>
+                <input type="submit" value="Save"/>
             </td>
         </tr>
     </table>

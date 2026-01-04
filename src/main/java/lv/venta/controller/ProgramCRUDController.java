@@ -7,10 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.validation.Valid;
+import lv.venta.model.Students;
 import lv.venta.model.StudyProgram;
 import lv.venta.service.IProgramCRUDService;
 
@@ -54,4 +56,57 @@ public class ProgramCRUDController {
 		return "redirect:/programs/crud/all";
 	}
 	//----------------------------------------------------------------
+	//------------------UPDATE----------------------------------------
+	@GetMapping("/update/{id}") //localhost:8081/programs/crud/update/2
+	public String getControllerUpdateProgramById(@PathVariable(name = "id") long id, Model model) {
+		try {
+		StudyProgram programToUpdate = programService.retrieveProgramById(id);
+		model.addAttribute("program", programToUpdate);
+		return "update-program";
+		}
+		catch (Exception e) {
+			model.addAttribute("package", e.getMessage());
+			return "show-error";
+		}
+	}
+		
+	@PostMapping("/update/{id}")
+	public String postConstrollerUpdateStudentById(@PathVariable(name = "id") long id, @Valid StudyProgram program, BindingResult result, Model model) {
+		if(result.hasErrors()) {
+			try{
+				return "update-program";
+			}catch (Exception e) {
+				model.addAttribute("package", e.getMessage());
+				return "show-error";
+			}
+		}
+			
+		try {
+			programService.updateProgramById(id, program.getProgramTitle(), program.getProgramDegree(), program.getAbbreviation());
+			return "redirect:/programs/crud/all";
+		}
+		catch(Exception e) {
+			model.addAttribute("package", e.getMessage());
+			return "show-error";
+		}
+			
+			
+	}
+	//-------------------------------------------------------------------------------------
+	//-------------------DELETE-------------------------------------------------------------------------------
+	@GetMapping("/delete/{id}")//localhost:8081/programs/crud/delete/3
+	public String getControllerDeleteProgramById(@PathVariable(name = "id") long id, Model model)
+	{
+		try {
+			programService.deleteProgram(id);
+			model.addAttribute("package", programService.selectAllPrograms());
+			return "redirect:/programs/crud/all";
+				
+		} catch (Exception e) {
+			model.addAttribute("package", e.getMessage());
+			return "show-error";
+		}
+			
+	}
+	//-------------------------------------------------------------------------------------------
 }

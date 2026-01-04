@@ -12,28 +12,28 @@
 
     <table>
         <tr>
-            <td>Vārds:</td>
+            <td>Name:</td>
             <td><input type="text" th:field="*{studentName}"/></td>
             <td th:if="${#fields.hasErrors('studentName')}"
                 th:errors="*{studentName}"></td>
         </tr>
 
         <tr>
-            <td>Uzvārds:</td>
+            <td>Surname:</td>
             <td><input type="text" th:field="*{studentSurname}"/></td>
             <td th:if="${#fields.hasErrors('studentSurname')}"
                 th:errors="*{studentSurname}"></td>
         </tr>
 
         <tr>
-            <td>Matriculācijas Nr:</td>
+            <td>Matriculation Nr:</td>
             <td><input type="text" th:field="*{matriculationNr}"/></td>
             <td th:if="${#fields.hasErrors('matriculationNr')}"
                 th:errors="*{matriculationNr}"></td>
         </tr>
 
         <tr>
-            <td>E-pasts:</td>
+            <td>Email:</td>
             <td><input type="text" th:field="*{email}"/></td>
             <td th:if="${#fields.hasErrors('email')}"
                 th:errors="*{email}"></td>
@@ -41,7 +41,7 @@
 
         <tr>
             <td>
-                <input type="submit" value="Saglabāt izmaiņas"/>
+                <input type="submit" value="Save"/>
             </td>
         </tr>
     </table>

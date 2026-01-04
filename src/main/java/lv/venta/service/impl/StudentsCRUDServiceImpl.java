@@ -72,19 +72,6 @@ public class StudentsCRUDServiceImpl implements IStudentsCRUDService {
 	//------------------------------------------------------------------------------------
 	
 	//--------------DELETE----------------------------------------------------------------
-//	@Override 
-//	public void DeleteStudent(long id)throws Exception{
-//		Students person = retrieveById(id);
-//		ArrayList<StudentProgram> entriesProg = studProgRepo.findByStudentId(person);
-//		ArrayList<StudentProgramCourse> entriesProgCourse = studProgCourseRepo.findByStudentId(person);
-//		if(!entriesProg.isEmpty()) {
-//			studProgRepo.deleteAll(entriesProg);
-//		}
-//		else if(!entriesProgCourse.isEmpty()) {
-//			studProgCourseRepo.deleteAll(entriesProgCourse);
-//		}
-//		studentsRepo.delete(person);
-//	}
 
 	@Override
 	public void DeleteStudentById(long id) throws Exception {

@@ -1,0 +1,16 @@
+<html xmlns:th="https://www.thymeleaf.org">
+	<body>
+		<p>Lecturers: </p>
+		<table border="1px">
+			<tr th:each="tempL: ${lecturers}">
+			
+				<td th:text = "${tempL.getLecturerName()}"></td>
+				<td th:text = "${tempL.getLecturerSurname()}"></td>
+				<td th:text = "${tempL.getLecturerDegree()}"></td>
+				
+			</tr>
+		</table>
+	</body>	
+
+
+</html>

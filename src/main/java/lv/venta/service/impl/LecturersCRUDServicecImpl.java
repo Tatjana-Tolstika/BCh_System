@@ -1,9 +1,12 @@
 package lv.venta.service.impl;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lv.venta.model.Lecturers;
+import lv.venta.model.Students;
 import lv.venta.repo.ILecturersRepo;
 import lv.venta.service.ILecturersCRUDService;
 
@@ -70,5 +73,14 @@ public class LecturersCRUDServicecImpl implements ILecturersCRUDService{
 			lecturersRepo.delete(person);
 		}
 	//--------------------------------------------------------------------------------------
+		
+		@Override 
+		public ArrayList<Lecturers> selectAllLecturers() throws Exception{
+			if(lecturersRepo.count() == 0) {
+				throw new Exception("Lecturers list is empty!");
+			}
+			ArrayList<Lecturers> result = (ArrayList<Lecturers>) lecturersRepo.findAll();
+			return result;
+		}
 	//=========================================================================
 }

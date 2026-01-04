@@ -1,0 +1,35 @@
+<html xmlns:th=" https://www.thymeleaf.org">
+	
+	<body>
+	<p>Please enter a new lecturer: </p>
+		<form action="#" th:action="@{/lecturers/crud/add}" th:object="${lecturers}" method="post">
+			<table>
+				<tr>
+					<td>Name: </td>
+					<td><input type="text" th:field="*{lecturerName}"></td>
+					<td th:if="${#fields.hasErrors('lecturerName')}" th:errors="*{lecturerName}"></td>
+				</tr>
+					<tr></tr>
+					<td>Surname: </td>
+					<td><input type="text" th:field="*{lecturerSurname}"></td>
+					<td th:if="${#fields.hasErrors('lecturerSurname')}" th:errors="*{lecturerSurname}"></td>
+										
+				</tr>
+					<tr>
+					<td>Degree: </td>
+					<td><input type="text" th:field="*{lecturerDegree}"></td>
+					<td th:if="${#fields.hasErrors('lecturerDegree')}" th:errors="*{lecturerDegree}"></td>
+										
+				</tr>
+				
+				<tr>
+					<td><input type="submit" name="Saglabat"></td>
+				</tr>
+				
+				
+			</table>
+		</form>
+		
+	</body>
+
+</html>

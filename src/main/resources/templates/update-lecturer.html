@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<body>
+
+<p>Update the information about the lecturer:</p>
+
+<form action="#" th:action="@{/lecturers/crud/update/{id}(id=${lecturer.lecturersId})}"
+      th:object="${lecturer}"
+      method="post">
+
+
+    <input type="hidden" th:field="*{lecturersId}"/>
+
+    <table>
+        <tr>
+            <td>Vārds:</td>
+            <td><input type="text" th:field="*{lecturerName}"/></td>
+            <td th:if="${#fields.hasErrors('lecturerName')}"
+                th:errors="*{lecturerName}"></td>
+        </tr>
+
+        <tr>
+            <td>Uzvārds:</td>
+            <td><input type="text" th:field="*{lecturerSurname}"/></td>
+            <td th:if="${#fields.hasErrors('lecturerSurname')}"
+                th:errors="*{lecturerSurname}"></td>
+        </tr>
+
+        <tr>
+            <td>Degree:</td>
+            <td><input type="text" th:field="*{lecturerDegree}"/></td>
+            <td th:if="${#fields.hasErrors('lecturerDegree')}"
+                th:errors="*{lecturerDegree}"></td>
+        </tr>
+
+
+        <tr>
+            <td>
+                <input type="submit" value="Saglabāt izmaiņas"/>
+            </td>
+        </tr>
+    </table>
+
+</form>
+
+</body>
+</html>

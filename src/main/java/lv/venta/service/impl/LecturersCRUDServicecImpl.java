@@ -50,7 +50,7 @@ public class LecturersCRUDServicecImpl implements ILecturersCRUDService{
 		@Override 
 		public void updateLecturerById(long id, String name, String surname, String degree) throws Exception{
 			Lecturers lecturerForUpdate = retrieveLecturerById(id);
-			if(name == null || surname == null ||!name.matches("[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž]+")|| !surname.matches("[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž]+") ) {
+			if(name == null || surname == null ||!name.matches("[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž]+")|| !surname.matches("[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž]+") || degree == null ) {
 				throw new Exception ("Incorrect input parameters!");
 			}
 			if(lecturerForUpdate.getLecturerName() != name) {

@@ -2,13 +2,12 @@
 <html xmlns:th="https://www.thymeleaf.org">
 <body>
 
-<p>Lūdzu rediģējiet eksistējošo studentu:</p>
+<p>Update the information about the student::</p>
 
 <form action="#" th:action="@{/students/crud/update/{id}(id=${student.studentId})}"
       th:object="${student}"
       method="post">
 
-    <!-- Obligāts lauks atjaunošanai -->
     <input type="hidden" th:field="*{studentId}"/>
 
     <table>

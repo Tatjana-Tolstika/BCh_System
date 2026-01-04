@@ -32,7 +32,7 @@ public class Lecturers {
 	@Column(name = "lecturer_id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long lecturersID;
+	private long lecturersId;
 	
 	@NotNull
 	@Pattern(regexp="[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž]+")

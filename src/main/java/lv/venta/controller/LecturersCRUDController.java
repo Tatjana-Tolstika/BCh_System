@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.validation.Valid;
 import lv.venta.model.Lecturers;
+import lv.venta.model.Students;
 import lv.venta.service.ILecturersCRUDService;
 
 @Controller
@@ -61,6 +62,43 @@ public class LecturersCRUDController {
 		}
 	
 		//----------------------------------------------------------------
+		//------------------UPDATE----------------------------------------
+		@GetMapping("/update/{id}") //localhost:8081/lecturers/crud/update/5
+		public String getControllerUpdateLecturerById(@PathVariable(name = "id") long id, Model model) {
+			try {
+			Lecturers lecturerToUpdate = lecturersService.retrieveLecturerById(id);
+			model.addAttribute("lecturer", lecturerToUpdate);
+			return "update-lecturer";
+			}
+			catch (Exception e) {
+				model.addAttribute("package", e.getMessage());
+				return "show-error";
+			}
+		}
+		
+		@PostMapping("/update/{id}")
+		public String postConstrollerUpdateLecturerById(@PathVariable(name = "id") long id, @Valid Lecturers lecturer, BindingResult result, Model model) {
+			if(result.hasErrors()) {
+				try{
+					return "update-lecturer";
+				}catch (Exception e) {
+					model.addAttribute("package", e.getMessage());
+					return "show-error";
+				}
+			}
+			
+			try {
+				lecturersService.updateLecturerById(id, lecturer.getLecturerName(), lecturer.getLecturerSurname(), lecturer.getLecturerDegree());
+				return "redirect:/lecturers/crud/all";
+			}
+			catch(Exception e) {
+				model.addAttribute("package", e.getMessage());
+				return "show-error";
+			}
+			
+			
+		}
+		//-------------------------------------------------------------------------------------
 	@GetMapping("/all") //localhost:8081/lecturers/crud/all
 	public String getConstrollerGetAllStudents(Model model) {
 		try {

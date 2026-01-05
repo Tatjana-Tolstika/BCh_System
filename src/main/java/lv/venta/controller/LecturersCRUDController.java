@@ -29,7 +29,7 @@ public class LecturersCRUDController {
 		}
 		
 		@PostMapping("/add")
-		public String postConstrollerAddNewStudent(@Valid Lecturers lecturer, BindingResult result, Model model) {
+		public String postConstrollerAddNewLecturer(@Valid Lecturers lecturer, BindingResult result, Model model) {
 			if(result.hasErrors()) {
 				return "create-lecturer";
 			}
@@ -99,7 +99,7 @@ public class LecturersCRUDController {
 		}
 		//-------------------------------------------------------------------------------------
 	@GetMapping("/all") //localhost:8081/lecturers/crud/all
-	public String getConstrollerGetAllStudents(Model model) {
+	public String getConstrollerGetAllLecturers(Model model) {
 		try {
 			ArrayList<Lecturers> allLecturers = lecturersService.selectAllLecturers();
 			model.addAttribute("lecturers", allLecturers);

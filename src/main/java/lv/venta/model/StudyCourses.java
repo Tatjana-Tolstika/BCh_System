@@ -32,7 +32,7 @@ public class StudyCourses {
 	@Column(name = "course_id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long courseID;
+	private long courseId;
 	
 	@NotNull
 	@Column(name = "course_title")

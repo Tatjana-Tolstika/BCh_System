@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.validation.Valid;
-import lv.venta.model.Students;
 import lv.venta.model.StudyProgram;
 import lv.venta.service.IProgramCRUDService;
 

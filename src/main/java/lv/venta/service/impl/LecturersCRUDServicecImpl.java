@@ -52,13 +52,13 @@ public class LecturersCRUDServicecImpl implements ILecturersCRUDService{
 			if(name == null || surname == null ||!name.matches("[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž]+")|| !surname.matches("[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž]+") || degree == null ) {
 				throw new Exception ("Incorrect input parameters!");
 			}
-			if(lecturerForUpdate.getLecturerName() != name) {
+			if(!lecturerForUpdate.getLecturerName().equals(name)) {
 				lecturerForUpdate.setLecturerName(name);
 			}
-			if(lecturerForUpdate.getLecturerSurname() != surname) {
+			if(!lecturerForUpdate.getLecturerSurname().equals(surname)) {
 				lecturerForUpdate.setLecturerSurname(surname);
 			}
-			if(lecturerForUpdate.getLecturerDegree() != degree) {
+			if(!lecturerForUpdate.getLecturerDegree().equals(degree)) {
 				lecturerForUpdate.setLecturerDegree(degree);
 			}
 			

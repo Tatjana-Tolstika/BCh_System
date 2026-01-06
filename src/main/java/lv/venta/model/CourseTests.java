@@ -56,7 +56,7 @@ public class CourseTests {
 	@JoinColumn(name = "course_id")
 	private StudyCourses course;
 
-	@OneToMany(mappedBy = "test", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "test", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Collection<TestTask> tasksForTest;
 	// -------------------------------------------
 

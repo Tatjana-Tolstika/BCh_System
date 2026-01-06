@@ -59,13 +59,13 @@ public class ProgramCRUDServiceImpl implements IProgramCRUDService{
 			if(title == null || degree == null || abbreviation == null || !title.matches("[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž ]+")|| !abbreviation.matches("[A-Z]+")) {
 				throw new Exception("Incorrect input parameters!");
 			}
-			if(programForUpdate.getProgramTitle() != title) {
+			if(!programForUpdate.getProgramTitle().equals(title)) {
 				programForUpdate.setProgramTitle(title);
 			}
-			if(programForUpdate.getProgramDegree() != degree) {
+			if(!programForUpdate.getProgramDegree().equals(degree)) {
 				programForUpdate.setProgramDegree(degree);
 			}
-			if(programForUpdate.getAbbreviation() != abbreviation) {
+			if(!programForUpdate.getAbbreviation().equals(abbreviation)) {
 				programForUpdate.setAbbreviation(abbreviation);
 			}
 			

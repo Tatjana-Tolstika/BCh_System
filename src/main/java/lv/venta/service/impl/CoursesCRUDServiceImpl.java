@@ -52,7 +52,7 @@ private IStudyCourseRepo courseRepo;
 			if(title == null || credits <=0 || credits > 10) {
 				throw new Exception ("Incorrect input parameters!");
 			}
-			if(courseForUpdate.getCourseTitle() != title) {
+			if(!courseForUpdate.getCourseTitle().equals(title)) {
 				courseForUpdate.setCourseTitle(title);
 			}
 			if(courseForUpdate.getCredits() != credits) {

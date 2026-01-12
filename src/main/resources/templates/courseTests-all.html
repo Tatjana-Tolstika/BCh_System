@@ -1,0 +1,18 @@
+<html xmlns:th="https://www.thymeleaf.org">
+	<body>
+		<p>Tests and courses: </p>
+		<table border="1px">
+			<tr th:each="tempCT: ${courseTests}">
+			
+				<td th:text = "${tempCT.getTestId()}"></td>
+				<td th:text = "${tempCT.getTestTitle()}"></td>
+				<td th:text = "${tempCT.getTestDescription()}"></td>
+				<td th:text = "${tempCT.getPoints()}"></td>
+				<td th:text = "${tempCT.getCourse().getCourseTitle()}"></td>
+				
+			</tr>
+		</table>
+	</body>	
+
+
+</html>

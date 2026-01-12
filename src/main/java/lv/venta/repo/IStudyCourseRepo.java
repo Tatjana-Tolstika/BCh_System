@@ -8,4 +8,7 @@ public interface IStudyCourseRepo extends CrudRepository<StudyCourses, Long>{
 
 	public abstract boolean existsByCourseTitleAndCredits(String title, int credits);
 
+
+	public abstract StudyCourses findByCourseTitle(String courseTitle);
+
 }

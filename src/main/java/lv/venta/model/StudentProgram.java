@@ -45,11 +45,7 @@ public class StudentProgram {
 	@JoinColumn(name="program_id")
 	private StudyProgram studyProgram;
 	
-	@OneToMany(
-		    mappedBy = "studentProgram",
-		    cascade = CascadeType.ALL,
-		    orphanRemoval = true
-		)
+	@OneToMany(mappedBy = "studentProgram",cascade = CascadeType.ALL,orphanRemoval = true)
 	@ToString.Exclude
 	private Collection<StudentProgramCourse> courses;
 

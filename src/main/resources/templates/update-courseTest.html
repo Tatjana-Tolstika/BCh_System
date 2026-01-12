@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<body>
+
+<p>Update the information about the test:</p>
+
+<form th:action="@{/courseTests/crud/update/{id}(id=*{testId})}" th:object="${courseTest}" method="post">
+
+
+	<input type="hidden" th:field="*{testId}" />
+
+    <table>
+        <tr>
+            <td>Title:</td>
+            <td><input type="text" th:field="*{testTitle}"/></td>
+            <td th:if="${#fields.hasErrors('testTitle')}"
+                th:errors="*{testTitle}"></td>
+        </tr>
+
+        <tr>
+            <td>Description:</td>
+            <td><input type="text" th:field="*{testDescription}"/></td>
+            <td th:if="${#fields.hasErrors('testDescription')}"
+                th:errors="*{testDescription}"></td>
+        </tr>
+
+        <tr>
+            <td>Points:</td>
+            <td><input type="text" th:field="*{points}"/></td>
+            <td th:if="${#fields.hasErrors('points')}"
+                th:errors="*{points}"></td>
+        </tr>
+
+		<tr>
+		    <td>Course:</td>
+		    <td>
+		        <select name="courseId" th:field="*{course.courseTitle}" required >
+		            <option value="" ></option>
+		            <option th:each="c : ${courses}"
+		                    th:value="${c.courseId}"
+		                    th:text="${c.courseTitle}"
+							th:selected="${c.courseId}"
+		                    ></option>
+		            </option>
+		        </select>
+		    </td>
+		</tr>
+
+        <tr>
+            <td>
+                <input type="submit" value="Save"/>
+            </td>
+        </tr>
+    </table>
+ 
+</form>
+
+</body>
+</html>

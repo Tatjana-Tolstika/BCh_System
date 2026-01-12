@@ -1,6 +1,7 @@
 package lv.venta.service.impl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,12 +9,15 @@ import org.springframework.stereotype.Service;
 import lv.venta.model.CourseTests;
 import lv.venta.model.StudyCourses;
 import lv.venta.repo.ICourseTestRepo;
+import lv.venta.repo.IStudyCourseRepo;
 import lv.venta.service.ICourseTestCRUDService;
 
 @Service
 public class CourseTestCRUDServiceImpl implements ICourseTestCRUDService{
 @Autowired
 private ICourseTestRepo testRepo;
+@Autowired
+private IStudyCourseRepo courseRepo;
 
 //========================CRUD=============================================
 	//----------------CREATE-------------------------------------------------------------
@@ -36,7 +40,7 @@ private ICourseTestRepo testRepo;
 		@Override 
 		public CourseTests retrieveTestById(long id) throws Exception{
 			if(id < 0) {
-				throw new Exception("Choose correect ID!");
+				throw new Exception("Choose correct ID!");
 			}
 			if(!testRepo.existsById(id)) {
 				throw new Exception("Test with ID [ " + id + " ] doesn't exists!");
@@ -48,11 +52,14 @@ private ICourseTestRepo testRepo;
 	//------------------------------------------------------------------------------------
 	//---------------UPDATE---------------------------------------------------------------
 		@Override 
-		public void updateTestById(long id, String title, String description, int points, StudyCourses course) throws Exception{
+		public void updateTestById(long id, String title, String description, int points, long courseId) throws Exception{
 			CourseTests testForUpdate = retrieveTestById(id);
-			if(title == null || description == null || points <= 0 || course == null ) {
+			
+			if(title == null || description == null || points <= 0) {
 				throw new Exception ("Incorrect input parameters!");
 			}
+			 StudyCourses foundCourse = courseRepo.findById(courseId)
+			            .orElseThrow(() -> new Exception("Course not found!"));
 			if(!testForUpdate.getTestTitle().equals(title)) {
 				testForUpdate.setTestTitle(title);
 			}
@@ -62,13 +69,13 @@ private ICourseTestRepo testRepo;
 			if(testForUpdate.getPoints() != points) {
 				testForUpdate.setPoints(points);
 			}
-			if(!testForUpdate.getCourse().equals(course)) {
-				testForUpdate.setCourse(course);
-			}
+			testForUpdate.setCourse(foundCourse);
 			
 			
 			testRepo.save(testForUpdate);
+			
 		}
+		
 	//------------------------------------------------------------------------------------
 	//--------------DELETE----------------------------------------------------------------
 		@Override 
@@ -87,4 +94,14 @@ private ICourseTestRepo testRepo;
 			return result;
 		}
 	//=========================================================================
+  //-----------------ADDITIONAL----------------------------------------------
+		 //  atgriežam visu sarakstu ar StudyCourses objektiem
+		@Override
+		public List<StudyCourses> selectAllCourse() {
+		    return (List<StudyCourses>) courseRepo.findAll();
+		}
+		
+		
+		
+
 }

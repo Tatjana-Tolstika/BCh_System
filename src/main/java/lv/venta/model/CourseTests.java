@@ -35,7 +35,7 @@ public class CourseTests {
 	@Column(name = "test_id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long testID;
+	private long testId;
 
 	@NotNull
 	@Column(name = "test_title")
@@ -54,6 +54,7 @@ public class CourseTests {
 	// ----------Table connection-----------------//
 	@ManyToOne
 	@JoinColumn(name = "course_id")
+	@NotNull
 	private StudyCourses course;
 
 	@OneToMany(mappedBy = "test", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -1,0 +1,111 @@
+<html xmlns:th=" https://www.thymeleaf.org">
+	
+	<body>
+	<p>Please enter a new test: </p>
+		<form action="#" th:action="@{/courseTests/crud/add}" th:object="${courseTest}" method="post" onsubmit="return validateForm();">
+			
+			<table>
+				<tr>
+					<td>Title: </td>
+					<td><input type="text" th:field="*{testTitle}">
+					<div id="titleError" style="color:red; display:none;">Please enter a test title!</div>
+					          </td>
+					<td th:if="${#fields.hasErrors('testTitle')}" th:errors="*{testTitle}"></td>
+				</tr>
+				<tr>
+					<td>Description: </td>
+					<td><input type="text" th:field="*{testDescription}">
+					<div id="descError" style="color:red; display:none;"> Please enter a description!</div>
+					         </td>
+					<td th:if="${#fields.hasErrors('testDescription')}" th:errors="*{testDescription}"></td>
+										
+				</tr>
+				<tr>
+					<td>MaxPoints: </td>
+					<td><input type="text" th:field="*{points}">
+					<div id="pointsError" style="color:red; display:none;"> Please enter a valid points value (>0)!</div>
+					         </td>
+					<td th:if="${#fields.hasErrors('points')}" th:errors="*{points}"></td>
+
+				</tr>
+				<tr>
+					<td>
+						
+							<select th:field="*{course}" id="courseSelect">
+							            <option value="">-- Select --</option>
+							            <option th:each="c : ${courses}"
+							                    th:value="${c.courseId}"
+							                    th:text="${c.courseTitle}">
+							            </option>
+							        </select>
+
+							        <!-- SERVER-SIDE kļūda -->
+							        <div th:if="${#fields.hasErrors('course')}"
+							             th:errors="*{course}"
+							             style="color:red"></div>
+
+							        <!-- CLIENT-SIDE kļūda -->
+							        <div id="courseError" style="color:red; display:none;">
+							            Please select a course!
+							        </div>
+						
+					</td>
+						
+				</tr>
+				
+				<tr>
+					<td><input type="submit" name="Save"></td> 
+					
+				</tr>
+				
+				
+			</table>
+		</form>
+		<script>
+		function validateForm() {
+		    let valid = true;
+
+		    const title = document.getElementById("testTitle");
+		    const desc = document.getElementById("testDescription");
+		    const points = document.getElementById("points");
+		    const course = document.getElementById("courseSelect");
+
+		    // Title validācija
+		    if (!title.value.trim()) {
+		        document.getElementById("titleError").style.display = "block";
+		        valid = false;
+		    } else {
+		        document.getElementById("titleError").style.display = "none";
+		    }
+
+		    // Description validācija
+		    if (!desc.value.trim() || desc.value.trim().length < 5) {
+		        document.getElementById("descError").style.display = "block";
+		        valid = false;
+		    } else {
+		        document.getElementById("descError").style.display = "none";
+		    }
+
+		    // Points validācija
+		    const pointsValue = parseInt(points.value, 10);
+		    if (isNaN(pointsValue) || pointsValue <= 0) {
+		        document.getElementById("pointsError").style.display = "block";
+		        valid = false;
+		    } else {
+		        document.getElementById("pointsError").style.display = "none";
+		    }
+
+		    // Course validācija
+		    if (!course.value) {
+		        document.getElementById("courseError").style.display = "block";
+		        valid = false;
+		    } else {
+		        document.getElementById("courseError").style.display = "none";
+		    }
+
+		    return valid; // ja false → forma netiks nosūtīta
+		}
+		</script>
+	</body>
+
+</html>

@@ -33,7 +33,7 @@ public class TestTask {
 	@Column(name = "task_id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long taskID;
+	private long taskId;
 	
 	@NotNull
 	//@Pattern(regexp="[A-za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž.,_:; ]{5,500}")
@@ -50,7 +50,7 @@ public class TestTask {
 	@JoinColumn(name="test_id")
 	private CourseTests test;
 	
-	@OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Collection<TestResult> testResults;
 	
 	

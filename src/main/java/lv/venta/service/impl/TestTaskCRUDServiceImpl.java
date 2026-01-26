@@ -1,6 +1,7 @@
 package lv.venta.service.impl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -97,5 +98,13 @@ public class TestTaskCRUDServiceImpl implements ITestTaskCRUDService{
 
 		    return tasks;
 		}
+		
+		//--------------------------------------------------------------------------------------
+		
+		@Override
+		public List<CourseTests> selectAllTests(){
+			return (List<CourseTests>) testRepo.findAll();
+		}
+		//--------------------------------------------------------------------------------------
 	
 }

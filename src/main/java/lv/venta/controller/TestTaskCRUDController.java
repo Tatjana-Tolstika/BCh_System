@@ -22,26 +22,38 @@ public class TestTaskCRUDController {
 	@Autowired 
 	private ITestTaskCRUDService taskService;
 	
+	
 	//----------------------ADD---------------------------------------
-		@GetMapping("/add") //localhost:8081/testTask/crud/add
-		public String getControllerAddNewTestTask(Model model) {
-			List<CourseTests> allTests = taskService.selectAllTests();
-		    System.out.println("Atrasti testi: " + allTests.size()); //Izņemt
-		    
-			model.addAttribute("testTask", new TestTask());
-			model.addAttribute("test", allTests);
-			return "create-TestTask";
+		@GetMapping("/add/{testId}") //localhost:8081/testTask/crud/add
+		public String getControllerAddNewTestTask(@PathVariable(name = "testId") long testId, Model model) {
+			
+			try {
+		        CourseTests test = taskService.getTestById(testId); // vai caur testRepo
+
+		        TestTask task = new TestTask();
+		        task.setTest(test); // piesaistām testu AUTOMĀTISKI
+
+		        model.addAttribute("testTask", task);
+		        model.addAttribute("test", test); // ja gribi parādīt nosaukumu
+
+		        return "create-TestTask";
+
+		    } catch (Exception e) {
+		        model.addAttribute("package", e.getMessage());
+		        return "show-error";
+		    }
 		}
 		
-		@PostMapping("/add")
-		public String postConstrollerAddNewTestTask(@Valid TestTask task, BindingResult result, Model model) {
+		@PostMapping("/add/{testId}")
+		public String postConstrollerAddNewTestTask(@PathVariable(name = "testId") long testId, @Valid TestTask task, BindingResult result, Model model) {
 			if (result.hasErrors()) {
-		        model.addAttribute("test", taskService.selectAllTests());
+		        model.addAttribute("test", task.getTest());
 		        return "create-TestTask";
 		    }
 			try {
-				taskService.createTask(task.getTest(), task.getTaskDescription(), task.getMaxPoints());
-				return "redirect:/testTask/crud/all";
+				CourseTests test = taskService.getTestById(testId);
+				taskService.createTask(test, task.getTaskDescription(), task.getMaxPoints());
+				return "redirect:/testTask/crud/all/" + testId;
 			}
 			catch(Exception e) {
 				model.addAttribute("package", e.getMessage());
@@ -71,7 +83,7 @@ public class TestTaskCRUDController {
 		@GetMapping("/update/{testId}/{taskId}") //localhost:8081/courseTests/crud/update/3
 		public String getControllerUpdateTaskById(@PathVariable(name = "testId") long testId,@PathVariable(name = "taskId") long taskId, Model model) {
 			try {
-			TestTask taskToUpdate = taskService.retrieveTaskById(id);
+			TestTask taskToUpdate = taskService.retrieveTaskById(taskId);
 			model.addAttribute("tests", taskService.selectAllTests());
 			model.addAttribute("testTask", taskToUpdate);
 			model.addAttribute("testName", taskToUpdate.getTest());
@@ -94,7 +106,7 @@ public class TestTaskCRUDController {
 			}
 			
 			try {
-				taskService.updateTaskById(taskId, Integer.parseInt(task.getTest().getTestTitle()), task.getTaskDescription(), task.getMaxPoints());
+				taskService.updateTaskById(taskId, testId, task.getTaskDescription(), task.getMaxPoints());
 				return "redirect:/testTask/crud/all/" + testId;
 			}
 			catch(Exception e) {
@@ -102,9 +114,20 @@ public class TestTaskCRUDController {
 				return "show-error";
 			}
 			
-			
-			
 		}
 
 		//-------------------------------------------------------------------------------------
+		
+		@GetMapping("/all/{testId}") //localhost:8081/testTask/crud/all/1
+		public String getConstrollerGetAllTests(Model model, @PathVariable(name = "testId") long testId) {
+			try {
+				List<TestTask> allTasks = taskService.selectAllTasksByTest(testId);
+				model.addAttribute("testTasks", allTasks);
+				return "testTasks-all";
+			}
+			catch(Exception e) {
+				model.addAttribute("package", e.getMessage());
+				return "show-error";
+			}
+		}
 }

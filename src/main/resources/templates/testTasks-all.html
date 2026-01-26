@@ -1,0 +1,18 @@
+<html xmlns:th="https://www.thymeleaf.org">
+	<body>
+		<p>Test and tasks: </p>
+		<table border="1px">
+			<tr th:each="tempTT: ${testTasks}">
+			
+				<td th:text = "${tempTT.getTaskId()}"></td>
+				<td th:text = "${tempTT.getTest().getTestTitle()}"></td>
+				<td th:text = "${tempTT.getTaskDescription()}"></td>
+				<td th:text = "${tempTT.getMaxPoints()}"></td>
+				
+				
+			</tr>
+		</table>
+	</body>	
+
+
+</html>

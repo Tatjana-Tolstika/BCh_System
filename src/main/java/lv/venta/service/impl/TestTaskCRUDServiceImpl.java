@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lv.venta.model.CourseTests;
-import lv.venta.model.Students;
-import lv.venta.model.StudyCourses;
 import lv.venta.model.TestTask;
 import lv.venta.repo.ICourseTestRepo;
 import lv.venta.repo.ITestTaskRepo;
@@ -26,7 +24,7 @@ public class TestTaskCRUDServiceImpl implements ITestTaskCRUDService{
 		//----------------CREATE-------------------------------------------------------------
 		@Override
 		public void createTask(CourseTests test, String description, double points) throws Exception {
-			if(test == null || description == null || points <= 0 ) {
+			if(description == null || points <= 0 ) {
 				throw new Exception("Incorrect input parameters!");
 			}
 			
@@ -106,5 +104,9 @@ public class TestTaskCRUDServiceImpl implements ITestTaskCRUDService{
 			return (List<CourseTests>) testRepo.findAll();
 		}
 		//--------------------------------------------------------------------------------------
-	
+		@Override
+		public CourseTests getTestById(long testId) throws Exception {
+		    return testRepo.findById(testId)
+		        .orElseThrow(() -> new Exception("Test not found"));
+		}
 }

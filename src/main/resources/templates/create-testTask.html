@@ -1,0 +1,70 @@
+<html xmlns:th=" https://www.thymeleaf.org">
+	
+	<body>
+	<p>Please enter a new task for the test: <strong th:text="${test.testTitle}"></strong> </p>
+	<form th:action="@{/testTask/crud/add/{testId}(testId=${test.testId})}"
+	      th:object="${testTask}"
+	      method="post">
+		  <input type="hidden" th:field="*{test.testId}"/>
+
+			<table>
+				
+				<tr>
+					<td>Description: </td>
+					<td><input type="text" th:field="*{taskDescription}">
+					<div id="descError" style="color:red; display:none;"> Please enter a description!</div>
+					         </td>
+					<td th:if="${#fields.hasErrors('taskDescription')}" th:errors="*{taskDescription}"></td>
+										
+				</tr>
+				<tr>
+					<td>MaxPoints: </td>
+					<td><input type="text" th:field="*{maxPoints}">
+					<div id="pointsError" style="color:red; display:none;"> Please enter a valid points value (>0)!</div>
+					         </td>
+					<td th:if="${#fields.hasErrors('maxPoints')}" th:errors="*{maxPoints}"></td>
+
+				</tr>
+				
+				
+				<tr>
+					<td><input type="submit" name="Save"></td> 
+					
+				</tr>
+				
+				
+			</table>
+		</form>
+		<script>
+		function validateForm() {
+		    let valid = true;
+
+		    const desc = document.getElementById("taskDescription");
+		    const points = document.getElementById("maxPoints");
+
+
+		    // Description validācija
+		    if (!desc.value.trim() || desc.value.trim().length < 5) {
+		        document.getElementById("descError").style.display = "block";
+		        valid = false;
+		    } else {
+		        document.getElementById("descError").style.display = "none";
+		    }
+
+		    // Points validācija
+		    const pointsValue = parseInt(points.value, 10);
+		    if (isNaN(pointsValue) || pointsValue <= 0) {
+		        document.getElementById("maxPointsError").style.display = "block";
+		        valid = false;
+		    } else {
+		        document.getElementById("maxPointsError").style.display = "none";
+		    }
+
+		   
+
+		    return valid; // ja false -> forma netiks nosūtīta
+		}
+		</script>
+	</body>
+
+</html>

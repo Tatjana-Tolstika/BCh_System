@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<body>
+
+	<p>
+	    Update the information about the task of the test:
+	    <strong th:text="${testName.testTitle}"></strong>
+	</p>
+	<form th:action="@{/testTask/crud/update/{testId}/{taskId}(
+	                    testId=${testTask.test.testId},
+	                    taskId=${testTask.taskId}
+	                )}"
+	      th:object="${testTask}"
+	      method="post">
+
+
+	<input type="hidden" th:field="*{taskId}" />
+
+    <table>
+
+        <tr>
+            <td>Description:</td>
+            <td><input type="text" th:field="*{taskDescription}"/></td>
+            <td th:if="${#fields.hasErrors('taskDescription')}"
+                th:errors="*{taskDescription}"></td>
+        </tr>
+
+        <tr>
+            <td>Points:</td>
+            <td><input type="text" th:field="*{maxPoints}"/></td>
+            <td th:if="${#fields.hasErrors('maxPoints')}"
+                th:errors="*{maxPoints}"></td>
+        </tr>
+
+        <tr>
+            <td>
+                <input type="submit" value="Save"/>
+            </td>
+        </tr>
+    </table>
+ 
+</form>
+
+</body>
+</html>

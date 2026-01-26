@@ -80,7 +80,7 @@ public class TestTaskCRUDController {
 
 		//----------------------------------------------------------------
 		//------------------UPDATE----------------------------------------
-		@GetMapping("/update/{testId}/{taskId}") //localhost:8081/courseTests/crud/update/3
+		@GetMapping("/update/{testId}/{taskId}") //localhost:8081/testTask/crud/update/1/3
 		public String getControllerUpdateTaskById(@PathVariable(name = "testId") long testId,@PathVariable(name = "taskId") long taskId, Model model) {
 			try {
 			TestTask taskToUpdate = taskService.retrieveTaskById(taskId);

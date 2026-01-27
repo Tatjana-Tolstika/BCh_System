@@ -24,4 +24,6 @@ public interface IStudentProgramCRUDService {
 
 	public abstract List<StudentProgram> selectAllStudentProgram();
 
+	public abstract StudyProgram getProgramById(long id) throws Exception;
+
 }

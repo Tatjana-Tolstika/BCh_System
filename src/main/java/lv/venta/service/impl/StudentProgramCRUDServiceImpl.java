@@ -28,12 +28,12 @@ public class StudentProgramCRUDServiceImpl implements IStudentProgramCRUDService
 			//----------------CREATE-------------------------------------------------------------
 			@Override
 			public void createStudentProgram(Students student, StudyProgram program, int course) throws Exception {
-				if(student == null || course <= 0 || program == null) {
+				
+				if(student == null || course <= 0 || program == null|| course > program.getLength()) {
 					throw new Exception("Incorrect input parameters!");
 				}
-				
-				if(studentPrRepo.existsByStudentAndStudyProgramAndCourse(student, program, course)) {
-					throw new Exception("Student in the program you want to add is already in the list!");
+				if(studentPrRepo.existsByStudent(student)) {
+					throw new Exception("Student is already in this program!");
 				}
 				else {
 					StudentProgram newStudentProgram = new StudentProgram(student, program, course);
@@ -63,10 +63,6 @@ public class StudentProgramCRUDServiceImpl implements IStudentProgramCRUDService
 			        .orElseThrow(() -> new Exception("Program not found"));
 
 			    List<StudentProgram> result = studentPrRepo.findByStudyProgram(program);
-
-			    if (result.isEmpty()) {
-			        throw new Exception("No students found for this program");
-			    }
 
 			    return result;
 			}
@@ -98,14 +94,22 @@ public class StudentProgramCRUDServiceImpl implements IStudentProgramCRUDService
 			}
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++
 			@Override 
-			public void deleteStudentFromProgram(long studentId, long programId) throws Exception{
-				if(studentId < 0 || programId < 0) {
-					throw new Exception("ID ir wrong!");
-				}
-				Students student = studentRepo.findById(studentId).get();
-				StudyProgram program = programRepo.findById(programId).get();
-				studentPrRepo.findByStudentAndStudyProgram(student, program).orElseThrow(() -> new Exception("Student is not enroller in this program!"));
-				}
+			public void deleteStudentFromProgram(long studentId, long programId) throws Exception {
+
+			    Students student = studentRepo.findById(studentId)
+			        .orElseThrow(() -> new Exception("Student not found"));
+
+			    StudyProgram program = programRepo.findById(programId)
+			        .orElseThrow(() -> new Exception("Program not found"));
+
+			    StudentProgram sp = studentPrRepo.findByStudentAndStudyProgram(student, program);
+	    		if(sp == null) {
+			    	throw new Exception("The student you want to delete is not in the program!");
+			    }
+			        
+
+			    studentPrRepo.delete(sp);
+			}
 
 			//--------------------------------------------------------------------------------------
 			//---------------UPDATE---------------------------------------------------------------
@@ -125,7 +129,9 @@ public class StudentProgramCRUDServiceImpl implements IStudentProgramCRUDService
 			        .orElseThrow(() -> new Exception("Program not found"));
 
 			    // Checking if the student in this program already exists
-			    if (studentPrRepo.existsByStudentAndStudyProgramAndCourse(student, program, course)) {
+			    if (!(sp.getStudent().getStudentId() == studentId &&
+			    	      sp.getStudyProgram().getProgramId() == programId &&
+			    	      sp.getCourse() == course) &&studentPrRepo.existsByStudentAndStudyProgramAndCourse(student, program, course)) {
 			        throw new Exception("Student is already enrolled in this program");
 			    }
 
@@ -155,6 +161,13 @@ public class StudentProgramCRUDServiceImpl implements IStudentProgramCRUDService
 			public List<StudentProgram> selectAllStudentProgram(){
 				return (List<StudentProgram>) studentPrRepo.findAll();
 			}
+			
+			@Override
+			public StudyProgram getProgramById(long id) throws Exception{
+				return programRepo.findById(id)
+				        .orElseThrow(() -> new Exception("Program not found"));
+			}
+			
 			
 			
 }

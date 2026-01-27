@@ -20,7 +20,11 @@ public interface IStudentProgramRepo  extends CrudRepository<StudentProgram, Lon
 
 	public abstract List<StudentProgram> findByStudent(Students student);
 
-	public abstract Optional<StudentProgram> findByStudentAndStudyProgram(Students student, StudyProgram program);
+
+
+	public abstract boolean existsByStudent(Students student);
+
+	public abstract StudentProgram findByStudentAndStudyProgram(Students student, StudyProgram program);
 
 
 

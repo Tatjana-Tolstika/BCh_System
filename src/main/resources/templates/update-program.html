@@ -31,6 +31,13 @@
             <td th:if="${#fields.hasErrors('abbreviation')}"
                 th:errors="*{abbreviation}"></td>
         </tr>
+		
+		<tr>
+            <td>Abbreviation:</td>
+            <td><input type="text" th:field="*{length}"/></td>
+            <td th:if="${#fields.hasErrors('length')}"
+                th:errors="*{length}"></td>
+		</tr>
 
 
         <tr>

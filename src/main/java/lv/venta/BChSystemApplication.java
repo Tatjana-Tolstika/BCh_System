@@ -61,9 +61,9 @@ public class BChSystemApplication {
 				StudyCourses course5 = new StudyCourses("Vizuālas programmēšanas valodas", 3);
 				courseRepo.saveAll(Arrays.asList(course1,course2,course3,course4, course5));
 				
-				StudyProgram prog1 = new StudyProgram("Datorzinātnes", "BA", "ITB");
-				StudyProgram prog2 = new StudyProgram("Elektronikas inžinierija", "BA", "EIB");
-				StudyProgram prog3 = new StudyProgram("Programmēšanas specialists", "AS", "IP");
+				StudyProgram prog1 = new StudyProgram("Datorzinātnes", "BA", "ITB", 3);
+				StudyProgram prog2 = new StudyProgram("Elektronikas inžinierija", "BA", "EIB", 4);
+				StudyProgram prog3 = new StudyProgram("Programmēšanas specialists", "AS", "IP", 2);
 				programRepo.saveAll(Arrays.asList(prog1,prog2,prog3));
 				
 				StudentProgram studProg1 = new StudentProgram(st1, prog1, 3);

@@ -28,13 +28,13 @@ public class TestTaskCRUDController {
 		public String getControllerAddNewTestTask(@PathVariable(name = "testId") long testId, Model model) {
 			
 			try {
-		        CourseTests test = taskService.getTestById(testId); // vai caur testRepo
+		        CourseTests test = taskService.getTestById(testId);
 
 		        TestTask task = new TestTask();
-		        task.setTest(test); // piesaistām testu AUTOMĀTISKI
+		        task.setTest(test);
 
 		        model.addAttribute("testTask", task);
-		        model.addAttribute("test", test); // ja gribi parādīt nosaukumu
+		        model.addAttribute("test", test); 
 
 		        return "create-TestTask";
 

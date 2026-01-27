@@ -17,8 +17,8 @@ public class ProgramCRUDServiceImpl implements IProgramCRUDService{
 	//======================================CRUD=======================================================
 		//-------------------------------CREATE-----------------------------------
 		@Override
-		public void createProgram(String title, String degree, String abbreviation) throws Exception{
-			if(title == null || degree == null || abbreviation == null || !title.matches("[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž ]+")|| !abbreviation.matches("[A-Z]+")) {
+		public void createProgram(String title, String degree, String abbreviation, int length) throws Exception{
+			if(title == null || degree == null || abbreviation == null || !title.matches("[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž ]+")|| !abbreviation.matches("[A-Z]+")||length<=0 || length > 4) {
 				throw new Exception("Incorrect input parameters!");
 			}
 			
@@ -26,7 +26,7 @@ public class ProgramCRUDServiceImpl implements IProgramCRUDService{
 				throw new Exception("Program you want to create already exists!");
 			}
 			else {
-				StudyProgram newProgram = new StudyProgram(title,degree, abbreviation);
+				StudyProgram newProgram = new StudyProgram(title,degree, abbreviation, length);
 				programRepo.save(newProgram);
 			}
 		}
@@ -54,9 +54,9 @@ public class ProgramCRUDServiceImpl implements IProgramCRUDService{
 		//------------------------------------------------------------------------------------
 		//--------------------------UPDATE---------------------------------------
 		@Override 
-		public void updateProgramById(long id, String title, String degree, String abbreviation) throws Exception{
+		public void updateProgramById(long id, String title, String degree, String abbreviation, int length) throws Exception{
 			StudyProgram programForUpdate = retrieveProgramById(id);
-			if(title == null || degree == null || abbreviation == null || !title.matches("[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž ]+")|| !abbreviation.matches("[A-Z]+")) {
+			if(title == null || degree == null || abbreviation == null || !title.matches("[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž ]+")|| !abbreviation.matches("[A-Z]+")||length<=0 || length > 4) {
 				throw new Exception("Incorrect input parameters!");
 			}
 			if(!programForUpdate.getProgramTitle().equals(title)) {
@@ -67,6 +67,9 @@ public class ProgramCRUDServiceImpl implements IProgramCRUDService{
 			}
 			if(!programForUpdate.getAbbreviation().equals(abbreviation)) {
 				programForUpdate.setAbbreviation(abbreviation);
+			}
+			if(programForUpdate.getLength() != length) {
+				programForUpdate.setLength(length);
 			}
 			
 			programRepo.save(programForUpdate);

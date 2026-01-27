@@ -15,10 +15,16 @@
 					<td th:if="${#fields.hasErrors('programDegree')}" th:errors="*{programDegree}"></td>
 										
 				</tr>
-					<tr>
+				<tr>
 					<td>Abbreviation: </td>
 					<td><input type="text" th:field="*{abbreviation}"></td>
 					<td th:if="${#fields.hasErrors('abbreviation')}" th:errors="*{abbreviation}"></td>
+										
+				</tr>
+				<tr>
+					<td>Program length</td>: </td>
+					<td><input type="text" th:field="*{length}"></td>
+					<td th:if="${#fields.hasErrors('length')}" th:errors="*{length}"></td>
 										
 				</tr>
 				

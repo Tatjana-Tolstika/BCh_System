@@ -46,7 +46,7 @@ public class ProgramCRUDController {
 			return "create-program";
 		}
 		try {
-			programService.createProgram(program.getProgramTitle(), program.getProgramDegree(), program.getAbbreviation());
+			programService.createProgram(program.getProgramTitle(), program.getProgramDegree(), program.getAbbreviation(), program.getLength());
 		}
 		catch(Exception e) {
 			model.addAttribute("package", e.getMessage());
@@ -81,7 +81,7 @@ public class ProgramCRUDController {
 		}
 			
 		try {
-			programService.updateProgramById(id, program.getProgramTitle(), program.getProgramDegree(), program.getAbbreviation());
+			programService.updateProgramById(id, program.getProgramTitle(), program.getProgramDegree(), program.getAbbreviation(), program.getLength());
 			return "redirect:/programs/crud/all";
 		}
 		catch(Exception e) {

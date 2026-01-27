@@ -1,0 +1,107 @@
+<html xmlns:th=" https://www.thymeleaf.org">
+	
+	<body>
+	<p>Please enter a new StudentProgram object: </p>
+		<form action="#" th:action="@{/studentProgram/crud/add}" th:object="${studentProgram}" method="post" onsubmit="return validateForm();">
+			
+			<table>
+				<tr>
+					<td>
+										
+						<select th:field="*{student}" id="studentSelect">
+				            <option value="">-- Select --</option>
+				            <option th:each="s : ${students}"
+				                    th:value="${s.studentId}"
+				                    th:text="${s.studentName + ' ' + s.studentSurname}">
+				            </option>
+				        </select>
+
+				        <!-- SERVER-SIDE kļūda -->
+				        <div th:if="${#fields.hasErrors('student')}"
+				             th:errors="*{student}"
+				             style="color:red"></div>
+
+				        <!-- CLIENT-SIDE kļūda -->
+				        <div id="studentError" style="color:red; display:none;">
+				            Please select a student!
+				        </div>
+					</td>
+										
+				</tr>
+				<tr>
+					<td>
+						
+						<select th:field="*{studyProgram}" id="programSelect">
+				            <option value="">-- Select --</option>
+				            <option th:each="p : ${programs}"
+				                    th:value="${p.programId}"
+				                    th:text="${p.programTitle}">
+				            </option>
+				        </select>
+
+				        <!-- SERVER-SIDE kļūda -->
+				        <div th:if="${#fields.hasErrors('studyProgram')}"
+				             th:errors="*{studyProgram}"
+				             style="color:red"></div>
+
+				        <!-- CLIENT-SIDE kļūda -->
+				        <div id="programError" style="color:red; display:none;">
+				            Please select a Program!
+				        </div>
+					
+					</td>
+						
+				</tr>
+				<tr>
+					<td>Course: </td>
+					<td><input type="text" th:field="*{course}">
+					<div id="courseError" style="color:red; display:none;"> Please enter a valid points value (>0)!</div>
+					         </td>
+					<td th:if="${#fields.hasErrors('course')}" th:errors="*{course}"></td>
+
+				</tr>
+				
+				
+				<tr>
+					<td><input type="submit" name="Save"></td> 
+					
+				</tr>
+				
+				
+			</table>
+		</form>
+		<script>
+		function validateForm() {
+		    let valid = true;
+
+		    const student = document.getElementById("studentSelect");
+		    const program = document.getElementById("programSelect");
+		    const course = document.getElementById("course");
+
+		    if (!student.value) {
+		        document.getElementById("studentError").style.display = "block";
+		        valid = false;
+		    } else {
+		        document.getElementById("studentError").style.display = "none";
+		    }
+
+		    if (!program.value) {
+		        document.getElementById("programError").style.display = "block";
+		        valid = false;
+		    } else {
+		        document.getElementById("programError").style.display = "none";
+		    }
+
+		    if (course.value <= 0) {
+		        document.getElementById("courseError").style.display = "block";
+		        valid = false;
+		    } else {
+		        document.getElementById("courseError").style.display = "none";
+		    }
+
+		    return valid;
+		}
+		</script>
+	</body>
+
+</html>

@@ -47,15 +47,19 @@ public class StudyProgram {
 		@Column(name = "abbreviation")
 		private String abbreviation;
 		
+		@NotNull
+		@Column(name = "program_length")
+		private int length;
 		//------------------Table connections------------------------
 		@OneToMany(mappedBy="studyProgram", cascade = CascadeType.ALL, orphanRemoval = true)
 		private Collection<StudentProgram> studentProgram;
 		
 //		//-----------------------------------------------------------
 		
-		public StudyProgram(String title, String degree, String abbreviation) {
+		public StudyProgram(String title, String degree, String abbreviation, int length) {
 			setProgramTitle(title);
 			setProgramDegree(degree);
 			setAbbreviation(abbreviation);
+			setLength(length);
 		}
 }

@@ -12,6 +12,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -34,6 +36,8 @@ public class StudentProgram {
 	
 	@NotNull
 	@Column(name = "course")
+	@Min(1)
+	@Max(4)
 	private int course;
 	
 	//-----------Table connections--------------

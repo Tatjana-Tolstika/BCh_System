@@ -1,0 +1,16 @@
+<html xmlns:th="https://www.thymeleaf.org">
+	<body>
+		<p>Tests and courses: </p>
+		<table border="1px">
+			<tr th:each="tempST: ${studentProgram}">
+			
+				<td th:text = "${tempST.getStudent().getStudentName() + '' + tempST.getStudent().getStudentSurname()}"></td>
+				<td th:text = "${tempST.getStudyProgram().getProgramTitle()}"></td>
+				<td th:text = "${tempST.getCourse()}"></td>
+				
+			</tr>
+		</table>
+	</body>	
+
+
+</html>

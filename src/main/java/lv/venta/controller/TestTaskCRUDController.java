@@ -63,7 +63,7 @@ public class TestTaskCRUDController {
 		}
 		//----------------------------------------------------------------
 		//-------------------DELETE-------------------------------------------------------------------------------
-		@GetMapping("/delete/{testId}/{taskId}")//localhost:8081/testTask/crud/delete/2
+		@GetMapping("/delete/{testId}/{taskId}")//localhost:8081/testTask/crud/delete/1/3
 		public String getControllerDeleteTaskById(@PathVariable(name = "taskId") long taskId, @PathVariable(name = "testId") long testId, Model model)
 		{
 			try {

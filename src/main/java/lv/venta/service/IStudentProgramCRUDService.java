@@ -16,4 +16,12 @@ public interface IStudentProgramCRUDService {
 
 	public abstract List<StudentProgram> retrieveByStudent(long studentId) throws Exception;
 
+	public abstract void deleteStudentProgramById(long id) throws Exception;
+
+	public abstract void deleteStudentFromProgram(long studentId, long programId) throws Exception;
+
+	public abstract void updateStudentProgramById(long id, long studentId, long programId, int course) throws Exception;
+
+	public abstract List<StudentProgram> selectAllStudentProgram();
+
 }

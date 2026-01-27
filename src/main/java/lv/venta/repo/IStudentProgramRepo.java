@@ -3,6 +3,8 @@ package lv.venta.repo;
 
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.repository.CrudRepository;
 
 import lv.venta.model.StudentProgram;
@@ -17,6 +19,9 @@ public interface IStudentProgramRepo  extends CrudRepository<StudentProgram, Lon
 	public abstract List<StudentProgram> findByStudyProgram(StudyProgram program);
 
 	public abstract List<StudentProgram> findByStudent(Students student);
+
+	public abstract Optional<StudentProgram> findByStudentAndStudyProgram(Students student, StudyProgram program);
+
 
 
 

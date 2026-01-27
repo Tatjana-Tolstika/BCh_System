@@ -5,11 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import lv.venta.model.CourseTests;
 import lv.venta.model.StudentProgram;
 import lv.venta.model.Students;
 import lv.venta.model.StudyProgram;
-import lv.venta.model.TestTask;
 import lv.venta.repo.IStudentProgramRepo;
 import lv.venta.repo.IStudentsRepo;
 import lv.venta.repo.IStudyProgramRepo;
@@ -88,5 +86,75 @@ public class StudentProgramCRUDServiceImpl implements IStudentProgramCRUDService
 			}
 			
 			//------------------------------------------------------------------------------------
+			//--------------DELETE----------------------------------------------------------------
+
+			@Override
+			public void deleteStudentProgramById(long id) throws Exception {
+			     if(id < 0) {
+			    	 throw new Exception("ID is wrong!");
+			     }
+			     StudentProgram stProgram = retrieveStudentProgramById(id);
+			     studentPrRepo.delete(stProgram);
+			}
+			//+++++++++++++++++++++++++++++++++++++++++++++++++++++
+			@Override 
+			public void deleteStudentFromProgram(long studentId, long programId) throws Exception{
+				if(studentId < 0 || programId < 0) {
+					throw new Exception("ID ir wrong!");
+				}
+				Students student = studentRepo.findById(studentId).get();
+				StudyProgram program = programRepo.findById(programId).get();
+				studentPrRepo.findByStudentAndStudyProgram(student, program).orElseThrow(() -> new Exception("Student is not enroller in this program!"));
+				}
+
+			//--------------------------------------------------------------------------------------
+			//---------------UPDATE---------------------------------------------------------------
+			@Override 
+			public void updateStudentProgramById( long id,long studentId,long programId,int course) throws Exception {
+
+			    StudentProgram sp = retrieveStudentProgramById(id);
+
+			    if (course <= 0) {
+			        throw new Exception("Course must be greater than 0");
+			    }
+
+			    Students student = studentRepo.findById(studentId)
+			        .orElseThrow(() -> new Exception("Student not found"));
+
+			    StudyProgram program = programRepo.findById(programId)
+			        .orElseThrow(() -> new Exception("Program not found"));
+
+			    // Checking if the student in this program already exists
+			    if (studentPrRepo.existsByStudentAndStudyProgramAndCourse(student, program, course)) {
+			        throw new Exception("Student is already enrolled in this program");
+			    }
+
+			    // Student
+			    if (sp.getStudent() == null ||
+			        sp.getStudent().getStudentId() != studentId) {
+			        sp.setStudent(student);
+			    }
+
+			    // Program
+			    if (sp.getStudyProgram() == null ||
+			        sp.getStudyProgram().getProgramId() != programId) {
+			        sp.setStudyProgram(program);
+			    }
+
+			    // Course
+			    if (sp.getCourse() != course) {
+			        sp.setCourse(course);
+			    }
+
+			    studentPrRepo.save(sp);
+			}
+			//------------------------------------------------------------------------------------
+			//===========================END OF CRUD==================================================================
+			//--------------------------------------------------------------------------------------
+			@Override
+			public List<StudentProgram> selectAllStudentProgram(){
+				return (List<StudentProgram>) studentPrRepo.findAll();
+			}
+			
 			
 }

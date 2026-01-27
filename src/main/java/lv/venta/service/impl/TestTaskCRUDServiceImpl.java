@@ -56,13 +56,22 @@ public class TestTaskCRUDServiceImpl implements ITestTaskCRUDService{
 		@Override 
 		public void updateTaskById(long id,  long testId, String description, double points) throws Exception{
 			TestTask taskForUpdate = retrieveTaskById(id);
-			if(description == null || points<=0) {
-				throw new Exception ("Incorrect input parameters!");
-			}
-			CourseTests foundTest = testRepo.findById(testId).orElseThrow(() -> new Exception("Test not found!"));
-			if(!taskForUpdate.getTaskDescription().equals(description)) {
-				taskForUpdate.setTaskDescription(description);
-			}
+		    if (description == null || description.trim().isEmpty() || points <= 0) {
+		        throw new Exception("Incorrect input parameters");
+		    }
+
+		    CourseTests test = testRepo.findById(testId)
+		            .orElseThrow(() -> new Exception("Test not found"));
+
+		    // Comparing by ID
+		    if (taskForUpdate.getTest() == null ||taskForUpdate.getTest().getTestId() != test.getTestId()) {
+		    	taskForUpdate.setTest(test);
+		    }
+
+		    // Description
+		    if (!taskForUpdate.getTaskDescription().equals(description)) {
+		    	taskForUpdate.setTaskDescription(description.trim());
+		    }
 			if(taskForUpdate.getMaxPoints() != points) {
 				taskForUpdate.setMaxPoints(points);
 			}
@@ -82,7 +91,7 @@ public class TestTaskCRUDServiceImpl implements ITestTaskCRUDService{
 		//--------------------------------------------------------------------------------------
 		
 		//===========================END OF CRUD==================================================================
-		
+		//Additional functions
 		@Override 
 		public ArrayList<TestTask> selectAllTasksByTest(long testId) throws Exception{
 			 

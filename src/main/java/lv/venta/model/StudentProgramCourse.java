@@ -34,7 +34,7 @@ public class StudentProgramCourse {
 	@Column(name = "student_program_course_id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long studentProgramCourseID;
+	private long studentProgramCourseId;
 	
 	@NotNull
 	@Min(1)

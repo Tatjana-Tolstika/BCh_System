@@ -27,12 +27,17 @@ public class StudentProgramCRUDServiceImpl implements IStudentProgramCRUDService
 	
 			//----------------CREATE-------------------------------------------------------------
 			@Override
-			public void createStudentProgram(Students student, StudyProgram program, int course) throws Exception {
+			public void createStudentProgram(Students studentInput, StudyProgram programInput, int course) throws Exception {
 				
-				if(student == null || course <= 0 || program == null|| course > program.getLength()) {
+				if(studentInput == null || course <= 0 || programInput == null|| course > programInput.getLength()) {
 					throw new Exception("Incorrect input parameters!");
 				}
-				if(studentPrRepo.existsByStudent(student)) {
+				Students student = studentRepo.findById(studentInput.getStudentId())
+			            .orElseThrow(() -> new Exception("Student not found"));
+
+			    StudyProgram program = programRepo.findById(programInput.getProgramId())
+			            .orElseThrow(() -> new Exception("Program not found"));
+				if(studentPrRepo.existsByStudent(studentInput)) {
 					throw new Exception("Student is already in one of the programs!");
 				}
 				else {

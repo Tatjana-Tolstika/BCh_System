@@ -2,7 +2,7 @@
 	
 	<body>
 	<p>Please enter a new StudentProgram object: </p>
-		<form action="#" th:action="@{/studentProgram/crud/add}" th:object="${studentProgram}" method="post" onsubmit="return validateForm();">
+		<form action="#" th:action="@{/studentProgram/crud/add}" th:object="${studentProgram}" method="post" onsubmit="return validateForm()">
 			
 			<table>
 				<tr>
@@ -31,11 +31,12 @@
 				<tr>
 					<td>
 						
-						<select th:field="*{studyProgram}" id="programSelect">
+						<select th:field="*{studyProgram}" id="programSelect" >
 				            <option value="">-- Select --</option>
 				            <option th:each="p : ${programs}"
 				                    th:value="${p.programId}"
-				                    th:text="${p.programTitle}">
+				                    th:text="${p.programTitle}"
+									th:data-length="${p.getLength()}">
 				            </option>
 				        </select>
 
@@ -55,7 +56,7 @@
 				<tr>
 					<td>Course: </td>
 					<td><input type="text" th:field="*{course}">
-					<div id="courseError" style="color:red; display:none;"> Please enter a valid points value (>0)!</div>
+					<div id="courseError" style="color:red; display:none;"> Course must be between 1 and program length!</div>
 					         </td>
 					<td th:if="${#fields.hasErrors('course')}" th:errors="*{course}"></td>
 
@@ -71,6 +72,7 @@
 			</table>
 		</form>
 		<script>
+		
 		function validateForm() {
 		    let valid = true;
 
@@ -92,12 +94,19 @@
 		        document.getElementById("programError").style.display = "none";
 		    }
 
-		    if (course.value <= 0) {
-		        document.getElementById("courseError").style.display = "block";
-		        valid = false;
-		    } else {
-		        document.getElementById("courseError").style.display = "none";
-		    }
+			if (program.value) {
+			        const selectedOption = program.options[program.selectedIndex];
+			        const maxLength = parseInt(selectedOption.getAttribute("data-length"));
+			        const courseValue = parseInt(course.value);
+
+			        if (isNaN(courseValue) || courseValue <= 0 || courseValue > maxLength) {
+			            courseError.innerText = "Course must be between 1 and " + maxLength + "!";
+			            courseError.style.display = "block";
+			            valid = false;
+			        } else {
+			            courseError.style.display = "none";
+			        }
+			    }
 
 		    return valid;
 		}

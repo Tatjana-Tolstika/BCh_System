@@ -17,7 +17,8 @@
 					<td><input type="text" th:field="*{testDescription}">
 					<div id="descError" style="color:red; display:none;"> Please enter a description!</div>
 					         </td>
-					<td th:if="${#fields.hasErrors('testDescription')}" th:errors="*{testDescription}"></td>
+					<td th:if="${#fields.hasErrors('testDescription')}" 
+					th:errors="*{testDescription}"></td>
 										
 				</tr>
 				<tr>

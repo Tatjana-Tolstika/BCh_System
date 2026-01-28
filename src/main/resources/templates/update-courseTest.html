@@ -35,11 +35,10 @@
 		    <td>Course:</td>
 		    <td>
 		        <select th:field="*{course.courseTitle}" required >
-		            <option value="" ></option>
 		            <option th:each="c : ${courses}"
 		                    th:value="${c.courseId}"
 		                    th:text="${c.courseTitle}"
-							th:selected="${c.courseId}"
+							th:selected="${c.courseId == courseTest.course.courseId}"
 		                    ></option>
 		            </option>
 		        </select>

@@ -7,8 +7,9 @@
 	</p>
 	<form th:action="@{/studentProgram/crud/update/{spId}(spId=${studentProgram.studentProgramId})}"
 	      th:object="${studentProgram}"
-	      method="post">
+	      method="post" onsubmit="return validateForm()">
 
+	<input type="hidden" id="programLength" th:value="${programLength}">
 	<input type="hidden" th:field="*{student.studentId}" th:value="${studentProgram.student.studentId}"> <!-- To get studentID without changing it-->
     <table>
 
@@ -20,20 +21,21 @@
 		<tr>
 		    <td>Program:</td>
 		    <td>
-				<select th:field=*{studyProgram.programTitle} required>
-                    <option value="">-- Select a program --</option>
-                    <option th:each="p : ${programs}"
-                            th:value="${p.programId}"
-                            th:text="${p.programTitle}"
-                            th:selected="${p.programId}">
-                    </option>
-                </select>
+				<select th:field="*{studyProgram.programId}" id="programSelect">
+				    <option th:each="p : ${programs}"
+				            th:value="${p.programId}"
+				            th:text="${p.programTitle}"
+				            th:selected="${p.programId == studentProgram.studyProgram.programId}">
+				    </option>
+				</select>
 		    </td>
 		</tr>
 
         <tr>
             <td>Courses:</td>
-            <td><input type="text" th:field="*{course}"/></td>
+            <td><input type="text" th:field="*{course}"/>
+				<div id="courseError" style="color:red; display:none">Please enter a correct course!</div>
+			</td>
             <td th:if="${#fields.hasErrors('course')}"
                 th:errors="*{course}"></td>
         </tr>
@@ -46,7 +48,20 @@
     </table>
  
 </form>
+<script>
+function validateForm() {
+    const course = parseInt(document.getElementById("course").value);
+    const programLength = parseInt(document.getElementById("programLength").value);
 
+    if (course <= 0 || course > programLength) {
+        document.getElementById("courseError").style.display = "block";
+        return false; // Forma NETIKS nosūtīta
+    }
+    
+    document.getElementById("courseError").style.display = "none";
+    return true; // Forma tiks nosūtīta
+}
+</script>
 
 </body>
 </html>

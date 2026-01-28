@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.validation.Valid;
 import lv.venta.model.StudentProgram;
@@ -96,12 +97,14 @@ public class StudentProgramCRUDController {
 			public String getControllerUpdateStudentProgramById(@PathVariable(name = "id") long id, Model model) {
 			    try {
 			        StudentProgram spForUpdate = stService.retrieveStudentProgramById(id);
+			        System.out.println("Esošā programma: " + spForUpdate.getStudyProgram().getProgramTitle());
 			        if (spForUpdate.getStudent() == null) {
 			            spForUpdate.setStudent(new Students());
 			        }
 			        if (spForUpdate.getStudyProgram() == null) {
 			            spForUpdate.setStudyProgram(new StudyProgram());
 			        }
+			        model.addAttribute("programLength", spForUpdate.getStudyProgram().getLength());
 			        model.addAttribute("programs", programService.selectAllPrograms());
 			        model.addAttribute("studentProgram", spForUpdate);
 			        return "update-studentProgram";
@@ -112,7 +115,7 @@ public class StudentProgramCRUDController {
 			}
 			
 			@PostMapping("/update/{id}")
-			public String postConstrollerUpdateTestById(@PathVariable(name = "id") long id, @Valid StudentProgram sp, BindingResult result,Model model) {
+			public String postConstrollerUpdateTestById(@PathVariable(name = "id") long id, @Valid StudentProgram sp, BindingResult result,Model model,  @RequestParam(name = "studyProgram.programId") long programId) {
 				System.out.println(id);
 			    System.out.println(sp);
 			    
@@ -127,7 +130,7 @@ public class StudentProgramCRUDController {
 			        StudentProgram currentSp = stService.retrieveStudentProgramById(id);
 			        long studentId = currentSp.getStudent().getStudentId(); // Use existing student ID
 			        
-			        stService.updateStudentProgramById(id, studentId, Integer.parseInt(sp.getStudyProgram().getProgramTitle()), sp.getCourse());
+			        stService.updateStudentProgramById(id, studentId, programId, sp.getCourse());
 			        return "redirect:/studentProgram/crud/all";
 			    }
 			    catch(Exception e) {

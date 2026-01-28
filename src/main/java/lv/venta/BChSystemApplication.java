@@ -52,7 +52,8 @@ public class BChSystemApplication {
 				Students st3 = new Students("Amanda","Rebuka", "23000003","s23rebuaman@venta.lv");
 				Students st4 = new Students("Baiba", "Kvizikeviča", "23000004", "s23kvizibaib@venta.lv");
 				Students st5 = new Students("Marta", "Dzelme", "23000005", "s23dzelmart@venta.lv");
-				studentsRepo.saveAll(Arrays.asList(st1, st2, st3, st4, st5));
+				Students st6 = new Students("Elīna Liene", "Baijere", "23000005", "s22baijelin@venta.lv");
+				studentsRepo.saveAll(Arrays.asList(st1, st2, st3, st4, st5, st6));
 				
 				StudyCourses course1 = new StudyCourses("Programmēšana tīmeklī JAVA", 6);
 				StudyCourses course2 = new StudyCourses("Datu struktūras un algoritmi", 6);

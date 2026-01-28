@@ -92,39 +92,50 @@ public class StudentProgramCRUDController {
 			}
 			
 			//------------------UPDATE----------------------------------------
-			@GetMapping("/update/{spId}") //localhost:8081/testTask/crud/update/1
-			public String getControllerUpdateStudentProgram(@PathVariable(name = "spId") long spId, Model model) {
-				try {
-				StudentProgram spForUpdate = stService.retrieveStudentProgramById(spId);
-				model.addAttribute("allStudentPrograms", stService.selectAllStudentProgram());
-				model.addAttribute("studentProgram", spForUpdate);
-				model.addAttribute("programName", spForUpdate.getStudyProgram());
-				return "update-studentProgram";
-				}
-				catch (Exception e) {
-					model.addAttribute("package", e.getMessage());
-					return "show-error";
-				}
+			@GetMapping("/update/{id}")//localhost:8081/studentProgram/crud/update/3
+			public String getControllerUpdateStudentProgramById(@PathVariable(name = "id") long id, Model model) {
+			    try {
+			        StudentProgram spForUpdate = stService.retrieveStudentProgramById(id);
+			        if (spForUpdate.getStudent() == null) {
+			            spForUpdate.setStudent(new Students());
+			        }
+			        if (spForUpdate.getStudyProgram() == null) {
+			            spForUpdate.setStudyProgram(new StudyProgram());
+			        }
+			        model.addAttribute("programs", programService.selectAllPrograms());
+			        model.addAttribute("studentProgram", spForUpdate);
+			        return "update-studentProgram";
+			    } catch (Exception e) {
+			        model.addAttribute("package", e.getMessage());
+			        return "show-error";
+			    }
 			}
 			
-			@PostMapping("/update/{spId}")
-			public String postControllerUpdateStudentProgram(@PathVariable(name = "spId") long spId, @Valid StudentProgram sp, BindingResult result,Model model) {
-				System.out.println(spId);
-				System.out.println(sp);
-				if (result.hasErrors()) {
-					model.addAttribute("studentProgram", sp); 
-				model.addAttribute("programs", stService.selectAllStudentProgram());
-				  return "update-studentProgram";
-				}
+			@PostMapping("/update/{id}")
+			public String postConstrollerUpdateTestById(@PathVariable(name = "id") long id, @Valid StudentProgram sp, BindingResult result,Model model) {
+				System.out.println(id);
+			    System.out.println(sp);
+			    
+			    try {
+			        if (result.hasErrors()) {
+			            model.addAttribute("studentProgram", sp); 
+			            model.addAttribute("programs", programService.selectAllPrograms());
+			            return "update-studentProgram";
+			        }
+			        
+			        // Get the current StudentProgram to extract the student ID
+			        StudentProgram currentSp = stService.retrieveStudentProgramById(id);
+			        long studentId = currentSp.getStudent().getStudentId(); // Use existing student ID
+			        
+			        stService.updateStudentProgramById(id, studentId, Integer.parseInt(sp.getStudyProgram().getProgramTitle()), sp.getCourse());
+			        return "redirect:/studentProgram/crud/all";
+			    }
+			    catch(Exception e) {
+			        model.addAttribute("package", e.getMessage());
+			        return "show-error";
+			    }
 				
-				try {
-					stService.updateStudentProgramById(spId, sp.getStudent().getStudentId(), sp.getStudyProgram().getProgramId(), sp.getCourse());
-					return "redirect:/studentProgram/crud/all/" + sp.getStudyProgram().getProgramId();
-				}
-				catch(Exception e) {
-					model.addAttribute("package", e.getMessage());
-					return "show-error";
-				}
+				
 				
 			}
 

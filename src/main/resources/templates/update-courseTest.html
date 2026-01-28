@@ -34,7 +34,7 @@
 		<tr>
 		    <td>Course:</td>
 		    <td>
-		        <select name="courseId" th:field="*{course.courseTitle}" required >
+		        <select th:field="*{course.courseTitle}" required >
 		            <option value="" ></option>
 		            <option th:each="c : ${courses}"
 		                    th:value="${c.courseId}"

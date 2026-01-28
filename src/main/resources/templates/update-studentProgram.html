@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<body>
+
+	<p>
+	    Update the information about the program:
+	</p>
+	<form th:action="@{/studentProgram/crud/update/{spId}(spId=${studentProgram.studentProgramId})}"
+	      th:object="${studentProgram}"
+	      method="post">
+
+	<input type="hidden" th:field="*{student.studentId}" th:value="${studentProgram.student.studentId}"> <!-- To get studentID without changing it-->
+    <table>
+
+		<p>
+		    Student:
+		    <strong th:text="${studentProgram.student.studentName + ' ' + studentProgram.student.studentSurname}"></strong>
+		</p>
+		
+		<tr>
+		    <td>Program:</td>
+		    <td>
+				<select th:field=*{studyProgram.programTitle} required>
+                    <option value="">-- Select a program --</option>
+                    <option th:each="p : ${programs}"
+                            th:value="${p.programId}"
+                            th:text="${p.programTitle}"
+                            th:selected="${p.programId}">
+                    </option>
+                </select>
+		    </td>
+		</tr>
+
+        <tr>
+            <td>Courses:</td>
+            <td><input type="text" th:field="*{course}"/></td>
+            <td th:if="${#fields.hasErrors('course')}"
+                th:errors="*{course}"></td>
+        </tr>
+
+        <tr>
+            <td>
+                <input type="submit" value="Save"/>
+            </td>
+        </tr>
+    </table>
+ 
+</form>
+
+
+</body>
+</html>

@@ -33,7 +33,7 @@ public class StudentProgramCRUDServiceImpl implements IStudentProgramCRUDService
 					throw new Exception("Incorrect input parameters!");
 				}
 				if(studentPrRepo.existsByStudent(student)) {
-					throw new Exception("Student is already in this program!");
+					throw new Exception("Student is already in one of the programs!");
 				}
 				else {
 					StudentProgram newStudentProgram = new StudentProgram(student, program, course);
@@ -118,16 +118,17 @@ public class StudentProgramCRUDServiceImpl implements IStudentProgramCRUDService
 
 			    StudentProgram sp = retrieveStudentProgramById(id);
 
-			    if (course <= 0) {
-			        throw new Exception("Course must be greater than 0");
-			    }
+			    
 
 			    Students student = studentRepo.findById(studentId)
 			        .orElseThrow(() -> new Exception("Student not found"));
 
 			    StudyProgram program = programRepo.findById(programId)
 			        .orElseThrow(() -> new Exception("Program not found"));
-
+			    
+			    if (course <= 0 || course > program.getLength()) {
+			        throw new Exception("Incorrect course value!");
+			    }
 			    // Checking if the student in this program already exists
 			    if (!(sp.getStudent().getStudentId() == studentId &&
 			    	      sp.getStudyProgram().getProgramId() == programId &&

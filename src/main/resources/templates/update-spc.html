@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<body>
+
+	<p>
+	    Update the information about the program:
+	</p>
+	<form th:action="@{/spc/crud/update/{spcId}(spcId=${studentProgramCourse.studentProgramCourseId})}"
+	      th:object="${studentProgramCourse}"
+	      method="post" onsubmit="return validateForm()">
+
+    <table>
+
+		<p>
+		    Updating:
+		</p>
+		
+		<tr>
+			<td>Course:</td>
+			<td>
+	    		<select th:field="*{course.courseId}" id="courseSelect">
+			        <option th:each="c : ${courses}"
+			                th:value="${c.courseId}"
+			                th:text="${c.courseTitle}">
+			        </option>
+			    </select>
+
+			    <div th:if="${#fields.hasErrors('course.courseId')}"
+			         th:errors="*{course.courseId}"
+			         style="color:red"></div>
+			
+			    <div id="courseError" style="color:red; display:none;">
+			        Please select a course!
+			    </div>
+			</td>
+		</tr>
+		
+		<tr>
+		    <td>Student:</td>
+		    <td>
+				<select th:field="*{studentProgram.studentProgramId}" id="spSelect">
+				    <option th:each="sp : ${studentPrograms}"
+				            th:value="${sp.studentProgramId}"
+				            th:text="${sp.student.studentName + ' ' + sp.student.studentSurname}">
+				    </option>
+				</select>
+				
+				<div th:if="${#fields.hasErrors('studentProgram.studentProgramId')}"
+							         th:errors="*{studentProgram.studentProgramId}"
+							         style="color:red"></div>
+							
+							    <div id="spError" style="color:red; display:none;">
+							        Please select a studentProgram!
+							    </div>
+
+		    </td>
+		</tr>
+
+        <tr>
+			<td>Mark:</td>
+			<td>
+			    <input type="number" th:field="*{mark}" id="mark" min="1" max="10"/>
+			    <div id="markError" style="color:red; display:none;">
+			        Mark must be between 1 and 10
+			    </div>
+			    <div th:if="${#fields.hasErrors('mark')}" th:errors="*{mark}"></div>
+			</td>
+        </tr>
+
+        <tr>
+            <td>
+                <input type="submit" value="Save"/>
+            </td>
+        </tr>
+    </table>
+ 
+	</form>
+		<script>
+			function validateForm() {
+		
+				const mark = document.getElementById("mark");
+				const sp = document.getElementById("spSelect");
+				const course = document.getElementById("courseSelect");
+			
+				if (mark.value < 1 || mark.value > 10) {
+			        document.getElementById("markError").style.display = "block";
+			        valid = false;
+			    } else {
+			        document.getElementById("markError").style.display = "none";
+			    }
+				if (!sp.value) {
+			        document.getElementById("spError").style.display = "block";
+			        valid = false;
+			    } else {
+			        document.getElementById("spError").style.display = "none";
+			    }
+				if (!course.value) {
+			        document.getElementById("courseError").style.display = "block";
+			        valid = false;
+			    } else {
+			        document.getElementById("courseError").style.display = "none";
+			    }
+			}
+		</script>
+
+</body>
+</html>

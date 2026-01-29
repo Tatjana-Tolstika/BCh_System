@@ -21,8 +21,8 @@
 		        </option>
 		    </select>
 
-		    <div th:if="${#fields.hasErrors('course.courseId')}"
-		         th:errors="*{course.courseId}"
+		    <div th:if="${#fields.hasErrors('course')}"
+		         th:errors="*{course}"
 		         style="color:red"></div>
 		
 		    <div id="courseError" style="color:red; display:none;">
@@ -39,7 +39,7 @@
 		        <option value="">-- Select course --</option>
 		        <option th:each="sp : ${studentPrograms}"
 		                th:value="${sp.studentProgramId}"
-		                th:text="${sp.student}">
+		                th:text="${sp.student.studentName + ' ' + sp.student.studentSurname}">
 		        </option>
 		    </select>
 		

@@ -115,7 +115,8 @@ public class StudentProgramCRUDController {
 			}
 			
 			@PostMapping("/update/{id}")
-			public String postConstrollerUpdateTestById(@PathVariable(name = "id") long id, @Valid StudentProgram sp, BindingResult result,Model model,  @RequestParam(name = "studyProgram.programId") long programId) {
+			public String postConstrollerUpdateStudentProgramById(@PathVariable(name = "id") long id, @Valid StudentProgram sp, BindingResult result,Model model,  @RequestParam(name = "studyProgram.programId") long programId) {
+				//RequestParam helps to take an ID from HTML file to avoid errors with nullPointer
 				System.out.println(id);
 			    System.out.println(sp);
 			    

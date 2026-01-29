@@ -1,0 +1,110 @@
+<html xmlns:th="https://www.thymeleaf.org">
+<body>
+
+	<p>Please enter a new test:</p>
+
+	<form th:action="@{/spc/crud/add}"
+      th:object="${studentProgramCourse}"
+      method="post"
+      onsubmit="return validateForm();">
+
+	<table>
+
+	<tr>
+		<td>Course:</td>
+		<td>
+    		<select th:field="*{course}" id="courseSelect">
+		        <option value="">-- Select course --</option>
+		        <option th:each="c : ${courses}"
+		                th:value="${c.courseId}"
+		                th:text="${c.courseTitle}">
+		        </option>
+		    </select>
+
+		    <div th:if="${#fields.hasErrors('course.courseId')}"
+		         th:errors="*{course.courseId}"
+		         style="color:red"></div>
+		
+		    <div id="courseError" style="color:red; display:none;">
+		        Please select a course!
+		    </div>
+		</td>
+	</tr>
+
+	
+	<tr>
+		<td>Student:</td>
+		<td>
+		    <select th:field="*{studentProgram}" id="studentSelect">
+		        <option value="">-- Select course --</option>
+		        <option th:each="sp : ${studentPrograms}"
+		                th:value="${sp.studentProgramId}"
+		                th:text="${sp.student}">
+		        </option>
+		    </select>
+		
+		    <div th:if="${#fields.hasErrors('studentProgram')}"
+		         th:errors="*{studentProgram}"
+		         style="color:red"></div>
+		
+		    <div id="spError" style="color:red; display:none;">
+		        Please select a student!
+		    </div>
+		</td>
+	</tr>
+
+	<tr>
+		<td>Mark:</td>
+		<td>
+		    <input type="number" th:field="*{mark}" id="mark" min="1" max="10"/>
+		    <div id="markError" style="color:red; display:none;">
+		        Mark must be between 1 and 10
+		    </div>
+		    <div th:if="${#fields.hasErrors('mark')}" th:errors="*{mark}"></div>
+		</td>
+	</tr>
+	
+	<tr>
+	<td colspan="2">
+	    <input type="submit" value="Save">
+	</td>
+	</tr>
+
+	</table>
+	</form>
+
+		<script>
+		function validateForm() {
+		    let valid = true;
+		
+			const sp = document.getElementById("studentSelect")
+		    const course = document.getElementById("courseSelect");
+		    const mark = document.getElementById("mark");
+		
+			if (!sp.value) {
+		        document.getElementById("spError").style.display = "block";
+		        valid = false;
+		    } else {
+		        document.getElementById("spError").style.display = "none";
+		    }
+			
+		    if (!course.value) {
+		        document.getElementById("courseError").style.display = "block";
+		        valid = false;
+		    } else {
+		        document.getElementById("courseError").style.display = "none";
+		    }
+		
+		    if (mark.value < 1 || mark.value > 10) {
+		        document.getElementById("markError").style.display = "block";
+		        valid = false;
+		    } else {
+		        document.getElementById("markError").style.display = "none";
+		    }
+		
+		    return valid;
+		}
+		</script>
+
+	</body>
+</html>

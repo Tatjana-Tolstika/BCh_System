@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -45,7 +46,7 @@ public class StudentProgramCourseCRUDController {
 			model.addAttribute("studentPrograms", allStudentProgram); 
 			model.addAttribute("courses", allCourses);
 
-	        return "create-studentProgramCourse";
+	        return "create-spc";
 
 	    } catch (Exception e) {
 	        model.addAttribute("package", e.getMessage());
@@ -54,12 +55,12 @@ public class StudentProgramCourseCRUDController {
 	}
 	
 	@PostMapping("/add")
-	public String postControllerAddNewCourseToStudentProgram(@Valid StudentProgramCourse spc, BindingResult result, Model model) {
+	public String postControllerAddNewCourseToStudentProgram(@Valid StudentProgramCourse spc,BindingResult result, Model model) {
 
 		    try {
 		    	if (result.hasErrors()) {
 			        model.addAttribute("studentProgramCourse", spc);
-			        model.addAttribute("studentProram", spService.selectAllStudentProgram());
+			        model.addAttribute("studentProrams", spService.selectAllStudentProgram());
 			        model.addAttribute("courses", coursesService.selectAllCourses());
 			        return "create-studentProgram";
 			    }

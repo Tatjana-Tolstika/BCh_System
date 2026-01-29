@@ -5,12 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import lv.venta.model.CourseTests;
 import lv.venta.model.StudentProgram;
 import lv.venta.model.StudentProgramCourse;
 import lv.venta.model.StudyCourses;
-import lv.venta.model.TestResult;
-import lv.venta.model.TestTask;
 import lv.venta.repo.IStudentProgramCourseRepo;
 import lv.venta.repo.IStudentProgramRepo;
 import lv.venta.repo.IStudyCourseRepo;

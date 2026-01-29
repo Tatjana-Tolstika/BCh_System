@@ -1,0 +1,18 @@
+<html xmlns:th="https://www.thymeleaf.org">
+	<body>
+		<p>Students and courses: </p>
+		<table border="1px">
+			<tr th:each="tempSPC: ${studentProgramCourse}">
+			
+				<td th:text = "${tempSPC.getStudentProgramCourseId()}"></td>
+				<td th:text = "${tempSPC.getStudentProgram().getStudent().getStudentName() + ' ' + tempSPC.getStudentProgram().getStudent().getStudentSurname()}"></td>
+				
+				<td th:text = "${tempSPC.getCourse().getCourseTitle()}"></td>
+				<td th:text = "${tempSPC.getMark()}"></td>
+				
+			</tr>
+		</table>
+	</body>	
+
+
+</html>

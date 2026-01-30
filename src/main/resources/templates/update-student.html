@@ -4,49 +4,100 @@
 
 <p>Update the information about the student::</p>
 
-<form action="#" th:action="@{/students/crud/update/{id}(id=${student.studentId})}"
+<form th:action="@{/students/crud/update/{id}(id=${id != null ? id : student.studentId})}"
       th:object="${student}"
-      method="post">
+      method="post"
+      onsubmit="return validateForm()">
 
     <input type="hidden" th:field="*{studentId}"/>
 
-    <table>
-        <tr>
-            <td>Name:</td>
-            <td><input type="text" th:field="*{studentName}"/></td>
-            <td th:if="${#fields.hasErrors('studentName')}"
-                th:errors="*{studentName}"></td>
-        </tr>
+	<table>
+	    <tr>
+	        <td>Name:</td>
+	        <td>
+	            <input type="text" th:field="*{studentName}" id="studentName"/>
+	            <div id="nameError" style="color:red; display:none;">Please enter the Name!</div>
+	        </td>
+	    </tr>
 
-        <tr>
-            <td>Surname:</td>
-            <td><input type="text" th:field="*{studentSurname}"/></td>
-            <td th:if="${#fields.hasErrors('studentSurname')}"
-                th:errors="*{studentSurname}"></td>
-        </tr>
+	    <tr>
+	        <td>Surname:</td>
+	        <td>
+	            <input type="text" th:field="*{studentSurname}" id="studentSurname"/>
+	            <div id="surnameError" style="color:red; display:none;">Please enter the Surname!</div>
+	        </td>
+	    </tr>
 
-        <tr>
-            <td>Matriculation Nr:</td>
-            <td><input type="text" th:field="*{matriculationNr}"/></td>
-            <td th:if="${#fields.hasErrors('matriculationNr')}"
-                th:errors="*{matriculationNr}"></td>
-        </tr>
+	    <tr>
+	        <td>Matriculation Nr:</td>
+	        <td>
+	            <input type="text" th:field="*{matriculationNr}" id="matriculationNr"/>
+	            <div id="matrError" style="color:red; display:none;">Please enter the Matriculation number!</div>
+	        </td>
+	    </tr>
 
-        <tr>
-            <td>Email:</td>
-            <td><input type="text" th:field="*{email}"/></td>
-            <td th:if="${#fields.hasErrors('email')}"
-                th:errors="*{email}"></td>
-        </tr>
-
-        <tr>
-            <td>
-                <input type="submit" value="Save"/>
-            </td>
-        </tr>
-    </table>
+	    <tr>
+	        <td>Email:</td>
+	        <td>
+	            <input type="text" th:field="*{email}" id="email"/> 
+	            <div id="emailError" style="color:red; display:none;">Please enter a valid Email!</div>
+	        </td>
+	    </tr>
+		<tr>
+           <td>
+               <input type="submit" value="Save"/>
+           </td>
+       </tr>
+	</table>
 
 </form>
+
+<script>
+function validateForm() {
+    let valid = true;
+    
+    // Iegūstam elementus
+    const name = document.getElementById("studentName");
+    const surname = document.getElementById("studentSurname");
+    const matriculation = document.getElementById("matriculationNr");
+    const email = document.getElementById("email");
+
+    // Name validācija
+    if (!name.value.trim()) {
+        document.getElementById("nameError").style.display = "block";
+        valid = false;
+    } else {
+        document.getElementById("nameError").style.display = "none";
+    }
+
+    // Surname validācija
+    if (!surname.value.trim()) {
+        document.getElementById("surnameError").style.display = "block";
+        valid = false;
+    } else {
+        document.getElementById("surnameError").style.display = "none";
+    }
+
+    // Matriculation validācija
+    if (!matriculation.value.trim()) {
+        document.getElementById("matrError").style.display = "block";
+        valid = false;
+    } else {
+        document.getElementById("matrError").style.display = "none";
+    }
+
+    // Email validācija (pārbauda vai nav tukšs un vai satur @ un .)
+    const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+    if (!email.value.match(emailPattern)) {
+        document.getElementById("emailError").style.display = "block";
+        valid = false;
+    } else {
+        document.getElementById("emailError").style.display = "none";
+    }
+
+    return valid; // Ja false, forma netiks sūtīta uz serveri
+}
+</script>
 
 </body>
 </html>

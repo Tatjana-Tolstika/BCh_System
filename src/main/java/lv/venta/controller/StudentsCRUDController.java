@@ -73,6 +73,8 @@ public class StudentsCRUDController {
 	public String postConstrollerUpdateStudentById(@PathVariable(name = "id") long id, @Valid Students student, BindingResult result, Model model) {
 		if(result.hasErrors()) {
 			try{
+				model.addAttribute("student", student);
+				model.addAttribute("id", id);
 				return "update-student";
 			}catch (Exception e) {
 				model.addAttribute("package", e.getMessage());

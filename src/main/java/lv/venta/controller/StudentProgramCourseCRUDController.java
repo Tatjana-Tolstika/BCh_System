@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.validation.Valid;
 import lv.venta.model.StudentProgram;
 import lv.venta.model.StudentProgramCourse;
-import lv.venta.model.Students;
 import lv.venta.model.StudyCourses;
-import lv.venta.model.StudyProgram;
 import lv.venta.service.ICoursesCRUDService;
 import lv.venta.service.IStudentProgramCRUDService;
 import lv.venta.service.IStudentProgramCourseCRUDService;
@@ -86,7 +84,7 @@ public class StudentProgramCourseCRUDController {
 	{
 		try {
 			spcService.deleteSPCById(spcId);
-			model.addAttribute("package", spcService.retrieveSPCById(spcId));
+			model.addAttribute("package", spcService.selectAllSPC());
 			return "redirect:/spc/crud/all";
 			
 		} catch (Exception e) {

@@ -46,11 +46,13 @@ public class TestTaskCRUDController {
 		
 		@PostMapping("/add/{testId}")
 		public String postConstrollerAddNewTestTask(@PathVariable(name = "testId") long testId, @Valid TestTask task, BindingResult result, Model model) {
-			if (result.hasErrors()) {
-		        model.addAttribute("test", task.getTest());
-		        return "create-TestTask";
-		    }
+			
 			try {
+				if (result.hasErrors()) {
+			        model.addAttribute("test", taskService.getTestById(testId));
+			        model.addAttribute("fixedId", testId);
+			        return "create-TestTask";
+			    }
 				CourseTests test = taskService.getTestById(testId);
 				taskService.createTask(test, task.getTaskDescription(), task.getMaxPoints());
 				return "redirect:/testTask/crud/all/" + testId;
@@ -99,13 +101,15 @@ public class TestTaskCRUDController {
 		public String postConstrollerUpdateTestById(@PathVariable(name = "testId") long testId,@PathVariable(name = "taskId") long taskId, @Valid TestTask task, BindingResult result,Model model) {
 			System.out.println(taskId);
 			System.out.println(task);
-			if (result.hasErrors()) {
-				model.addAttribute("testTask", task); 
-			model.addAttribute("tests", taskService.selectAllTests());
-			  return "update-testTask";
-			}
 			
 			try {
+				if (result.hasErrors()) {
+					CourseTests currentTest = taskService.getTestById(testId);
+		            model.addAttribute("testName", currentTest);
+					model.addAttribute("testTask", task); 
+					model.addAttribute("tests", taskService.selectAllTests());
+				  return "update-testTask";
+				}
 				taskService.updateTaskById(taskId, testId, task.getTaskDescription(), task.getMaxPoints());
 				return "redirect:/testTask/crud/all/" + testId;
 			}

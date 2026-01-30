@@ -115,5 +115,17 @@ public class StudentProgramCourseCRUDServiceImpl implements IStudentProgramCours
 	public List<StudentProgramCourse> selectAllSPC(){
 		return (List<StudentProgramCourse>) spcRepo.findAll();
 	}
+	
+	@Override
+	public List<StudentProgramCourse> selectStudentByCourse(long courseId) throws Exception{
+		if(courseId < 0) {
+			throw new Exception("ID is incorrect!");
+		}
+		StudyCourses foundedCourse = courseRepo.findById(courseId).orElseThrow(() -> new Exception("Course not found"));
+		List<StudentProgramCourse> result = spcRepo.findByCourse(foundedCourse);
+		
+		return result;
+		
+	}
 
 }

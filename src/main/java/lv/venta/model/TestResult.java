@@ -26,7 +26,7 @@ public class TestResult {
 	@Column(name = "result_id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long resultID;
+	private long resultId;
 	
 	@NotNull
 	@Column(name = "comments")
@@ -40,6 +40,8 @@ public class TestResult {
 	@ManyToOne
 	@JoinColumn(name="task_id")
 	private TestTask task;
+	
+	
 	
 	@ManyToOne
 	@JoinColumn(name="student_program_course_id")

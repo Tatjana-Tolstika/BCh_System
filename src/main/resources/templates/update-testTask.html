@@ -7,11 +7,12 @@
 	    <strong th:text="${testName.testTitle}"></strong>
 	</p>
 	<form th:action="@{/testTask/crud/update/{testId}/{taskId}(
-	                    testId=${testTask.test.testId},
-	                    taskId=${testTask.taskId}
+	                    testId=${testId},
+	                    taskId=${taskId}
 	                )}"
 	      th:object="${testTask}"
-	      method="post">
+	      method="post"
+		  onsubmit="return validateForm()">
 
 
 	<input type="hidden" th:field="*{taskId}" />
@@ -20,16 +21,25 @@
 
         <tr>
             <td>Description:</td>
-            <td><input type="text" th:field="*{taskDescription}"/></td>
-            <td th:if="${#fields.hasErrors('taskDescription')}"
-                th:errors="*{taskDescription}"></td>
+            <td><input type="text" th:field="*{taskDescription}" id="descEnter">
+			<div th:if="${#fields.hasErrors('taskDescription')}" th:errors="*{taskDescription}" style="color:red"></div>
+							
+			 <div id="descError" style="color:red; display:none;">
+			        Please write the description!
+			    </div>
+			</td>
         </tr>
 
         <tr>
             <td>Points:</td>
-            <td><input type="text" th:field="*{maxPoints}"/></td>
-            <td th:if="${#fields.hasErrors('maxPoints')}"
-                th:errors="*{maxPoints}"></td>
+            <td><input type="number" th:field="*{maxPoints}" id="maxPointEnter" step="any">
+			<div th:if="${#fields.hasErrors('maxPoints')}"
+				th:errors="*{maxPoints}" style="color:red"></div>
+							
+			    <div id="pointsError" style="color:red; display:none;">
+			        Please enter max points!
+			    </div>
+			</td>
         </tr>
 
         <tr>
@@ -40,6 +50,36 @@
     </table>
  
 </form>
+
+	<script>
+		function validateForm() {
+			let valid = true;
+			
+			const pointsElement = document.getElementById("maxPointEnter");
+			    // Dabūjam skaitlisko vērtību
+		    const pointsValue = parseFloat(pointsElement.value); 
+		    
+		    const desc = document.getElementById("descEnter");
+		    
+		    // Tagad salīdzinām skaitli, nevis elementu
+		    if (isNaN(pointsValue) || pointsValue <= 0) {
+		        document.getElementById("pointsError").style.display = "block";
+		        valid = false;
+		    } else {
+		        document.getElementById("pointsError").style.display = "none";
+		    }
+			// Description validācija
+		    if (!desc.value.trim() || desc.value.trim().length < 5) {
+		        document.getElementById("descError").style.display = "block";
+		        valid = false;
+		    } else {
+		        document.getElementById("descError").style.display = "none";
+		    }
+		
+		    return valid;
+		}
+	</script>
+
 
 </body>
 </html>

@@ -18,4 +18,6 @@ public interface IStudentProgramCourseCRUDService {
 
 	public abstract List<StudentProgramCourse> selectAllSPC();
 
+	public abstract List<StudentProgramCourse> selectStudentByCourse(long courseId) throws Exception;
+
 }

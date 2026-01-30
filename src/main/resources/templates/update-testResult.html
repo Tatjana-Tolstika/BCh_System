@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<body>
+
+    <div th:if="${testResult != null}">
+        <h2>Update Test Result</h2>
+        <p><strong>Test: </strong> <span th:text="${testResult.task.test.testTitle}">Test Title</span></p>
+        <p><strong>Task Condition: </strong> <span th:text="${testResult.task.taskDescription}">Task Description</span></p>
+        <hr>
+    </div>
+
+    <form th:action="@{/testResult/crud/update/{resultId}(resultId=${resultId})}"
+          th:object="${testResult}"
+          method="post" onsubmit="return validateForm()">
+
+        <input type="hidden" th:field="*{resultId}" />
+        <input type="hidden" id="taskMaxPoints" th:value="${taskMaxPoints}">
+
+        <table>
+            <tr>
+                <td>Student:</td>
+                <td><strong th:text="${testResult.studentProgramCourse.studentProgram.student.studentName + ' ' + testResult.studentProgramCourse.studentProgram.student.studentSurname}">Student Name</strong></td>
+            </tr>
+            <tr>
+                <td>Comment:</td>
+                <td>
+                    <input type="text" th:field="*{comments}" id="commentsEnter"/>
+                    <div id="commentError" style="color:red; display:none;">Please enter a comment (min 5 chars)!</div>
+                </td>
+                <td th:if="${#fields.hasErrors('comments')}" th:errors="*{comments}" style="color:red"></td>
+            </tr>
+
+            <tr>
+                <td>Minus Points:</td>
+                <td>
+                    <input type="number" th:field="*{minus}" id="minuses" step="0.01"/>
+                    <div id="minusError" style="color:red; display:none;"></div>
+                    <div th:if="${#fields.hasErrors('minus')}" th:errors="*{minus}" style="color:red"></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="Save Changes"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <script th:inline="javascript">
+    function validateForm() {
+        let valid = true;
+        const minusInput = document.getElementById("minuses");
+        const minusAmount = parseFloat(minusInput.value);
+        const maxPoints = parseFloat(document.getElementById("taskMaxPoints").value);
+        const comment = document.getElementById("commentsEnter").value.trim();
+        
+        const minusError = document.getElementById("minusError");
+        const commentError = document.getElementById("commentError");
+
+        // Valdation minuses
+        if (isNaN(minusAmount) || minusAmount < 0 || minusAmount > maxPoints) {
+            minusError.innerText = "Minus points must be between 0 and " + maxPoints;
+            minusError.style.display = "block";
+            valid = false;
+        } else {
+            minusError.style.display = "none";
+        }
+
+        // Validation comments
+        if (comment.length < 5) {
+            commentError.style.display = "block";
+            valid = false;
+        } else {
+            commentError.style.display = "none";
+        }
+
+        return valid;
+    }
+    </script>
+</body>
+</html>

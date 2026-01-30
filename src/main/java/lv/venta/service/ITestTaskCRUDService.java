@@ -22,5 +22,7 @@ public interface ITestTaskCRUDService {
 
 	public abstract CourseTests getTestById(long testId) throws Exception;
 
+	public abstract List<TestTask> selectAllTasks();
+
 
 }

@@ -82,7 +82,7 @@ public class StudentProgramCRUDController {
 			{
 				try {
 					stService.deleteStudentFromProgram(studentId, programId);
-					model.addAttribute("package", stService.retrieveByStudyProgram(programId));
+					model.addAttribute("package", stService.selectAllStudentProgram());
 					return "redirect:/studentProgram/crud/all/" + programId;
 					
 				} catch (Exception e) {
@@ -98,15 +98,16 @@ public class StudentProgramCRUDController {
 			    try {
 			        StudentProgram spForUpdate = stService.retrieveStudentProgramById(id);
 			        System.out.println("Esošā programma: " + spForUpdate.getStudyProgram().getProgramTitle());
-			        if (spForUpdate.getStudent() == null) {
-			            spForUpdate.setStudent(new Students());
-			        }
+			        
+			        Students currentStudent = spForUpdate.getStudent();
+			        
 			        if (spForUpdate.getStudyProgram() == null) {
 			            spForUpdate.setStudyProgram(new StudyProgram());
 			        }
 			        model.addAttribute("programLength", spForUpdate.getStudyProgram().getLength());
 			        model.addAttribute("programs", programService.selectAllPrograms());
 			        model.addAttribute("studentProgram", spForUpdate);
+			        model.addAttribute("student", currentStudent);
 			        return "update-studentProgram";
 			    } catch (Exception e) {
 			        model.addAttribute("package", e.getMessage());
@@ -121,17 +122,18 @@ public class StudentProgramCRUDController {
 			    System.out.println(sp);
 			    
 			    try {
+			        
 			        if (result.hasErrors()) {
 			            model.addAttribute("studentProgram", sp); 
 			            model.addAttribute("programs", programService.selectAllPrograms());
+			            model.addAttribute("student", sp.getStudent());
+			            model.addAttribute("fixedId", id);
 			            return "update-studentProgram";
 			        }
 			        
-			        // Get the current StudentProgram to extract the student ID
-			        StudentProgram currentSp = stService.retrieveStudentProgramById(id);
-			        long studentId = currentSp.getStudent().getStudentId(); // Use existing student ID
+			        //long studentId = currentSp.getStudent().getStudentId(); // Use existing student ID
 			        
-			        stService.updateStudentProgramById(id, studentId, programId, sp.getCourse());
+			        stService.updateStudentProgramById(id, sp.getStudent().getStudentId(), programId, sp.getCourse());
 			        return "redirect:/studentProgram/crud/all";
 			    }
 			    catch(Exception e) {

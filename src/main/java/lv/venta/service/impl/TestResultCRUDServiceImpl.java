@@ -29,7 +29,7 @@ public class TestResultCRUDServiceImpl implements ITestResultCRUDService{
 	//----------------------------CREATE----------------------------------------------------------------------------
 	@Override
 	public void createResult(String comments, double minus, TestTask taskInput, StudentProgramCourse spcInput) throws Exception {
-		if(comments == null || minus <= 0 ) {
+		if(comments == null || minus < 0 ) {
 			throw new Exception("Incorrect input parameters!");
 		}
 		TestTask task = taskRepo.findById(taskInput.getTaskId())

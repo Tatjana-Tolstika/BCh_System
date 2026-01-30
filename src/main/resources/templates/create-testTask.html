@@ -1,11 +1,12 @@
 <html xmlns:th=" https://www.thymeleaf.org">
 	
 	<body>
-	<p>Please enter a new task for the test: <strong th:text="${test.testTitle}"></strong> </p>
-	<form th:action="@{/testTask/crud/add/{testId}(testId=${test.testId})}"
+	<p>Please enter a new task for the test: <strong th:text="${test?.testTitle}"></strong> </p>
+	<form th:action="@{/testTask/crud/add/{testId}(testId=${fixedId != null ? fixedId : test.testId})}"
 	      th:object="${testTask}"
-	      method="post">
-		  <input type="hidden" th:field="*{test.testId}"/>
+	      method="post"
+		  onsubmit="return validateForm()">
+		  <input type="hidden" name="testId" th:value="${fixedId != null ? fixedId : test.testId}"/>
 
 			<table>
 				
@@ -13,16 +14,22 @@
 					<td>Description: </td>
 					<td><input type="text" th:field="*{taskDescription}">
 					<div id="descError" style="color:red; display:none;"> Please enter a description!</div>
-					         </td>
-					<td th:if="${#fields.hasErrors('taskDescription')}" th:errors="*{taskDescription}"></td>
+					<div th:if="${#fields.hasErrors('taskDescription')}" th:errors="*{taskDescription}" style="color:red"></div>
+					<div id="descError" style="color:red; display:none;">
+					        Please write the description!
+					</div>
+				</td>
 										
 				</tr>
 				<tr>
 					<td>MaxPoints: </td>
 					<td><input type="text" th:field="*{maxPoints}">
-					<div id="pointsError" style="color:red; display:none;"> Please enter a valid points value (>0)!</div>
-					         </td>
-					<td th:if="${#fields.hasErrors('maxPoints')}" th:errors="*{maxPoints}"></td>
+						<div th:if="${#fields.hasErrors('maxPoints')}" th:errors="*{maxPoints}" style="color:red"></div>
+									
+					    <div id="pointsError" style="color:red; display:none;">
+					        Please enter max points!
+					    </div>
+					</td>
 
 				</tr>
 				
@@ -52,12 +59,11 @@
 		    }
 
 		    // Points validācija
-		    const pointsValue = parseInt(points.value, 10);
-		    if (isNaN(pointsValue) || pointsValue <= 0) {
-		        document.getElementById("maxPointsError").style.display = "block";
+		    if (points <= 0) {
+		        document.getElementById("pointsError").style.display = "block";
 		        valid = false;
 		    } else {
-		        document.getElementById("maxPointsError").style.display = "none";
+		        document.getElementById("pointsError").style.display = "none";
 		    }
 
 		   

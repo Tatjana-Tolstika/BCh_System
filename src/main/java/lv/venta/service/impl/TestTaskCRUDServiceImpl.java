@@ -106,6 +106,10 @@ public class TestTaskCRUDServiceImpl implements ITestTaskCRUDService{
 		    return tasks;
 		}
 		
+		@Override
+		public List<TestTask> selectAllTasks(){
+			return (List<TestTask>) taskRepo.findAll();
+		}
 		//--------------------------------------------------------------------------------------
 		
 		@Override

@@ -21,7 +21,9 @@ public interface ICourseTestCRUDService {
 
 	
 
-	void updateTestById(long id, String title, String description, int points, long  course) throws Exception;
+	public abstract void updateTestById(long id, String title, String description, int points, long  course) throws Exception;
+
+	public abstract StudyCourses selectCourseByTest(long testId) throws Exception;
 	
 
 

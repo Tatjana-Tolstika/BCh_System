@@ -1,0 +1,141 @@
+<html xmlns:th="https://www.thymeleaf.org">
+	<body>
+		
+		<p>Please enter a new test result:</p>
+		
+		<form action="#" th:action="@{/testResult/crud/add/{testId}(testId=${testId})}" th:object="${testResult}" method="post" onsubmit="return validateForm()">
+		    <table>
+		        <!-- StudentProgramCourse izvēle -->
+				
+				<input type="hidden" name="testId" th:value="${testId}">
+
+		        <tr>
+		            <td>Student:</td>
+		            <td>
+						<select th:field="*{studentProgramCourse}" id="studentSelect">
+				            <option value="">-- Select student --</option>
+				            <option th:each="spc : ${studentProgramCourse}"
+				                    th:value="${spc.studentProgramCourseId}"
+				                    th:text="${spc.studentProgram.student.studentName + ' ' + spc.studentProgram.student.studentSurname}">
+				            </option>
+				        </select>
+		                <div th:if="${#fields.hasErrors('studentProgramCourse')}" th:errors="*{studentProgramCourse}" style="color:red"></div>
+		                <div id="spcError" style="color:red; display:none;">Please select a student!</div>
+		            </td>
+		        </tr>
+				
+				
+		        <!-- TestTask izvēle -->
+		        <tr>
+		            <td>Test Task:</td>
+		            <td>
+						<select id="taskSelect" th:field="*{task}">
+						    <option value="">-- Select test task --</option>
+						    <option th:each="t : ${tasks}" 
+						            th:value="${t.taskId}" 
+						            th:text="${t.taskDescription}"
+									th:attr="data-max=${t.maxPoints}">
+						    </option>
+						</select>
+
+		                <div th:if="${#fields.hasErrors('task')}" th:errors="*{task}" style="color:red"></div>
+		                <div id="taskError" style="color:red; display:none;">Please select a task!</div>
+		            </td>
+		        </tr>
+		
+		        <!-- Komentāri -->
+		        <tr>
+		            <td>Comments:</td>
+		            <td>
+		                <input type="text" th:field="*{comments}" id="comments">
+		                <div id="commentsError" style="color:red; display:none;">Please enter comments!</div>
+		                <div th:if="${#fields.hasErrors('comments')}" th:errors="*{comments}"></div>
+		            </td>
+		        </tr>
+		
+		        <!-- Minus punkti -->
+		        <tr>
+		            <td>Minus points:</td>
+		            <td>
+		                <input type="number" th:field="*{minus}" id="minus" min="0" step="0.01">
+		                <div id="minusError" style="color:red; display:none;">Enter valid points (>=0)!</div>
+		                <div th:if="${#fields.hasErrors('minus')}" th:errors="*{minus}"></div>
+		            </td>
+		        </tr>
+		
+		        <tr>
+		            <td colspan="2"><input type="submit" value="Save"></td>
+		        </tr>
+		    </table>
+		</form>
+<!-- ==================================SKRIPTI===========================-->
+		<script>
+			function updateMaxMinus() {
+			    const taskSelect = document.getElementById("taskSelect");
+			    const minusInput = document.getElementById("minus");
+			    
+			    // Dabūjam izvēlēto opciju
+			    const selectedOption = taskSelect.options[taskSelect.selectedIndex];
+			    
+			    const maxVal = selectedOption.getAttribute("data-max");
+			    
+			    if (maxVal) {
+			        minusInput.max = maxVal; 
+			        console.log("Jaunais mīnusu limits: " + maxVal);
+			    }
+			}
+		</script>
+	
+
+		<script>
+			function validateForm() {
+			    let valid = true;
+			
+				const spc = document.getElementById("studentSelect");
+			
+			    const task = document.getElementById("taskSelect");
+			    const comments = document.getElementById("comments");
+			    const minus = document.getElementById("minus");
+				
+				const selectedTask = task.options[task.selectedIndex];
+				const maxAllowed = parseFloat(selectedTask.getAttribute("data-max"));
+			
+			    // StudentProgramCourse validācija
+				if (!spc.value) {
+				    document.getElementById("spcError").style.display = "block";
+				    valid = false;
+				} else {
+				    document.getElementById("spcError").style.display = "none";
+				}
+			
+			    // Task validācija
+			    if (!task.value) {
+			        document.getElementById("taskError").style.display = "block";
+			        valid = false;
+			    } else {
+			        document.getElementById("taskError").style.display = "none";
+			    }
+			
+			    // Comments validācija
+			    if (!comments.value.trim() || comments.value.trim().length < 5) {
+			        document.getElementById("commentsError").style.display = "block";
+			        valid = false;
+			    } else {
+			        document.getElementById("commentsError").style.display = "none";
+			    }
+			
+			    // Minus validācija
+			    const minusValue = parseFloat(minus.value);
+			    if (isNaN(minusValue) || minusValue < 0 || minusValue > maxAllowed) {
+			        document.getElementById("minusError").style.display = "block";
+			        valid = false;
+			    } else {
+			        document.getElementById("minusError").style.display = "none";
+			    }
+			
+			    return valid;
+			}
+		</script>
+
+	</body>
+</html>

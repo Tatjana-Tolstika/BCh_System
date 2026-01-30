@@ -224,12 +224,12 @@ public class BChSystemApplication {
 						+ "Random principa. Ja ir nepieciešams, ieviest papildus masīvus.", 3.5);
 				taskRepo.saveAll(Arrays.asList(task1,task2,task3,task4,task5,task6));
 				
-				TestResult result1 = new TestResult("Comment 1", 0.1, task1, spc1);
-				TestResult result2 = new TestResult("Comment 2", 0, task2, spc1);
-				TestResult result3 = new TestResult("Comment 3", 0, task3, spc1);
-				TestResult result4 = new TestResult("Comment 4", 0.1, task4, spc1);
-				TestResult result5 = new TestResult("Comment 5", 0.2, task5, spc1);
-				TestResult result6 = new TestResult("Comment 6", 0, task6, spc1);
+				TestResult result1 = new TestResult("Comment 1", 0.1, task1, spc7);
+				TestResult result2 = new TestResult("Comment 2", 0, task2, spc7);
+				TestResult result3 = new TestResult("Comment 3", 0, task3, spc7);
+				TestResult result4 = new TestResult("Comment 4", 0.1, task4, spc7);
+				TestResult result5 = new TestResult("Comment 5", 0.2, task5, spc7);
+				TestResult result6 = new TestResult("Comment 6", 0, task6, spc7);
 				resultRepo.saveAll(Arrays.asList(result1,result2,result3,result4,result5,result6));
 				
 				

@@ -101,6 +101,16 @@ private IStudyCourseRepo courseRepo;
 		    return (List<StudyCourses>) courseRepo.findAll();
 		}
 		
+		@Override
+		public StudyCourses selectCourseByTest(long testId) throws Exception {
+			if(testId < 0) {
+				throw new Exception("Id cannot be less than 0!");
+			}
+			CourseTests foundedTest = testRepo.findById(testId).orElseThrow(() -> new Exception("Test with id " + testId + " not found"));
+			StudyCourses result = foundedTest.getCourse();
+			return result;
+		}
+		
 		
 		
 

@@ -5,12 +5,15 @@
 	<p>
 	    Update the information about the program:
 	</p>
-	<form th:action="@{/studentProgram/crud/update/{spId}(spId=${studentProgram.studentProgramId})}"
-	      th:object="${studentProgram}"
+	<form th:action="@{/studentProgram/crud/update/{id}(id=${fixedId != null ? fixedId : studentProgram.studentProgramId})}" 
+	      th:object="${studentProgram}" 
 	      method="post" onsubmit="return validateForm()">
 
+	<input type="hidden" name="studentProgramId" th:value="${fixedId != null ? fixedId : studentProgram.studentProgramId}">
+
 	<input type="hidden" id="programLength" th:value="${programLength}">
-	<input type="hidden" th:field="*{student.studentId}" th:value="${studentProgram.student.studentId}"> <!-- To get studentID without changing it-->
+	<input type="hidden" th:field="*{student}" > <!-- To get studentID without changing it-->
+	
     <table>
 
 		<p>
@@ -25,19 +28,30 @@
 				    <option th:each="p : ${programs}"
 				            th:value="${p.programId}"
 				            th:text="${p.programTitle}"
-				            th:selected="${p.programId == studentProgram.studyProgram.programId}">
+				            th:selected="${p.programId == studentProgram.studyProgram.programId}"
+				            th:attr="data-length=${p.length}">
 				    </option>
 				</select>
+				<div th:if="${#fields.hasErrors('studyProgram.programId')}"
+							         th:errors="*{studyProgram.programId}"
+							         style="color:red"></div>
+							
+			    <div id="programError" style="color:red; display:none;">
+			        Please select a programm!
+			    </div>
 		    </td>
 		</tr>
 
         <tr>
             <td>Courses:</td>
-            <td><input type="text" th:field="*{course}"/>
-				<div id="courseError" style="color:red; display:none">Please enter a correct course!</div>
-			</td>
-            <td th:if="${#fields.hasErrors('course')}"
-                th:errors="*{course}"></td>
+            <td><input type="number" th:field="*{course}"/>
+				<div th:if="${#fields.hasErrors('course')}"
+							         th:errors="*{course}"
+							         style="color:red"></div>
+							
+			    <div id="courseError" style="color:red; display:none;">
+			        Please enter the course!
+			    </div></td>
         </tr>
 
         <tr>
@@ -49,17 +63,49 @@
  
 </form>
 <script>
-function validateForm() {
-    const course = parseInt(document.getElementById("course").value);
-    const programLength = parseInt(document.getElementById("programLength").value);
+	const programSelect = document.getElementById("programSelect");
+	const programLengthInput = document.getElementById("programLength");
+	
+	// sākumā uzstāda pareizo vērtību
+	updateProgramLength();
+	
+	programSelect.addEventListener("change", function () {
+	    updateProgramLength();
+	});
+	
+	function updateProgramLength() {
+	    const selectedOption = programSelect.options[programSelect.selectedIndex];
+	    const length = selectedOption.getAttribute("data-length");
+	
+	    programLengthInput.value = length;
+	
+	    console.log("New program length:", length); // debugam
+	}
+</script>
 
-    if (course <= 0 || course > programLength) {
+<script>
+function validateForm() {
+	let valid = true;
+	
+	const course = document.getElementById("course");
+    const programLength = parseInt(document.getElementById("programLength").value);
+	const program = document.getElementById("programSelect");
+	
+	if (course <= 0 || course > programLength) {
         document.getElementById("courseError").style.display = "block";
-        return false; // Forma NETIKS nosūtīta
+        valid = false;
+    } else {
+        document.getElementById("courseError").style.display = "none";
     }
-    
-    document.getElementById("courseError").style.display = "none";
-    return true; // Forma tiks nosūtīta
+	
+	if (!program.value) {
+        document.getElementById("programError").style.display = "block";
+        valid = false;
+    } else {
+        document.getElementById("programError").style.display = "none";
+    }
+
+    return valid;
 }
 </script>
 

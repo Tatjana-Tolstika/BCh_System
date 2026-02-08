@@ -4,7 +4,7 @@
 
 <p>Update the information about the test:</p>
 
-<form th:action="@{/courseTests/crud/update/{id}(id=*{testId})}" th:object="${courseTest}" method="post">
+<form th:action="@{/courseTests/crud/update/{id}(id=*{testId})}" th:object="${courseTest}" method="post"  onsubmit="return validateForm()">
 
 
 	<input type="hidden" th:field="*{testId}" />
@@ -12,36 +12,45 @@
     <table>
         <tr>
             <td>Title:</td>
-            <td><input type="text" th:field="*{testTitle}"/></td>
-            <td th:if="${#fields.hasErrors('testTitle')}"
-                th:errors="*{testTitle}"></td>
+            <td><input type="text" th:field="*{testTitle}" id="testTitleEnter"/> 
+				<div id="titleError" style="color:red; display:none;">
+			        Please, eneter the title of the test!
+			    </div>
+			    <div th:if="${#fields.hasErrors('testTitle')}" th:errors="*{testTitle}"></div></td>
         </tr>
 
         <tr>
             <td>Description:</td>
-            <td><input type="text" th:field="*{testDescription}"/></td>
-            <td th:if="${#fields.hasErrors('testDescription')}"
-                th:errors="*{testDescription}"></td>
+            <td><input type="text" th:field="*{testDescription}"  id="descEnter"/> 
+				<div id="descError" style="color:red; display:none;">
+			        Please, eneter the description of the test!
+			    </div>
+			    <div th:if="${#fields.hasErrors('testDescription')}" th:errors="*{testDescription}"></div></td>
         </tr>
 
         <tr>
             <td>Points:</td>
-            <td><input type="text" th:field="*{points}"/></td>
-            <td th:if="${#fields.hasErrors('points')}"
-                th:errors="*{points}"></td>
+            <td><input type="text" th:field="*{points}" id = "pointsEnter"/> 
+			<div id="pointsError" style="color:red; display:none;">
+		        Points must be between 1 and 10
+		    </div>
+		    <div th:if="${#fields.hasErrors('points')}" th:errors="*{points}"></div></td>
         </tr>
 
 		<tr>
 		    <td>Course:</td>
 		    <td>
-		        <select th:field="*{course.courseTitle}" required >
+				<select th:field="*{course.courseId}" id="selectCourse" required>
+		            <option value="">-- Select Course --</option>
 		            <option th:each="c : ${courses}"
 		                    th:value="${c.courseId}"
 		                    th:text="${c.courseTitle}"
-							th:selected="${c.courseId == courseTest.course.courseId}"
-		                    ></option>
+		                    th:selected="${courseTest.course != null && c.courseId == courseTest.course.courseId}">
 		            </option>
 		        </select>
+				<div id="courseError" style="color:red; display:none;">
+			        Select Course!
+			    </div>
 		    </td>
 		</tr>
 
@@ -53,6 +62,57 @@
     </table>
  
 </form>
+
+<script>
+	function validateForm() {
+		    let valid = true;
+		
+		    const title = document.getElementById("testTitleEnter");
+		    const description = document.getElementById("descEnter");
+		    const points = document.getElementById("pointsEnter");
+		    const course = document.getElementById("selectCourse");
+		
+		    // Validācija Title
+		    if (!title.value.trim() || title.value.trim().length < 5) {
+				document.getElementById("titleError").style.display = "block";
+				valid = false;
+		    }else {
+		        document.getElementById("titleError").style.display = "none";
+		    }
+		
+		    // Validācija Description
+			if (!description.value.trim() || description.value.trim().length < 5) {
+		        document.getElementById("descError").style.display = "block";
+		        valid = false;
+		    } else {
+		        document.getElementById("descError").style.display = "none";
+		    }
+		
+		    // Validācija Points
+		    const pointsValue = parseFloat(points.value);
+		    if (isNaN(pointsValue) || pointsValue <= 0) {
+				document.getElementById("pointsError").style.display = "block";
+				valid = false;
+		    }else {
+		        document.getElementById("pointsError").style.display = "none";
+		    }
+			
+		
+		    // Validācija Course
+		    if (!course.value) {
+				document.getElementById("courseError").style.display = "block";
+				valid = false;
+		    }else {
+		        document.getElementById("courseError").style.display = "none";
+		    }
+		
+		    return valid;
+		}
+		
+		// Piesaistīt formu
+		
+</script>
+
 
 </body>
 </html>

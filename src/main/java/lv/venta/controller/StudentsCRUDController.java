@@ -36,13 +36,15 @@ public class StudentsCRUDController {
 	//----------------------ADD---------------------------------------
 	@GetMapping("/add") //localhost:8081/students/crud/add
 	public String getControllerAddNewStudent(Model model) {
-		model.addAttribute("student", new Students());
+		
+		model.addAttribute("students", new Students());
 		return "create-student";
 	}
 	
 	@PostMapping("/add")
 	public String postConstrollerAddNewStudent(@Valid Students student, BindingResult result, Model model) {
 		if(result.hasErrors()) {
+			model.addAttribute("students", student);
 			return "create-student";
 		}
 		try {

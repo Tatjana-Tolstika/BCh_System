@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.validation.Valid;
 import lv.venta.model.CourseTests;
@@ -75,6 +76,9 @@ public class CourseTestCRUDController {
 	public String getControllerUpdateTestById(@PathVariable(name = "id") long id, Model model) {
 		try {
 		CourseTests testToUpdate = testService.retrieveTestById(id);
+		if (testToUpdate.getCourse() == null) {
+            testToUpdate.setCourse(new StudyCourses()); 
+        }
 		model.addAttribute("courses", testService.selectAllCourse());
 		model.addAttribute("courseTest", testToUpdate);
 		model.addAttribute("courseName", testToUpdate.getCourse());
@@ -87,7 +91,7 @@ public class CourseTestCRUDController {
 	}
 	
 	@PostMapping("/update/{id}")
-	public String postConstrollerUpdateTestById(@PathVariable(name = "id") long id, @Valid CourseTests test, BindingResult result,Model model) {
+	public String postConstrollerUpdateTestById(@PathVariable(name = "id") long id, @RequestParam(name = "course.courseId") long courseId, @Valid CourseTests test, BindingResult result,Model model) {
 		System.out.println(id);
 		System.out.println(test);
 		if (result.hasErrors()) {
@@ -97,7 +101,7 @@ public class CourseTestCRUDController {
 		}
 		
 		try {
-			testService.updateTestById(id, test.getTestTitle(), test.getTestDescription(), test.getPoints(),Integer.parseInt(test.getCourse().getCourseTitle()));
+			testService.updateTestById(id, test.getTestTitle(), test.getTestDescription(), test.getPoints(),courseId);
 			return "redirect:/courseTests/crud/all";
 		}
 		catch(Exception e) {

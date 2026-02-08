@@ -40,7 +40,7 @@ public class BChSystemApplication {
 			@Override
 			public void run(String... args) throws Exception{
 				
-				Lecturers lect1 = new Lecturers("TestName", "TestSurname", "Mg.sc.Comp");
+				Lecturers lect1 = new Lecturers("Test Name", "Testsurname", "Mg.sc.Comp");
 				Lecturers lect2 = new Lecturers("Karina", "Šķirmante", "Mg.sc.Comp");
 				Lecturers lect3 = new Lecturers("Estere", "Vitola", "Mg.sc.Pead");
 				Lecturers lect4 = new Lecturers("Kristaps", "Blumbergs", "Mg.sc");

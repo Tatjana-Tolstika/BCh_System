@@ -4,35 +4,39 @@
 
 <p>Update the information about the lecturer:</p>
 
-<form action="#" th:action="@{/lecturers/crud/update/{id}(id=${lecturer.lecturersId})}"
+<form th:action="@{/lecturers/crud/update/{id}(id=${lecturer.lecturersId})}"
       th:object="${lecturer}"
-      method="post">
-
+      method="post" onsubmit="return validateForm()">
 
     <input type="hidden" th:field="*{lecturersId}"/>
 
     <table>
         <tr>
             <td>Name:</td>
-            <td><input type="text" th:field="*{lecturerName}"/></td>
-            <td th:if="${#fields.hasErrors('lecturerName')}"
-                th:errors="*{lecturerName}"></td>
+            <td>
+                <input type="text" th:field="*{lecturerName}" id="name"/>
+                <div id="nameError" style="color:red; display:none;">Please enter the Name!</div>
+            </td>
+            <td th:if="${#fields.hasErrors('lecturerName')}" th:errors="*{lecturerName}" style="color:red"></td>
         </tr>
 
         <tr>
             <td>Surname:</td>
-            <td><input type="text" th:field="*{lecturerSurname}"/></td>
-            <td th:if="${#fields.hasErrors('lecturerSurname')}"
-                th:errors="*{lecturerSurname}"></td>
+            <td>
+                <input type="text" th:field="*{lecturerSurname}" id="surname"/>
+                <div id="surnameError" style="color:red; display:none;">Please enter the Surname!</div>
+            </td>
+            <td th:if="${#fields.hasErrors('lecturerSurname')}" th:errors="*{lecturerSurname}" style="color:red"></td>
         </tr>
 
         <tr>
             <td>Degree:</td>
-            <td><input type="text" th:field="*{lecturerDegree}"/></td>
-            <td th:if="${#fields.hasErrors('lecturerDegree')}"
-                th:errors="*{lecturerDegree}"></td>
+            <td>
+                <input type="text" th:field="*{lecturerDegree}" id="degree"/>
+                <div id="degreeError" style="color:red; display:none;">Please enter the Degree!</div>
+            </td>
+            <td th:if="${#fields.hasErrors('lecturerDegree')}" th:errors="*{lecturerDegree}" style="color:red"></td>
         </tr>
-
 
         <tr>
             <td>
@@ -40,8 +44,44 @@
             </td>
         </tr>
     </table>
-
 </form>
+
+<script>
+function validateForm() {
+    let valid = true;
+    
+    // Iegūstam elementus
+    const name = document.getElementById("name");
+    const surname = document.getElementById("surname");
+    const degree = document.getElementById("degree");
+
+    // Name validācija
+    if (!name.value.trim() || name.value.trim().length < 2) {
+        document.getElementById("nameError").style.display = "block";
+        valid = false;
+    } else {
+        document.getElementById("nameError").style.display = "none";
+    }
+
+    // Surname validācija
+    if (!surname.value.trim() || surname.value.trim().length < 2) {
+        document.getElementById("surnameError").style.display = "block";
+        valid = false;
+    } else {
+        document.getElementById("surnameError").style.display = "none";
+    }
+
+    // Degree validācija
+    if (!degree.value.trim()) {
+        document.getElementById("degreeError").style.display = "block";
+        valid = false;
+    } else {
+        document.getElementById("degreeError").style.display = "none";
+    }
+
+    return valid; 
+}
+</script>
 
 </body>
 </html>

@@ -11,6 +11,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AccessLevel;
@@ -49,6 +51,8 @@ public class StudyProgram {
 		
 		@NotNull
 		@Column(name = "program_length")
+		@Min(1)
+		@Max(6)
 		private int length;
 		//------------------Table connections------------------------
 		@OneToMany(mappedBy="studyProgram", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -1,8 +1,8 @@
-<html xmlns:th=" https://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org">
 	
 	<body>
 	<p>Please enter a new student: </p>
-		<form action="#" th:action="@{/students/crud/add}" th:object="${student}" method="post">
+		<form action="#" th:action="@{/students/crud/add}" th:object="${students}" method="post">
 			<table>
 				<tr>
 					<td>Name: </td>

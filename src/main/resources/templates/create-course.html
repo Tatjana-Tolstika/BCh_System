@@ -1,4 +1,4 @@
-<html xmlns:th=" https://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org">
 	
 	<body>
 	<p>Please enter a new course: </p>
@@ -10,7 +10,7 @@
 					<td th:if="${#fields.hasErrors('courseTitle')}" th:errors="*{courseTitle}"></td>
 				</tr>
 					<tr></tr>
-					<td>Degree: </td>
+					<td>Credits: </td>
 					<td><input type="text" th:field="*{credits}"></td>
 					<td th:if="${#fields.hasErrors('credits')}" th:errors="*{credits}"></td>
 										

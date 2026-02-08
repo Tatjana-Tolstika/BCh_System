@@ -45,6 +45,8 @@ public class TestTask {
 	@Column(name="max_points_amount")
 	private double maxPoints;
 	
+	//notes string 
+	
 	//---------Tables connections---------------------------
 	@ManyToOne
 	@JoinColumn(name="test_id")

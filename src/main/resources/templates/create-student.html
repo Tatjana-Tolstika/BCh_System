@@ -2,28 +2,39 @@
 	
 	<body>
 	<p>Please enter a new student: </p>
-		<form action="#" th:action="@{/students/crud/add}" th:object="${students}" method="post">
+		<form action="#" th:action="@{/students/crud/add}" th:object="${students}" method="post" onsubmit="return validateForm();">
 			<table>
+				
 				<tr>
 					<td>Name: </td>
-					<td><input type="text" th:field="*{studentName}"></td>
+					<td><input type="text" th:field="*{studentName}" id="studentNameEnter">
+						<div id="nameError" style="color:red; display:none;">Please enter a name!</div>
+					</td>
 					<td th:if="${#fields.hasErrors('studentName')}" th:errors="*{studentName}"></td>
 				</tr>
-					<tr></tr>
+				
+				
+				<tr>
 					<td>Surname: </td>
-					<td><input type="text" th:field="*{studentSurname}"></td>
+					<td><input type="text" th:field="*{studentSurname}" id="studentSurnameEnter">
+						<div id="surnameError" style="color:red; display:none;">Please enter a surname!</div>
+					</td>
 					<td th:if="${#fields.hasErrors('studentSurname')}" th:errors="*{studentSurname}"></td>
 										
 				</tr>
-					<tr>
+				<tr>
 					<td>MatriculationNr: </td>
-					<td><input type="text" th:field="*{matriculationNr}"></td>
+					<td><input type="text" th:field="*{matriculationNr}" id="matrNrEnter">
+						<div id="matrError" style="color:red; display:none;">Please enter a matriculation Nr!</div>
+					</td>
 					<td th:if="${#fields.hasErrors('matriculationNr')}" th:errors="*{matriculationNr}"></td>
 										
 				</tr>
 				<tr>
 					<td>Email: </td>
-					<td><input type="email" th:field="*{email}"></td>
+					<td><input type="email" th:field="*{email}" id="emailEnter">
+						<div id="emailError" style="color:red; display:none;">Please enter an email!</div>
+					</td>
 					<td th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></td>
 													
 				</tr>
@@ -35,6 +46,51 @@
 				
 			</table>
 		</form>
+		
+		<script>
+				function validateForm() {
+				    let valid = true;
+
+				    const name = document.getElementById("studentNameEnter");
+				    const surname = document.getElementById("studentSurnameEnter");
+				    const matrNr = document.getElementById("matrNrEnter");
+				    const stEmail = document.getElementById("emailEnter");
+
+				    // Title validācija
+				    if (!name.value.trim()) {
+				        document.getElementById("nameError").style.display = "block";
+				        valid = false;
+				    } else {
+				        document.getElementById("nameError").style.display = "none";
+				    }
+
+				    // Description validācija
+				    if (!surname.value.trim() ) {
+				        document.getElementById("surnameError").style.display = "block";
+				        valid = false;
+				    } else {
+				        document.getElementById("surnameError").style.display = "none";
+				    }
+
+				    // Points validācija
+					if (!matrNr.value.trim()) {
+				        document.getElementById("matrError").style.display = "block";
+				        valid = false;
+				    } else {
+				        document.getElementById("matrError").style.display = "none";
+				    }
+
+				    // Course validācija
+					if (!stEmail.value.trim()) {
+				        document.getElementById("emailError").style.display = "block";
+				        valid = false;
+				    } else {
+				        document.getElementById("emailError").style.display = "none";
+				    }
+
+				    return valid; // ja false → forma netiks nosūtīta
+				}
+				</script>
 		
 	</body>
 

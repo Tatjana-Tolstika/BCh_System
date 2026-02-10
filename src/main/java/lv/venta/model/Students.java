@@ -36,12 +36,14 @@ public class Students {
 	private long studentId;
 	
 	@NotNull
-	@Pattern(regexp="^[A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+([\\s-][A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+)*$")
+	@Pattern(regexp="^[A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+([\\s-][A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+)*$",
+			  message = "Name must start with a capital letter and contain only letters")
 	@Column(name = "name")
 	private String studentName;
 	
 	@NotNull
-	@Pattern(regexp="^[A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+")
+	@Pattern(regexp="^[A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+",
+			  message = "Surname must start with a capital letter and contain only letters")
 	@Column(name = "surname")
 	private String studentSurname;
 	
@@ -51,7 +53,8 @@ public class Students {
 	private String matriculationNr;
 	
 	@NotNull
-	@Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-z]{2,}$")
+	@Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-z]{2,}$", 
+			message = "Invalid email address")
 	@Column(name = "email")
 	private String email;
 	

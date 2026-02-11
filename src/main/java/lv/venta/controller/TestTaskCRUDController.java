@@ -54,7 +54,7 @@ public class TestTaskCRUDController {
 			        return "create-TestTask";
 			    }
 				CourseTests test = taskService.getTestById(testId);
-				taskService.createTask(test, task.getTaskDescription(), task.getMaxPoints());
+				taskService.createTask(test, task.getTaskDescription(), task.getMaxPoints(), task.getTaskNotes());
 				return "redirect:/testTask/crud/all/" + testId;
 			}
 			catch(Exception e) {
@@ -110,7 +110,7 @@ public class TestTaskCRUDController {
 					model.addAttribute("tests", taskService.selectAllTests());
 				  return "update-testTask";
 				}
-				taskService.updateTaskById(taskId, testId, task.getTaskDescription(), task.getMaxPoints());
+				taskService.updateTaskById(taskId, testId, task.getTaskDescription(), task.getMaxPoints(), task.getTaskNotes());
 				return "redirect:/testTask/crud/all/" + testId;
 			}
 			catch(Exception e) {

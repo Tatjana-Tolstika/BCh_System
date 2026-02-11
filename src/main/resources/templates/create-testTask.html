@@ -15,9 +15,7 @@
 					<td><input type="text" th:field="*{taskDescription}">
 					<div id="descError" style="color:red; display:none;"> Please enter a description!</div>
 					<div th:if="${#fields.hasErrors('taskDescription')}" th:errors="*{taskDescription}" style="color:red"></div>
-					<div id="descError" style="color:red; display:none;">
-					        Please write the description!
-					</div>
+					
 				</td>
 										
 				</tr>
@@ -29,6 +27,14 @@
 					    <div id="pointsError" style="color:red; display:none;">
 					        Please enter max points!
 					    </div>
+					</td>
+
+				</tr>
+				<tr>
+					<td>Notes: </td>
+					<td><input type="text" th:field="*{taskNotes}">
+						<div th:if="${#fields.hasErrors('taskNotes')}" th:errors="*{taskNotes}" style="color:red"></div>
+						
 					</td>
 
 				</tr>

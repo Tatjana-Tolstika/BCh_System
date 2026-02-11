@@ -23,8 +23,8 @@ public class TestTaskCRUDServiceImpl implements ITestTaskCRUDService{
 	
 		//----------------CREATE-------------------------------------------------------------
 		@Override
-		public void createTask(CourseTests test, String description, double points) throws Exception {
-			if(description == null || points <= 0 ) {
+		public void createTask(CourseTests test, String description, double points, String notes) throws Exception {
+			if(description == null || points <= 0) {
 				throw new Exception("Incorrect input parameters!");
 			}
 			
@@ -32,7 +32,7 @@ public class TestTaskCRUDServiceImpl implements ITestTaskCRUDService{
 				throw new Exception("Student you want to create already exists!");
 			}
 			else {
-				TestTask newTask = new TestTask(test, description, points);
+				TestTask newTask = new TestTask(test, description, points, notes);
 				taskRepo.save(newTask);
 			}
 		}
@@ -54,7 +54,7 @@ public class TestTaskCRUDServiceImpl implements ITestTaskCRUDService{
 		//------------------------------------------------------------------------------------
 		//---------------UPDATE---------------------------------------------------------------
 		@Override 
-		public void updateTaskById(long id,  long testId, String description, double points) throws Exception{
+		public void updateTaskById(long id,  long testId, String description, double points, String notes) throws Exception{
 			TestTask taskForUpdate = retrieveTaskById(id);
 		    if (description == null || description.trim().isEmpty() || points <= 0) {
 		        throw new Exception("Incorrect input parameters");
@@ -75,6 +75,9 @@ public class TestTaskCRUDServiceImpl implements ITestTaskCRUDService{
 			if(taskForUpdate.getMaxPoints() != points) {
 				taskForUpdate.setMaxPoints(points);
 			}
+			if (!taskForUpdate.getTaskNotes().equals(notes)) {
+		    	taskForUpdate.setTaskNotes(notes.trim());
+		    }
 			
 			taskRepo.save(taskForUpdate);
 		}

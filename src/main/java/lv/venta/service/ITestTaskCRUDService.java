@@ -8,11 +8,11 @@ import lv.venta.model.TestTask;
 
 public interface ITestTaskCRUDService {
 
-	public abstract void createTask(CourseTests test, String description, double points) throws Exception;
+	public abstract void createTask(CourseTests test, String description, double points, String notes) throws Exception;
 
 	public abstract TestTask retrieveTaskById(long id) throws Exception;
 
-	public abstract void updateTaskById(long id, long testId, String description, double points) throws Exception;
+	public abstract void updateTaskById(long id, long testId, String description, double points, String notes) throws Exception;
 
 	public abstract void deleteTaskById(long id) throws Exception;
 
@@ -23,6 +23,7 @@ public interface ITestTaskCRUDService {
 	public abstract CourseTests getTestById(long testId) throws Exception;
 
 	public abstract List<TestTask> selectAllTasks();
+
 
 
 }

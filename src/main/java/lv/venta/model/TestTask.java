@@ -14,7 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-
+import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -46,7 +46,8 @@ public class TestTask {
 	private double maxPoints;
 	
 	//notes string 
-	
+	@Column(name="task_notes")
+	private String taskNotes;
 	//---------Tables connections---------------------------
 	@ManyToOne
 	@JoinColumn(name="test_id")
@@ -58,9 +59,10 @@ public class TestTask {
 	
 	//-----------------------------------------------------
 	
-	public TestTask(CourseTests test, String description, double points) {
+	public TestTask(CourseTests test, String description, double points, String notes) {
 		setTest(test);
 		setTaskDescription(description);
 		setMaxPoints(points);
+		setTaskNotes(notes);
 	}
 }

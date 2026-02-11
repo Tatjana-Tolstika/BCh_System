@@ -3,6 +3,7 @@ package lv.venta.model;
 
 import java.util.Collection;
 
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,6 +14,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AccessLevel;
@@ -36,16 +38,21 @@ public class StudyProgram {
 		private long programId;
 		
 		@NotNull
-		@Pattern(regexp = "[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž ]+")
+		@NotBlank
+		@Pattern(regexp = "[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž ]+",
+				message="Title should consist only letters")
 		@Column(name = "program_title")
 		private String programTitle;
 		
 		@NotNull
+		@NotBlank
 		@Column(name = "program_degree")
 		private String programDegree;
 		
 		@NotNull
-		@Pattern(regexp = "[A-Z]+")
+		@NotBlank
+		@Pattern(regexp = "[A-Z]+",
+				message = "Abbreviation can be written by capital letters")
 		@Column(name = "abbreviation")
 		private String abbreviation;
 		

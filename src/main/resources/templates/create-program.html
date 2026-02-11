@@ -2,28 +2,36 @@
 	
 	<body>
 	<p>Please enter a new program: </p>
-		<form action="#" th:action="@{/programs/crud/add}" th:object="${program}" method="post">
+		<form action="#" th:action="@{/programs/crud/add}" th:object="${program}" method="post" onsubmit="return validateForm();">
 			<table>
 				<tr>
 					<td>Title: </td>
-					<td><input type="text" th:field="*{programTitle}"></td>
+					<td><input type="text" th:field="*{programTitle}" id="programTitle">
+						<div id="titleError" style="color:red; display:none;">Please enter a program title!</div>
+					</td>
 					<td th:if="${#fields.hasErrors('programTitle')}" th:errors="*{programTitle}"></td>
 				</tr>
-					<tr></tr>
+				<tr>
 					<td>Degree: </td>
-					<td><input type="text" th:field="*{programDegree}"></td>
+					<td><input type="text" th:field="*{programDegree}" id="programDegree">
+						<div id="degreeError" style="color:red; display:none;">Please enter a program degree!</div>
+					</td>
 					<td th:if="${#fields.hasErrors('programDegree')}" th:errors="*{programDegree}"></td>
 										
 				</tr>
 				<tr>
 					<td>Abbreviation: </td>
-					<td><input type="text" th:field="*{abbreviation}"></td>
+					<td><input type="text" th:field="*{abbreviation}" id="abbreviation">
+						<div id="abbrError" style="color:red; display:none;">Please enter a program abbreviation!</div>
+					</td>
 					<td th:if="${#fields.hasErrors('abbreviation')}" th:errors="*{abbreviation}"></td>
 										
 				</tr>
 				<tr>
 					<td>Program length</td>: </td>
-					<td><input type="text" th:field="*{length}"></td>
+					<td><input type="text" th:field="*{length}" id="length">
+						<div id="lengthError" style="color:red; display:none;">Please enter a program length (years)!</div>
+					</td>
 					<td th:if="${#fields.hasErrors('length')}" th:errors="*{length}"></td>
 										
 				</tr>
@@ -35,7 +43,57 @@
 				
 			</table>
 		</form>
-		
+		<script>
+			function validateForm() {
+			    let valid = true;
+
+			    const title = document.getElementById("programTitle");
+			    const degree = document.getElementById("programDegree");
+			    const abbr = document.getElementById("abbreviation");
+			    const length = document.getElementById("length");
+
+				const titleRegex = /^[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž ]+$/;
+			    const abbrRegex = /^[A-Z]+$/;
+
+			   // --- title ---
+			   if (!title.value.trim() || !titleRegex.test(title.value)) {
+			       document.getElementById("titleError").innerText ="Title must contain only letters and spaces";
+			       document.getElementById("titleError").style.display = "block";
+			       valid = false;
+			   } else {
+			       document.getElementById("titleError").style.display = "none";
+			   }
+
+			   // --- degree ---
+			   if (!degree.value.trim()) {
+			       document.getElementById("degreeError").style.display = "block";
+			       valid = false;
+			   } else {
+			       document.getElementById("degreeError").style.display = "none";
+			   }
+
+			   // --- abbr ---
+			   if (!abbr.value.trim() || !abbrRegex.test(abbr.value)) {
+			       document.getElementById("abbrError").innerText = "Abbreviation must contain only capital letters (A–Z)";
+			       document.getElementById("abbrError").style.display = "block";
+			       valid = false;
+			   } else {
+			       document.getElementById("abbrError").style.display = "none";
+			   }
+
+			   // --- length ---
+			   const lengthValue = parseInt(length.value, 10);
+			   if (isNaN(lengthValue) || lengthValue < 1 || lengthValue > 6) {
+			       document.getElementById("lengthError").innerText ="Program length must be between 1 and 6 years";
+			       document.getElementById("lengthError").style.display = "block";
+			       valid = false;
+			   } else {
+			       document.getElementById("lengthError").style.display = "none";
+			   }
+
+			    return valid; // ja false → forma netiks nosūtīta
+			}
+		</script>
 	</body>
 
 </html>

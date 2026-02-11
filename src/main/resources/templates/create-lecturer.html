@@ -1,35 +1,106 @@
-<html xmlns:th=" https://www.thymeleaf.org">
-	
+<html xmlns:th="https://www.thymeleaf.org">
 	<body>
-	<p>Please enter a new lecturer: </p>
-		<form action="#" th:action="@{/lecturers/crud/add}" th:object="${lecturers}" method="post">
-			<table>
-				<tr>
-					<td>Name: </td>
-					<td><input type="text" th:field="*{lecturerName}"></td>
-					<td th:if="${#fields.hasErrors('lecturerName')}" th:errors="*{lecturerName}"></td>
-				</tr>
-					<tr></tr>
-					<td>Surname: </td>
-					<td><input type="text" th:field="*{lecturerSurname}"></td>
-					<td th:if="${#fields.hasErrors('lecturerSurname')}" th:errors="*{lecturerSurname}"></td>
-										
-				</tr>
-					<tr>
-					<td>Degree: </td>
-					<td><input type="text" th:field="*{lecturerDegree}"></td>
-					<td th:if="${#fields.hasErrors('lecturerDegree')}" th:errors="*{lecturerDegree}"></td>
-										
-				</tr>
+	
+	<p>Please enter a new lecturer:</p>
+	
+	<form th:action="@{/lecturers/crud/add}"
+	      th:object="${lecturers}"
+	      method="post"
+	      onsubmit="return validateForm();">
+	
+	    <table>
+	
+	        <!-- NAME -->
+	        <tr>
+	            <td>Name:</td>
+	            <td>
+	                <input type="text" th:field="*{lecturerName}" id="lecturerName">
+	                <div id="nameError" style="color:red; display:none;">
+	                    Please enter a valid name!
+	                </div>
+	            </td>
+	            <td th:if="${#fields.hasErrors('lecturerName')}"
+	                th:errors="*{lecturerName}">
+	            </td>
+	        </tr>
+	
+	        <!-- SURNAME -->
+	        <tr>
+	            <td>Surname:</td>
+	            <td>
+	                <input type="text" th:field="*{lecturerSurname}" id="lecturerSurname">
+	                <div id="surnameError" style="color:red; display:none;">
+	                    Please enter a valid surname!
+	                </div>
+	            </td>
+	            <td th:if="${#fields.hasErrors('lecturerSurname')}"
+	                th:errors="*{lecturerSurname}">
+	            </td>
+	        </tr>
+	
+	        <!-- DEGREE -->
+	        <tr>
+	            <td>Degree:</td>
+	            <td>
+	                <input type="text" th:field="*{lecturerDegree}" id="lecturerDegree">
+	                <div id="degreeError" style="color:red; display:none;">
+	                    Please enter a degree!
+	                </div>
+	            </td>
+	            <td th:if="${#fields.hasErrors('lecturerDegree')}"
+	                th:errors="*{lecturerDegree}">
+	            </td>
+	        </tr>
+	
+	        <tr>
+	            <td>
+	                <input type="submit" value="Save">
+	            </td>
+	        </tr>
+	
+	    </table>
+	</form>
+	
+			<script>
+				function validateForm() {
+				    let valid = true;
 				
-				<tr>
-					<td><input type="submit" name="Save"></td>
-				</tr>
+				    const name = document.getElementById("lecturerName");
+				    const surname = document.getElementById("lecturerSurname");
+				    const degree = document.getElementById("lecturerDegree");
 				
+				    // name regex
+				    const nameRegex = /^[A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+([ -][A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+)*$/;
+					// surname regex
+					const surnameRegex = /^[A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+/;
 				
-			</table>
-		</form>
-		
+				    // NAME
+				    if (!nameRegex.test(name.value.trim())) {
+				        document.getElementById("nameError").style.display = "block";
+				        valid = false;
+				    } else {
+				        document.getElementById("nameError").style.display = "none";
+				    }
+				
+				    // SURNAME
+				    if (!surnameRegex.test(surname.value.trim())) {
+				        document.getElementById("surnameError").style.display = "block";
+				        valid = false;
+				    } else {
+				        document.getElementById("surnameError").style.display = "none";
+				    }
+				
+				    // DEGREE
+				    if (!degree.value.trim()) {
+				        document.getElementById("degreeError").style.display = "block";
+				        valid = false;
+				    } else {
+				        document.getElementById("degreeError").style.display = "none";
+				    }
+				
+				    return valid;
+				}
+			</script>
+	
 	</body>
-
 </html>

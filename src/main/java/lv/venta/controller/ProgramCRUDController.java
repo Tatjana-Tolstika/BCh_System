@@ -43,6 +43,7 @@ public class ProgramCRUDController {
 	@PostMapping("/add")
 	public String postConstrollerAddNewProgram(@Valid StudyProgram program, BindingResult result, Model model) {
 		if(result.hasErrors()) {
+			model.addAttribute("program", program);
 			return "create-program";
 		}
 		try {
@@ -70,9 +71,10 @@ public class ProgramCRUDController {
 	}
 		
 	@PostMapping("/update/{id}")
-	public String postConstrollerUpdateStudentById(@PathVariable(name = "id") long id, @Valid StudyProgram program, BindingResult result, Model model) {
+	public String postConstrollerUpdateStudentById(@PathVariable(name = "id") long id,BindingResult result, @Valid StudyProgram program, Model model) {
 		if(result.hasErrors()) {
 			try{
+				model.addAttribute("program", program);
 				return "update-program";
 			}catch (Exception e) {
 				model.addAttribute("package", e.getMessage());

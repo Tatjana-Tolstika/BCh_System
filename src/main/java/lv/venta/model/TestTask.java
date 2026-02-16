@@ -2,6 +2,7 @@ package lv.venta.model;
 
 
 import java.util.Collection;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -53,7 +54,7 @@ public class TestTask {
 	private CourseTests test;
 	
 	@OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Collection<TestResult> testResults;
+	private List<TestResult> testResults;
 	
 	
 	//-----------------------------------------------------

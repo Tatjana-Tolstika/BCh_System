@@ -1,5 +1,6 @@
 package lv.venta.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,10 +8,16 @@ import org.springframework.stereotype.Service;
 
 import lv.venta.model.CourseTests;
 import lv.venta.model.Lecturers;
+import lv.venta.model.Students;
 import lv.venta.model.StudyCourses;
+import lv.venta.model.TestResult;
+import lv.venta.model.TestTask;
 import lv.venta.repo.ICourseTestRepo;
 import lv.venta.repo.ILecturersRepo;
+import lv.venta.repo.IStudentsRepo;
 import lv.venta.repo.IStudyCourseRepo;
+import lv.venta.repo.ITestResultRepo;
+import lv.venta.repo.ITestTaskRepo;
 import lv.venta.service.ILectViewService;
 
 @Service
@@ -21,11 +28,17 @@ public class LectViewServiceImpl implements ILectViewService{
 	private IStudyCourseRepo coursesRepo;
 	@Autowired
 	private ICourseTestRepo testRepo;
+	@Autowired
+	private IStudentsRepo studentsRepo;
+	@Autowired
+	private ITestResultRepo resultRepo;
+	@Autowired
+	private ITestTaskRepo taskRepo;
 	
 	@Override
 	public List<StudyCourses> allCoursesForLecturer(long lectId) throws Exception{
 		Lecturers lecturer = lecturersRepo.findById(lectId)
-	        .orElseThrow(() -> new Exception("Lecturer not found"));
+	        .orElseThrow(() -> new Exception("Lecturer not found!"));
 	
 	    List<StudyCourses> courses = coursesRepo.findByLecturers(lecturer);
 	
@@ -45,5 +58,29 @@ public class LectViewServiceImpl implements ILectViewService{
 		}
 		return tests;
 		
+	}
+	
+	@Override
+	public List<Students> allStudentsOfTest(long testId) throws Exception{
+		CourseTests test = testRepo.findById(testId)
+				.orElseThrow(()-> new Exception("Test not found!"));
+		List<Students> students = new ArrayList<>();
+		List<TestTask> tasks = test.getTasksForTest();
+		List<TestResult> results = new ArrayList<>();
+		
+		for(TestTask tt : tasks){
+			results = tt.getTestResults();
+			for(TestResult tr : results) {
+				Students foundedStudent = tr.getStudentProgramCourse().getStudentProgram().getStudent();
+				if(!students.contains(foundedStudent)) {
+					students.add(foundedStudent);
+				}
+			}
+		}
+		if (students.isEmpty()) {
+	        throw new Exception("No students have taken this test");
+	    }
+		
+		return students;
 	}
 }

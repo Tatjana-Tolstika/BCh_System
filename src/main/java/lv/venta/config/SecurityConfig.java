@@ -21,8 +21,9 @@ public class SecurityConfig {
 	 
 	 UserDetails ud1 = User.builder().username("admin").password(encoder.encode("12345")).authorities("ADMIN").build();
 	 UserDetails ud2 = User.builder().username("lecturer").password(encoder.encode("12345")).authorities("LECT").build();
+	 UserDetails ud3 = User.builder().username("student").password(encoder.encode("12345")).authorities("STUDENT").build();
 	 
-	 InMemoryUserDetailsManager imUserDetailsMan = new InMemoryUserDetailsManager(ud1, ud2);
+	 InMemoryUserDetailsManager imUserDetailsMan = new InMemoryUserDetailsManager(ud1, ud2, ud3);
 	 
 	 return imUserDetailsMan;
 	}
@@ -31,7 +32,8 @@ public class SecurityConfig {
 	public SecurityFilterChain createConfigForEndpoints(HttpSecurity http) throws Exception{
 		http.authorizeHttpRequests(
 				auth -> auth
-				.requestMatchers("")
+				.anyRequest().authenticated()
+
 				);
 		
 		http.formLogin(auth->auth.permitAll());

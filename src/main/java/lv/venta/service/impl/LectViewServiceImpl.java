@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import lv.venta.model.CourseTests;
@@ -74,6 +75,16 @@ public class LectViewServiceImpl implements ILectViewService{
 	    }
 		
 		return students;
+	}
+	
+	@Override 
+	public Lecturers getAuthorisedId() throws Exception{
+		String username = SecurityContextHolder.getContext()
+		        .getAuthentication()
+		        .getName();
+		Lecturers foundedLecturer = lecturersRepo.findByUsername(username)
+				.orElseThrow(() -> new Exception("Lecturer not found"));
+		return foundedLecturer;
 	}
 	
 	//Update testResult can be taken from CRUD service?

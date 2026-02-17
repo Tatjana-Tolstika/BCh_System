@@ -11,6 +11,7 @@ public interface ILecturersRepo extends CrudRepository<Lecturers, Long> {
 	public abstract boolean existsByLecturerNameAndLecturerSurnameAndLecturerDegree(String name, String surname,
 			String degree);
 
-	public abstract Optional<Lecturers> findByUsername(String username);
+	public abstract Optional<Lecturers> findByLecturerUsername(String username);
+
 
 }

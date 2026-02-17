@@ -40,6 +40,10 @@ public class SecurityConfig {
 				);
 		
 		http.formLogin(auth->auth.permitAll());
+		http.formLogin(form -> form
+	            .defaultSuccessUrl("/professor/courses", true) 
+	            .permitAll()
+	    );
 		return http.build();
 	}
 	

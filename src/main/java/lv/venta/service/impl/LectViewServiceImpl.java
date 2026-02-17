@@ -82,7 +82,7 @@ public class LectViewServiceImpl implements ILectViewService{
 		String username = SecurityContextHolder.getContext()
 		        .getAuthentication()
 		        .getName();
-		Lecturers foundedLecturer = lecturersRepo.findByUsername(username)
+		Lecturers foundedLecturer = lecturersRepo.findByLecturerUsername(username)
 				.orElseThrow(() -> new Exception("Lecturer not found"));
 		return foundedLecturer;
 	}

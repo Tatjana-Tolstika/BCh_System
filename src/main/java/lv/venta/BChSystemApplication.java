@@ -62,6 +62,14 @@ public class BChSystemApplication {
 				StudyCourses course5 = new StudyCourses("Vizuālas programmēšanas valodas", 3);
 				courseRepo.saveAll(Arrays.asList(course1,course2,course3,course4, course5));
 				
+				//-------------------------------
+				lect2.getCourses().add(course1);
+				lect2.getCourses().add(course2);
+				lect3.getCourses().add(course4);
+				lect3.getCourses().add(course3);
+				lecturersRepo.saveAll(Arrays.asList(lect2, lect3));
+				//-------------------------------
+				
 				StudyProgram prog1 = new StudyProgram("Datorzinātnes", "BA", "ITB", 3);
 				StudyProgram prog2 = new StudyProgram("Elektronikas inžinierija", "BA", "EIB", 4);
 				StudyProgram prog3 = new StudyProgram("Programmēšanas specialists", "AS", "IP", 2);

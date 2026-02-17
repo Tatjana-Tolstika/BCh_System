@@ -20,10 +20,13 @@ public class SecurityConfig {
 	 PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	 
 	 UserDetails ud1 = User.builder().username("admin").password(encoder.encode("12345")).authorities("ADMIN").build();
-	 UserDetails ud2 = User.builder().username("lecturer").password(encoder.encode("12345")).authorities("LECT").build();
-	 UserDetails ud3 = User.builder().username("student").password(encoder.encode("12345")).authorities("STUDENT").build();
+	 UserDetails ud2 = User.builder().username("TestUser").password(encoder.encode("testPassword")).authorities("LECT").build();
+	 UserDetails ud3 = User.builder().username("KarinaSkirmante").password(encoder.encode("54321")).authorities("LECT").build();
+	 UserDetails ud4 = User.builder().username("EstereVitola").password(encoder.encode("qwerty")).authorities("LECT").build();
+	 UserDetails ud5 = User.builder().username("KristapsBlumbergs").password(encoder.encode("ytrewq")).authorities("LECT").build();
+	 UserDetails ud6 = User.builder().username("student").password(encoder.encode("12345")).authorities("STUDENT").build();
 	 
-	 InMemoryUserDetailsManager imUserDetailsMan = new InMemoryUserDetailsManager(ud1, ud2, ud3);
+	 InMemoryUserDetailsManager imUserDetailsMan = new InMemoryUserDetailsManager(ud1, ud2, ud3, ud4, ud5, ud6);
 	 
 	 return imUserDetailsMan;
 	}

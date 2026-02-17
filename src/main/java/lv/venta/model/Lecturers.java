@@ -35,6 +35,12 @@ public class Lecturers {
 	private long lecturersId;
 	
 	@NotNull
+	@Pattern(regexp="^[a-zA-Z0-9._]{5,20}$",
+			message = "Username might contains only: letters, numbers, underscores and dots!")
+	@Column(name="lecturer_username")
+	private String lecturerUsername;
+	
+	@NotNull
 	@Pattern(regexp="^[A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+([\\s-][A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+)*$")
 	@Column(name = "lecturer_name")
 	private String lecturerName;
@@ -52,7 +58,8 @@ public class Lecturers {
 	@JoinTable(name = "lecturers_courses", joinColumns = @JoinColumn(name="lecturer_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
 	private Set<StudyCourses> courses = new HashSet<>();
 	
-	public Lecturers(String name, String surname, String degree) {
+	public Lecturers(String username, String name, String surname, String degree) {
+		setLecturerUsername(username);
 		setLecturerName(name);
 		setLecturerSurname(surname);
 		setLecturerDegree(degree);

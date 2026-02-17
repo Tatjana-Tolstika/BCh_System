@@ -4,6 +4,7 @@
 		<table border="1px">
 			<tr th:each="tempL: ${lecturers}">
 			
+				<td th:text = "${tempL.getLecturerUsername()}"></td>
 				<td th:text = "${tempL.getLecturerName()}"></td>
 				<td th:text = "${tempL.getLecturerSurname()}"></td>
 				<td th:text = "${tempL.getLecturerDegree()}"></td>

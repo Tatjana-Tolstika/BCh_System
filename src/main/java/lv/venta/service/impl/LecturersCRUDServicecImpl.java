@@ -17,16 +17,19 @@ public class LecturersCRUDServicecImpl implements ILecturersCRUDService{
 	//========================CRUD=============================================
 	//----------------CREATE-------------------------------------------------------------
 		@Override
-		public void createLecturer(String name, String surname, String degree ) throws Exception {
-			if(name == null || surname == null || degree == null || !name.matches("^[A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+([\\s-][A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+)*$")|| !surname.matches("[A-Z]{1}[a-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž]+")) {
+		public void createLecturer(String username, String name, String surname, String degree ) throws Exception {
+			if(name == null || surname == null || degree == null 
+					|| !name.matches("^[A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+([\\s-][A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+)*$")
+					|| !surname.matches("[A-Z]{1}[a-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž]+")
+					|| !username.matches("^[a-zA-Z0-9._]{5,20}$")) {
 				throw new Exception("Incorrect input parameters!");
 			}
 			
 			if(lecturersRepo.existsByLecturerNameAndLecturerSurnameAndLecturerDegree(name,surname,degree)) {
-				throw new Exception("Student you want to create already exists!");
+				throw new Exception("Professor you want to create already exists!");
 			}
 			else {
-				Lecturers newLecturer = new Lecturers(name, surname, degree);
+				Lecturers newLecturer = new Lecturers(username, name, surname, degree);
 				lecturersRepo.save(newLecturer);
 			}
 		}
@@ -35,7 +38,7 @@ public class LecturersCRUDServicecImpl implements ILecturersCRUDService{
 		@Override 
 		public Lecturers retrieveLecturerById(long id) throws Exception{
 			if(id < 0) {
-				throw new Exception("Choose correect ID!");
+				throw new Exception("Choose correct ID!");
 			}
 			if(!lecturersRepo.existsById(id)) {
 				throw new Exception("Lecturer with ID [ " + id + " ] doesn't exists!");
@@ -47,10 +50,15 @@ public class LecturersCRUDServicecImpl implements ILecturersCRUDService{
 	//------------------------------------------------------------------------------------
 	//---------------UPDATE---------------------------------------------------------------
 		@Override 
-		public void updateLecturerById(long id, String name, String surname, String degree) throws Exception{
+		public void updateLecturerById(long id,String username,  String name, String surname, String degree) throws Exception{
 			Lecturers lecturerForUpdate = retrieveLecturerById(id);
-			if(name == null || surname == null ||!name.matches("[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž]+")|| !surname.matches("[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž]+") || degree == null ) {
+			if(name == null || surname == null ||!name.matches("[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž]+")
+					|| !surname.matches("[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž]+") 
+					|| !username.matches("^[a-zA-Z0-9._]{5,20}$") || degree == null ) {
 				throw new Exception ("Incorrect input parameters!");
+			}
+			if(!lecturerForUpdate.getLecturerUsername().equals(username)) {
+				lecturerForUpdate.setLecturerUsername(username);
 			}
 			if(!lecturerForUpdate.getLecturerName().equals(name)) {
 				lecturerForUpdate.setLecturerName(name);

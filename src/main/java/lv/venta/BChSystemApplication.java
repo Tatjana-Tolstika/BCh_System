@@ -40,11 +40,11 @@ public class BChSystemApplication {
 			@Override
 			public void run(String... args) throws Exception{
 				
-				Lecturers lect1 = new Lecturers("Test Name", "Testsurname", "Mg.sc.Comp");
-				Lecturers lect2 = new Lecturers("Karina", "Šķirmante", "Mg.sc.Comp");
-				Lecturers lect3 = new Lecturers("Estere", "Vitola", "Mg.sc.Pead");
-				Lecturers lect4 = new Lecturers("Kristaps", "Blumbergs", "Mg.sc");
-				Lecturers lect5 = new Lecturers("Arturs", "Orbidans", "Mg.sc");
+				Lecturers lect1 = new Lecturers("TestUser","Test Name", "Testsurname", "Mg.sc.Comp");
+				Lecturers lect2 = new Lecturers("KarinaSkirmante","Karina", "Šķirmante", "Mg.sc.Comp");
+				Lecturers lect3 = new Lecturers("EstereVitola","Estere", "Vitola", "Mg.sc.Pead");
+				Lecturers lect4 = new Lecturers("KristapsBlumbergs", "Kristaps", "Blumbergs", "Mg.sc");
+				Lecturers lect5 = new Lecturers("ArtursOrbidans","Arturs", "Orbidans", "Mg.sc");
 				lecturersRepo.saveAll(Arrays.asList(lect1, lect2, lect3, lect4, lect5));
 				
 				Students st1 = new Students("Tatjana", "Tolstika", "230000001", "s23tolstatj@venta.lv");
@@ -52,7 +52,7 @@ public class BChSystemApplication {
 				Students st3 = new Students("Amanda","Rebuka", "23000003","s23rebuaman@venta.lv");
 				Students st4 = new Students("Baiba", "Kvizikeviča", "23000004", "s23kvizibaib@venta.lv");
 				Students st5 = new Students("Marta", "Dzelme", "23000005", "s23dzelmart@venta.lv");
-				Students st6 = new Students("Elīna Liene", "Baijere", "23000005", "s22baijelin@venta.lv");
+				Students st6 = new Students("Anatolijs", "Berziņš", "23000005", "s22berzanat@venta.lv");
 				studentsRepo.saveAll(Arrays.asList(st1, st2, st3, st4, st5, st6));
 				
 				StudyCourses course1 = new StudyCourses("Programmēšana tīmeklī JAVA", 6);

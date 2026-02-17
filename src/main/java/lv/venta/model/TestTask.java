@@ -1,7 +1,7 @@
 package lv.venta.model;
 
 
-import java.util.Collection;
+
 import java.util.List;
 
 import jakarta.persistence.CascadeType;

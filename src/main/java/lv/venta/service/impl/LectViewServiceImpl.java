@@ -14,10 +14,7 @@ import lv.venta.model.TestResult;
 import lv.venta.model.TestTask;
 import lv.venta.repo.ICourseTestRepo;
 import lv.venta.repo.ILecturersRepo;
-import lv.venta.repo.IStudentsRepo;
 import lv.venta.repo.IStudyCourseRepo;
-import lv.venta.repo.ITestResultRepo;
-import lv.venta.repo.ITestTaskRepo;
 import lv.venta.service.ILectViewService;
 
 @Service
@@ -28,12 +25,7 @@ public class LectViewServiceImpl implements ILectViewService{
 	private IStudyCourseRepo coursesRepo;
 	@Autowired
 	private ICourseTestRepo testRepo;
-	@Autowired
-	private IStudentsRepo studentsRepo;
-	@Autowired
-	private ITestResultRepo resultRepo;
-	@Autowired
-	private ITestTaskRepo taskRepo;
+	
 	
 	@Override
 	public List<StudyCourses> allCoursesForLecturer(long lectId) throws Exception{
@@ -83,5 +75,9 @@ public class LectViewServiceImpl implements ILectViewService{
 		
 		return students;
 	}
+	
+	//Update testResult can be taken from CRUD service?
+	//Adding new tests to the course can be taken from courseTestCRUD service???
+	
 	
 }

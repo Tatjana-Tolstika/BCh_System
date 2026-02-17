@@ -34,7 +34,7 @@ public class LecturersCRUDController {
 				return "create-lecturer";
 			}
 			try {
-				lecturersService.createLecturer(lecturer.getLecturerName(), lecturer.getLecturerSurname(), lecturer.getLecturerDegree());
+				lecturersService.createLecturer(lecturer.getLecturerUsername(),lecturer.getLecturerName(), lecturer.getLecturerSurname(), lecturer.getLecturerDegree());
 			}
 			catch(Exception e) {
 				model.addAttribute("package", e.getMessage());
@@ -87,7 +87,7 @@ public class LecturersCRUDController {
 			}
 			
 			try {
-				lecturersService.updateLecturerById(id, lecturer.getLecturerName(), lecturer.getLecturerSurname(), lecturer.getLecturerDegree());
+				lecturersService.updateLecturerById(id,lecturer.getLecturerUsername(), lecturer.getLecturerName(), lecturer.getLecturerSurname(), lecturer.getLecturerDegree());
 				return "redirect:/lecturers/crud/all";
 			}
 			catch(Exception e) {

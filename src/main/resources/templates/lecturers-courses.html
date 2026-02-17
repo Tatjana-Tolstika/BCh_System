@@ -20,7 +20,7 @@
         }
 
         h1 {
-            text-align: center;
+            text-align: left;
             color: #2c3e50;
             margin-bottom: 25px;
         }
@@ -49,6 +49,8 @@
 
         tr {
             border-bottom: 1px solid #ddd;
+            position: relative;
+            transition: background-color 0.2s;
         }
 
         tr:nth-child(even) {
@@ -59,9 +61,28 @@
             background-color: #eaf2f8;
         }
 
+        .stretched-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .stretched-link::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: auto;
+        }
+
         .credits {
             font-weight: bold;
             color: #2980b9;
+            position: relative; /*Lai credits teksts būtu "virs" saites*/
+            z-index: 2;
         }
 
         .empty {
@@ -87,7 +108,12 @@
         </thead>
         <tbody>
             <tr th:each="tempC : ${courses}">
-                <td th:text="${tempC.courseTitle}"></td>
+                <td>
+                    <a th:href="@{/professor/courses/{id}/tests(id=${tempC.courseId})}" 
+                       class="stretched-link" 
+                       th:text="${tempC.courseTitle}">
+                    </a>
+                </td>
                 <td class="credits" th:text="${tempC.credits}"></td>
             </tr>
         </tbody>

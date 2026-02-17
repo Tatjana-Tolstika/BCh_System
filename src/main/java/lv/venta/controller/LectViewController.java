@@ -26,7 +26,7 @@ public class LectViewController {
 		List<StudyCourses> allCourses = lectService.allCoursesForLecturer(foundedLector.getLecturersId());
 	    System.out.println("Atrasti kursi: " + allCourses.size());
 	    model.addAttribute("courses", allCourses);
-	    return "courses-all";
+	    return "lecturers-courses";
 	    
 		}catch(Exception e){
 			model.addAttribute("package", e.getMessage());

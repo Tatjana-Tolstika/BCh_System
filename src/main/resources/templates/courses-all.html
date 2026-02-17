@@ -1,102 +1,15 @@
-<!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
-<head>
-    <title>My Courses</title>
-    <style>
-        body {
-            font-family: "Segoe UI", Arial, sans-serif;
-            background-color: #f4f6f9;
-            margin: 0;
-            padding: 0;
-        }
+	<body>
+		<p>Courses: </p>
+		<table border="1px">
+			<tr th:each="tempC: ${courses}">
+			
+				<td th:text = "${tempC.getCourseTitle()}"></td>
+				<td th:text = "${tempC.getCredits()}"></td>
+				
+			</tr>
+		</table>
+	</body>	
 
-        .container {
-            max-width: 900px;
-            margin: 50px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        }
 
-        h1 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 25px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-
-        thead {
-            background-color: #34495e;
-            color: white;
-        }
-
-        th, td {
-            padding: 12px 15px;
-            text-align: center;
-        }
-
-        th {
-            font-size: 16px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        tr {
-            border-bottom: 1px solid #ddd;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        tr:hover {
-            background-color: #eaf2f8;
-        }
-
-        .credits {
-            font-weight: bold;
-            color: #2980b9;
-        }
-
-        .empty {
-            text-align: center;
-            color: #999;
-            margin-top: 20px;
-            font-style: italic;
-        }
-    </style>
-</head>
-
-<body>
-
-<div class="container">
-    <h1>My Courses</h1>
-
-    <table th:if="${not #lists.isEmpty(courses)}">
-        <thead>
-            <tr>
-                <th>Course Title</th>
-                <th>Credits</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="tempC : ${courses}">
-                <td th:text="${tempC.courseTitle}"></td>
-                <td class="credits" th:text="${tempC.credits}"></td>
-            </tr>
-        </tbody>
-    </table>
-
-    <div class="empty" th:if="${#lists.isEmpty(courses)}">
-        No courses assigned to this lecturer.
-    </div>
-</div>
-
-</body>
 </html>

@@ -40,9 +40,12 @@ public class Users {
 	@Column(name = "Password")
 	private String password;
 	
+	@ManyToOne
+	@JoinColumn(name = "AuthoritiesId")
+	private Authorities authority;
 	
 	
-	public Users(String username, String passord) {
+	public Users(String username, String passord, Authorities authority) {
 		setUsername(username);
 		setPassword(passord);
 		setAuthority(authority);

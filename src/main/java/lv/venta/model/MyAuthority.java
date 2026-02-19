@@ -24,7 +24,7 @@ import lombok.ToString;
 @Table(name = "MyAuthorityTable")
 @Entity
 
-public class Authorities {
+public class MyAuthority {
 	
 	@Setter(value = AccessLevel.NONE)
 	@Column(name = "AuthoritiesId")
@@ -39,11 +39,11 @@ public class Authorities {
 	
 	@OneToMany(mappedBy = "authority")
 	@ToString.Exclude
-	private Collection<Users> users;
+	private Collection<MyUser> users;
 	
 	
 	
-	public Authorities(String inputTitle) {
+	public MyAuthority(String inputTitle) {
 		
 		setTitle(inputTitle);
 	}

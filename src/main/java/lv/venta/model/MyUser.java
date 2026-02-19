@@ -22,7 +22,7 @@ import lombok.ToString;
 @ToString
 @Table(name = "UserTable")
 @Entity
-public class Users {
+public class MyUser {
 	
 	@Setter(value = AccessLevel.NONE) 
 	@Column(name = "IDu") 
@@ -42,10 +42,10 @@ public class Users {
 	
 	@ManyToOne
 	@JoinColumn(name = "AuthoritiesId")
-	private Authorities authority;
+	private MyAuthority authority;
 	
 	
-	public Users(String username, String passord, Authorities authority) {
+	public MyUser(String username, String passord, MyAuthority authority) {
 		setUsername(username);
 		setPassword(passord);
 		setAuthority(authority);

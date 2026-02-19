@@ -35,8 +35,7 @@ public class Lecturers {
 	private long lecturersId;
 	
 	@NotNull
-	@Pattern(regexp="^[a-zA-Z0-9._]{5,20}$",
-			message = "Username might contains only: letters, numbers, underscores and dots!")
+	@Pattern(regexp="^[a-zA-Z0-9._]{5,20}$")
 	@Column(name="lecturer_username")
 	private String lecturerUsername;
 	

@@ -41,18 +41,26 @@ public class SecurityConfig {
 				
 
 				//PROFESSOR PIEEJAMĀS DAĻAS
-				.requestMatchers("/professor/courses","/professor/courses/**/tests").hasAnyAuthority("LECT")
+				.requestMatchers("/professor/**").hasAuthority("LECT")
 				//ADMIN PIEEJAMĀS DAĻAS
-				.requestMatchers("/courses/CRUD/add", "/courses/CRUD/update/**", "/courses/CRUD/delete/**", "/courses/CRUD/all", "/courseTests/crud/add", "/courseTests/crud/delete/**",
-						"/courseTests/crud/update/**", "/courseTests/crud/all", "/lecturers/crud/add", "/lecturers/crud/delete/**", "/lecturers/crud/update/**", "/lecturers/crud/all",
-						"/programs/crud/all", "/programs/crud/add", "/programs/crud/update/**", "/programs/crud/delete/**", "/spc/crud/add", "/spc/crud/delete/**",
-						"/spc/crud/update/**", "/spc/crud/all", "/studentProgram/crud/add", "/studentProgram/crud/delete/**/**", "/studentProgram/crud/update/**", "/studentProgram/crud/all",
-						"/studentProgram/crud/all/**", "/students/crud/all","/students/crud/add", "/students/crud/update/**", "/students/crud/delete/**", "/testResult/crud/add/**", 
-						"/testResult/crud/delete/**", "/testResult/crud/update/**", "/testResult/crud/all", "/testTask/crud/add", "/testTask/crud/delete/**/**", "/testTask/crud/update/**/**",
-						"/testTask/crud/all/**").hasAnyAuthority("ADMIN")
+				.requestMatchers(
+					    "/courses/CRUD/**",
+					    "/courseTests/crud/**",
+					    "/lecturers/crud/**",
+					    "/programs/crud/**",
+					    "/spc/crud/**",
+					    "/studentProgram/crud/**",
+					    "/students/crud/**",
+					    "/testResult/crud/**",
+					    "/testTask/crud/**"
+					).hasAnyAuthority("ADMIN")
 				//---------------------------------------------------------------
 				);
-	http.formLogin(auth -> auth.permitAll());
+		http.formLogin(form -> form
+			    .permitAll()
+			    .defaultSuccessUrl("/professor/courses", true)
+			);
+	//http.formLogin(auth -> auth.permitAll());
 	return http.build();
 	}
 	

@@ -11,14 +11,7 @@
     <input type="hidden" th:field="*{lecturersId}"/>
 
     <table>
-		<tr>
-            <td>Username:</td>
-            <td>
-                <input type="text" th:field="*{lecturerUsername}" id="username"/>
-                <div id="usernameError" style="color:red; display:none;">Please enter the Username!</div>
-            </td>
-            <td th:if="${#fields.hasErrors('lecturerUsername')}" th:errors="*{lecturerUsername}" style="color:red"></td>
-        </tr>
+		
         <tr>
             <td>Name:</td>
             <td>
@@ -59,7 +52,6 @@ function validateForm() {
     let valid = true;
     
     // Iegūstam elementus
-	const username = document.getElementById("username");
     const name = document.getElementById("name");
     const surname = document.getElementById("surname");
     const degree = document.getElementById("degree");
@@ -68,16 +60,7 @@ function validateForm() {
     const nameRegex = /^[A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+([ -][A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+)*$/;
 	// surname regex
 	const surnameRegex = /^[A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+/;
-	//username regex
-	const usernameRegex = /^[a-zA-Z0-9._]{5,20}$/;
 
-	//USERNAME
-	if (!usernameRegex.test(username.value.trim())) {
-        document.getElementById("usernameError").style.display = "block";
-        valid = false;
-    } else {
-        document.getElementById("usernameError").style.display = "none";
-    }
 						
     // NAME
     if (!nameRegex.test(name.value.trim())) {

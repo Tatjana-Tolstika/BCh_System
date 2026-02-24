@@ -4,17 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import lv.venta.model.CourseTests;
 import lv.venta.model.Lecturers;
+import lv.venta.model.MyUser;
 import lv.venta.model.Students;
 import lv.venta.model.StudyCourses;
 import lv.venta.model.TestResult;
 import lv.venta.model.TestTask;
 import lv.venta.repo.ICourseTestRepo;
 import lv.venta.repo.ILecturersRepo;
+import lv.venta.repo.IMyUserRepo;
 import lv.venta.repo.IStudyCourseRepo;
 import lv.venta.service.ILectViewService;
 
@@ -26,6 +29,8 @@ public class LectViewServiceImpl implements ILectViewService{
 	private IStudyCourseRepo coursesRepo;
 	@Autowired
 	private ICourseTestRepo testRepo;
+	@Autowired
+	private IMyUserRepo userRepo;
 	
 	
 	@Override
@@ -77,18 +82,22 @@ public class LectViewServiceImpl implements ILectViewService{
 		return students;
 	}
 	
-	@Override 
-	public Lecturers getAuthorisedId() throws Exception{
-		String username = SecurityContextHolder.getContext()
-		        .getAuthentication()
-		        .getName();
-		Lecturers foundedLecturer = lecturersRepo.findByLecturerUsername(username)
-				.orElseThrow(() -> new Exception("Lecturer not found"));
-		return foundedLecturer;
+	public Lecturers getAuthorisedId() {
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    String currentUsername = auth.getName();
+
+	    MyUser user = userRepo.findByUsername(currentUsername);
+
+	    if (user != null && user.getLecturer() != null) {
+	        return user.getLecturer();
+	    }
+	    
+	    return null;
 	}
-	
 	//Update testResult can be taken from CRUD service?
 	//Adding new tests to the course can be taken from courseTestCRUD service???
+
+	
 	
 	
 }

@@ -11,8 +11,10 @@ import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 
 import lv.venta.config.MyUserDetails;
+import lv.venta.model.Lecturers;
 import lv.venta.model.MyAuthority;
 import lv.venta.model.MyUser;
+import lv.venta.repo.ILecturersRepo;
 import lv.venta.repo.IMyAuthorityRepo;
 import lv.venta.repo.IMyUserRepo;
 
@@ -46,6 +48,8 @@ public class MyUserDetailsManager implements UserDetailsManager{
 		
 		
 	}
+	
+	//=====================USER CREATING=========================================
 
 	@Override
 	public void createUser(UserDetails userDetails) throws IllegalArgumentException{
@@ -69,10 +73,28 @@ public class MyUserDetailsManager implements UserDetailsManager{
 	        }
 	        user.setAuthority(role);
 
+	        
+	        
 	        userRepo.save(user);
 
 	}
 
+	public void createLecturerUser(UserDetails userDetails, Lecturers lecturer) {
+	    MyUser user = new MyUser();
+	    user.setUsername(userDetails.getUsername());
+	    user.setPassword(encoder.encode(userDetails.getPassword()));
+	    
+	    String roleName = userDetails.getAuthorities().iterator().next().getAuthority();
+	    user.setAuthority(roleRepo.findByTitle(roleName));
+
+	    if (lecturer != null) {
+	        
+	        user.setLecturer(lecturer);
+	    }
+
+	    userRepo.save(user);
+	}
+	//===========================================================================
 	@Override
 	public void updateUser(UserDetails userDetails) {
 		MyUser existing = userRepo.findByUsername(userDetails.getUsername());

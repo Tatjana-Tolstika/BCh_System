@@ -46,6 +46,7 @@ public class MyUser {
 	private MyAuthority authority;
 	
 	@OneToOne
+	@JoinColumn(name = "lecturer_id", unique = true)
     private Lecturers lecturer;
 	
 	

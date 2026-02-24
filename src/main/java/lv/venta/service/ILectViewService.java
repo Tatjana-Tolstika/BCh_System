@@ -15,6 +15,7 @@ public interface ILectViewService {
 
 	public abstract List<Students> allStudentsOfTest(long testId) throws Exception;
 
-	public abstract Lecturers getAuthorisedId() throws Exception;
+	public abstract Lecturers getAuthorisedId();
+
 
 }

@@ -34,11 +34,7 @@ public class Lecturers {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long lecturersId;
-	
-	@NotNull
-	@Pattern(regexp="^[a-zA-Z0-9._]{5,20}$")
-	@Column(name="lecturer_username")
-	private String lecturerUsername;
+
 	
 	@NotNull
 	@Pattern(regexp="^[A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+([\\s-][A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+)*$")
@@ -61,8 +57,7 @@ public class Lecturers {
 	@OneToOne(mappedBy = "lecturer")
     private MyUser user;
 	
-	public Lecturers(String username, String name, String surname, String degree) {
-		setLecturerUsername(username);
+	public Lecturers(String name, String surname, String degree) {
 		setLecturerName(name);
 		setLecturerSurname(surname);
 		setLecturerDegree(degree);

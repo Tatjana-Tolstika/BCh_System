@@ -56,11 +56,11 @@ public class BChSystemApplication {
 				//====================================================================================
 				
 				
-				Lecturers lect1 = new Lecturers("TestUser","Test Name", "Testsurname", "Mg.sc.Comp");
-				Lecturers lect2 = new Lecturers("KarinaSkirmante","Karina", "Šķirmante", "Mg.sc.Comp");
-				Lecturers lect3 = new Lecturers("EstereVitola","Estere", "Vitola", "Mg.sc.Pead");
-				Lecturers lect4 = new Lecturers("KristapsBlumbergs", "Kristaps", "Blumbergs", "Mg.sc");
-				Lecturers lect5 = new Lecturers("ArtursOrbidans","Arturs", "Orbidans", "Mg.sc");
+				Lecturers lect1 = new Lecturers("Test Name", "Testsurname", "Mg.sc.Comp");
+				Lecturers lect2 = new Lecturers("Karina", "Šķirmante", "Mg.sc.Comp");
+				Lecturers lect3 = new Lecturers("Estere", "Vitola", "Mg.sc.Pead");
+				Lecturers lect4 = new Lecturers("Kristaps", "Blumbergs", "Mg.sc");
+				Lecturers lect5 = new Lecturers("Arturs", "Orbidans", "Mg.sc");
 				lecturersRepo.saveAll(Arrays.asList(lect1, lect2, lect3, lect4, lect5));
 				
 				//USERS FOR LECTURERS==========================================================

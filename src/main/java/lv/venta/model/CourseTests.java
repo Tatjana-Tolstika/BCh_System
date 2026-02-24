@@ -55,9 +55,11 @@ public class CourseTests {
 	@ManyToOne
 	@JoinColumn(name = "course_id")
 	@NotNull
+	@ToString.Exclude
 	private StudyCourses course;
 
 	@OneToMany(mappedBy = "test", cascade = CascadeType.ALL, orphanRemoval = true)
+	@ToString.Exclude
 	private List<TestTask> tasksForTest;
 	// -------------------------------------------
 

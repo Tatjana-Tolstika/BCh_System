@@ -135,13 +135,14 @@
 <div class="container">
     <div class="header-area">
         <h1>Create New Test</h1>
-        <a href="javascript:history.back()" class="btn-back">← Back</a>
+        <a th:href="@{/professor/courses/{courseId}/tests(courseId=${course.courseId})}" class="btn-back">← Back</a>
     </div>
 
-    <form th:action="@{/courseTests/crud/add}"
+    <form th:action="@{/professor/courses/{courseId}/tests/add(courseId=${course.courseId})}"
           th:object="${courseTest}"
           method="post"
           onsubmit="return validateForm();">
+		  <input type="hidden" name="course" th:field="*{course}">
 
         <table class="form-grid">
             <!-- Title -->
@@ -170,29 +171,19 @@
                 <td class="label">Max points</td>
                 <td class="field">
                     <input type="number" th:field="*{points}" id="points" min="1" step="1">
-                    <div class="hint">Must be &gt; 0</div>
-                    <div id="pointsError" class="error" style="display:none;">Please enter a valid points value (&gt;0)!</div>
+                    <div class="hint">Must be > 0</div>
+                    <div id="pointsError" class="error" style="display:none;">Please enter a valid points value (>0)!</div>
                     <div th:if="${#fields.hasErrors('points')}" th:errors="*{points}" class="error"></div>
                 </td>
             </tr>
 
             <!-- Course -->
-            <tr>
-                <td class="label">Course</td>
-                <td class="field">
-                    
-                    <select th:field="*{course}" id="courseSelect">
-                        <option value="">-- Select --</option>
-                        <option th:each="c : ${courses}"
-                                th:value="${c.courseId}"
-                                th:text="${c.courseTitle}">
-                        </option>
-                    </select>
-
-                    <div id="courseError" class="error" style="display:none;">Please select a course!</div>
-                    <div th:if="${#fields.hasErrors('course')}" th:errors="*{course}" class="error"></div>
-                </td>
-            </tr>
+			<tr>
+		        <td class="label">Course</td>
+		        <td class="field">
+		            <span class="hint" th:text="${course.courseTitle}"></span>
+		        </td>
+		    </tr>
         </table>
 
         <div class="actions">
@@ -210,7 +201,6 @@ function validateForm() {
     const title = document.getElementById("testTitle");
     const desc = document.getElementById("testDescription");
     const points = document.getElementById("points");
-    const course = document.getElementById("courseSelect");
 
     // Title
     if (!title.value.trim()) {
@@ -237,13 +227,6 @@ function validateForm() {
         document.getElementById("pointsError").style.display = "none";
     }
 
-    // Course
-    if (!course.value) {
-        document.getElementById("courseError").style.display = "block";
-        valid = false;
-    } else {
-        document.getElementById("courseError").style.display = "none";
-    }
 
     return valid;
 }

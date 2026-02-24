@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lv.venta.model.CourseTests;
 import lv.venta.model.Lecturers;
@@ -58,6 +59,7 @@ public class LectViewServiceImpl implements ILectViewService{
 		
 	}
 	
+	@Transactional
 	@Override
 	public List<Students> allStudentsOfTest(long testId) throws Exception{
 		CourseTests test = testRepo.findById(testId)
@@ -82,6 +84,23 @@ public class LectViewServiceImpl implements ILectViewService{
 		return students;
 	}
 	
+	@Transactional
+	@Override
+	public List<TestResult> allResultsOfTheTest(long testId) throws Exception{
+		CourseTests test = testRepo.findById(testId)
+				.orElseThrow(()-> new Exception("Test not found!"));
+		List<TestResult> results = new ArrayList<>();
+		List<TestTask> tasks = test.getTasksForTest();
+		for(TestTask tt : tasks){
+			results = tt.getTestResults();
+		}
+		if (results.isEmpty()) {
+	        throw new Exception("This test has no results!");
+	    }
+		return results;
+	}
+	
+	@Override
 	public Lecturers getAuthorisedId() {
 	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	    String currentUsername = auth.getName();

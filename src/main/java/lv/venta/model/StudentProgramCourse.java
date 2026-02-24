@@ -52,6 +52,7 @@ public class StudentProgramCourse {
 	private StudyCourses course;
 	
 	@OneToMany(mappedBy="studentProgramCourse" , cascade = CascadeType.ALL, orphanRemoval = true)
+	@ToString.Exclude
 	private Collection<TestResult> testResult ;
 	//--------------------------------------------------
 	

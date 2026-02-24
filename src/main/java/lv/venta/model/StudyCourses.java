@@ -44,13 +44,16 @@ public class StudyCourses {
 	
 	//----------Table connections-----------------------
 	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+	@ToString.Exclude
 	private Collection<CourseTests> courseTests;
 	
 	
 	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+	@ToString.Exclude
 	private Collection<StudentProgramCourse> studentProgramCourse;
 	
 	@ManyToMany(mappedBy = "courses")
+	@ToString.Exclude
 	private Set<Lecturers> lecturers = new HashSet<>();
 	
 	//--------------------------------------------------

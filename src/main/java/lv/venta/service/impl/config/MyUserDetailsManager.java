@@ -14,7 +14,6 @@ import lv.venta.config.MyUserDetails;
 import lv.venta.model.Lecturers;
 import lv.venta.model.MyAuthority;
 import lv.venta.model.MyUser;
-import lv.venta.repo.ILecturersRepo;
 import lv.venta.repo.IMyAuthorityRepo;
 import lv.venta.repo.IMyUserRepo;
 

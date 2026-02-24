@@ -94,6 +94,20 @@
             border: 2px dashed #eee;
             border-radius: 8px;
         }
+		.btn-view {
+		    text-decoration: none;
+		    background-color: #16a085;
+		    color: white;
+		    padding: 8px 12px;
+		    border-radius: 6px;
+		    font-size: 13px;
+		    transition: background 0.2s;
+		    display: inline-block;
+		    white-space: nowrap;
+		}
+		.btn-view:hover {
+		    background-color: #1abc9c;
+		}
     </style>
 </head>
 
@@ -102,7 +116,8 @@
 <div class="container">
     <div class="header-area">
         <h1>Course Tests</h1>
-        <a href="javascript:history.back()" class="btn-back">← Back to Courses</a>
+		<a class="btn-add" th:href="@{/professor/courses/{courseId}/tests/add(courseId=${courseId})}"> + Add Test </a>
+        <a th:href="@{/professor/courses}" class="btn-back">← Back to Courses</a>
     </div>
 
     <table th:if="${not #lists.isEmpty(allTests)}">
@@ -119,7 +134,13 @@
                 </td>
                 <td class="test-info">
                     <span th:text="${test.testDescription ?: 'No description available'}"></span>
-                </td>
+				</td>
+				<td>
+			        <a class="btn-view" th:href="@{/professor/courses/{courseId}/tests/{testId}/students(courseId=${courseId}, testId=${test.testId})}">
+			            View Students
+			        </a>
+			    </td>
+				
             </tr>
         </tbody>
     </table>

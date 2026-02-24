@@ -6,6 +6,7 @@ import lv.venta.model.CourseTests;
 import lv.venta.model.Lecturers;
 import lv.venta.model.Students;
 import lv.venta.model.StudyCourses;
+import lv.venta.model.TestResult;
 
 public interface ILectViewService {
 
@@ -16,6 +17,8 @@ public interface ILectViewService {
 	public abstract List<Students> allStudentsOfTest(long testId) throws Exception;
 
 	public abstract Lecturers getAuthorisedId();
+
+	public abstract List<TestResult> allResultsOfTheTest(long testId) throws Exception;
 
 
 }

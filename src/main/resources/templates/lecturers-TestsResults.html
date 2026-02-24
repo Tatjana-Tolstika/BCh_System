@@ -1,0 +1,19 @@
+<html xmlns:th="https://www.thymeleaf.org">
+	<body>
+		<p>Results: </p>
+		<table border="1px">
+			<tr th:each="tempR: ${results}">
+				<td th:text = "${tempR.getResultId()}"></td>
+				<td th:text = "${tempR.getStudentProgramCourse().getStudentProgram().getStudent().getStudentName() + ' ' + tempR.getStudentProgramCourse().getStudentProgram().getStudent().getStudentSurname()}"></td>
+				
+				<td th:text = "${tempR.getStudentProgramCourse().getCourse().getCourseTitle()}"></td>
+				<td th:text = "${tempR.getTask().getTaskDescription()}"></td>
+				<td th:text = "${tempR.getComments()}"></td>
+				<td th:text = "${tempR.getMinus()}"></td>
+				
+			</tr>
+		</table>
+	</body>	
+
+
+</html>

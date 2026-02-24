@@ -54,6 +54,7 @@ public class TestTask {
 	private CourseTests test;
 	
 	@OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+	@ToString.Exclude
 	private List<TestResult> testResults;
 	
 	

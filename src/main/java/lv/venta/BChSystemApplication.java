@@ -66,7 +66,7 @@ public class BChSystemApplication {
 				//USERS FOR LECTURERS==========================================================
 				MyUser lectUser1 = new MyUser("KarinaSkirmante",encoder.encode("12345"),lect,lect2);
 				MyUser lectUser2 = new MyUser("EstereVitola",encoder.encode("12345"), lect,lect3);
-				MyUser lectUser3 = new MyUser("TestUser",encoder.encode("test"), lect,lect1);
+				MyUser lectUser3 = new MyUser("TestUser",encoder.encode("test"), admin,lect1);
 				MyUser lectUser4 = new MyUser("KristapsBlumbergs",encoder.encode("12345"), lect,lect4);
 				MyUser lectUser5 = new MyUser("ArtursOrbidans",encoder.encode("12345"), lect,lect5);
 

@@ -63,6 +63,7 @@ public class StudyProgram {
 		private int length;
 		//------------------Table connections------------------------
 		@OneToMany(mappedBy="studyProgram", cascade = CascadeType.ALL, orphanRemoval = true)
+		@ToString.Exclude
 		private Collection<StudentProgram> studentProgram;
 		
 //		//-----------------------------------------------------------

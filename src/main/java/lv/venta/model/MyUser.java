@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -44,11 +45,15 @@ public class MyUser {
 	@JoinColumn(name = "AuthoritiesId")
 	private MyAuthority authority;
 	
+	@OneToOne
+    private Lecturers lecturer;
 	
-	public MyUser(String username, String passord, MyAuthority authority) {
+	
+	public MyUser(String username, String passord, MyAuthority authority, Lecturers lecturer) {
 		setUsername(username);
 		setPassword(passord);
 		setAuthority(authority);
+		setLecturer(lecturer);
 	}
 
 }

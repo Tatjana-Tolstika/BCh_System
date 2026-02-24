@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -56,6 +57,9 @@ public class Lecturers {
 	@ManyToMany
 	@JoinTable(name = "lecturers_courses", joinColumns = @JoinColumn(name="lecturer_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
 	private Set<StudyCourses> courses = new HashSet<>();
+	
+	@OneToOne(mappedBy = "lecturer")
+    private MyUser user;
 	
 	public Lecturers(String username, String name, String surname, String degree) {
 		setLecturerUsername(username);

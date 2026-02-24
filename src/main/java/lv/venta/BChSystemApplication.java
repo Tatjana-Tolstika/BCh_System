@@ -6,9 +6,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lv.venta.model.CourseTests;
 import lv.venta.model.Lecturers;
+import lv.venta.model.MyAuthority;
+import lv.venta.model.MyUser;
 import lv.venta.model.StudentProgram;
 import lv.venta.model.StudentProgramCourse;
 import lv.venta.model.Students;
@@ -18,6 +22,8 @@ import lv.venta.model.TestResult;
 import lv.venta.model.TestTask;
 import lv.venta.repo.ICourseTestRepo;
 import lv.venta.repo.ILecturersRepo;
+import lv.venta.repo.IMyAuthorityRepo;
+import lv.venta.repo.IMyUserRepo;
 import lv.venta.repo.IStudentProgramCourseRepo;
 import lv.venta.repo.IStudentProgramRepo;
 import lv.venta.repo.IStudentsRepo;
@@ -35,10 +41,20 @@ public class BChSystemApplication {
 	//=================================================================
 	@Bean
 	public CommandLineRunner testDB(ICourseTestRepo courseTestRepo, ILecturersRepo lecturersRepo, IStudentProgramCourseRepo studentProgCourseRepo, IStudentProgramRepo studentProgRepo,
-									IStudentsRepo studentsRepo, IStudyCourseRepo courseRepo, IStudyProgramRepo programRepo, ITestResultRepo resultRepo, ITestTaskRepo taskRepo) {
+									IStudentsRepo studentsRepo, IStudyCourseRepo courseRepo, IStudyProgramRepo programRepo, ITestResultRepo resultRepo, ITestTaskRepo taskRepo,
+									IMyAuthorityRepo roleRepo, IMyUserRepo userRepo) {
 		return new CommandLineRunner() {
 			@Override
 			public void run(String... args) throws Exception{
+				
+				//Sistēmai
+				MyAuthority admin = new MyAuthority("ADMIN");
+				MyAuthority lect = new MyAuthority("LECT");
+				roleRepo.saveAll(Arrays.asList(admin,lect));
+				
+				PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+				//====================================================================================
+				
 				
 				Lecturers lect1 = new Lecturers("TestUser","Test Name", "Testsurname", "Mg.sc.Comp");
 				Lecturers lect2 = new Lecturers("KarinaSkirmante","Karina", "Šķirmante", "Mg.sc.Comp");
@@ -46,6 +62,16 @@ public class BChSystemApplication {
 				Lecturers lect4 = new Lecturers("KristapsBlumbergs", "Kristaps", "Blumbergs", "Mg.sc");
 				Lecturers lect5 = new Lecturers("ArtursOrbidans","Arturs", "Orbidans", "Mg.sc");
 				lecturersRepo.saveAll(Arrays.asList(lect1, lect2, lect3, lect4, lect5));
+				
+				//USERS FOR LECTURERS==========================================================
+				MyUser lectUser1 = new MyUser("KarinaSkirmante",encoder.encode("12345"),lect,lect2);
+				MyUser lectUser2 = new MyUser("EstereVitola",encoder.encode("12345"), lect,lect3);
+				MyUser lectUser3 = new MyUser("TestUser",encoder.encode("test"), lect,lect1);
+				MyUser lectUser4 = new MyUser("KristapsBlumbergs",encoder.encode("12345"), lect,lect4);
+				MyUser lectUser5 = new MyUser("ArtursOrbidans",encoder.encode("12345"), lect,lect5);
+
+				userRepo.saveAll(Arrays.asList(lectUser1, lectUser2, lectUser3, lectUser4, lectUser5));
+				//=============================================================================
 				
 				Students st1 = new Students("Tatjana", "Tolstika", "230000001", "s23tolstatj@venta.lv");
 				Students st2 = new Students("Kristiana", "Felša", "230000002", "s23felskrist@venta.lv");

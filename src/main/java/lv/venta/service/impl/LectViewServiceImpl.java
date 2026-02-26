@@ -41,8 +41,8 @@ public class LectViewServiceImpl implements ILectViewService{
 	
 	    List<StudyCourses> courses = coursesRepo.findByLecturers(lecturer);
 	
-	    if(courses.isEmpty())
-	        throw new Exception("This lecturer has no courses");
+//	    if(courses.isEmpty())
+//	        throw new Exception("This lecturer has no courses");
 	
 	    return courses;
 	}
@@ -52,9 +52,9 @@ public class LectViewServiceImpl implements ILectViewService{
 		StudyCourses course = coursesRepo.findById(courseId)
 				.orElseThrow(()-> new Exception("Course not found!"));
 		List<CourseTests> tests = testRepo.findByCourse(course);
-		if(tests.isEmpty()) {
-			throw new Exception("This course has no tests!");
-		}
+//		if(tests.isEmpty()) {
+//			throw new Exception("This course has no tests!");
+//		}
 		return tests;
 		
 	}
@@ -77,9 +77,9 @@ public class LectViewServiceImpl implements ILectViewService{
 				}
 			}
 		}
-		if (students.isEmpty()) {
-	        throw new Exception("No students have taken this test");
-	    }
+//		if (students.isEmpty()) {
+//	        throw new Exception("No students have taken this test");
+//	    }
 		
 		return students;
 	}
@@ -113,8 +113,8 @@ public class LectViewServiceImpl implements ILectViewService{
 	    
 	    return null;
 	}
-	//Update testResult can be taken from CRUD service?
-	//Adding new tests to the course can be taken from courseTestCRUD service???
+	//Update testResult can be taken from CRUD service
+	//Adding new tests to the course can be taken from courseTestCRUD service
 
 	
 	

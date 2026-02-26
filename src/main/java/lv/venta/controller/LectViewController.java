@@ -149,12 +149,12 @@ public class LectViewController {
 	public String getControllerAddNewTaskForTest(@PathVariable(name ="courseId") long courseId, @PathVariable(name = "testId") long testId,Model model) {
 		
 		try {
-			StudyCourses courseFind = courseService.retrieveCourseById(courseId);
-			System.out.println("Atrasts kurss: " + courseFind);
+			CourseTests testFind = testService.retrieveTestById(testId);
+			System.out.println("Atrasts kurss: " + testFind);
 		    
-			model.addAttribute("courseTest", new CourseTests());
-			model.addAttribute("course", courseFind);
-			return "lecturers-create-courseTest";
+			model.addAttribute("testTask", new TestTask());
+			model.addAttribute("testFind", testFind);
+			return "lecturers-create-testTask";
 		} catch (Exception e) {
 			model.addAttribute("package", e.getMessage());
 			return "show-error";
@@ -164,19 +164,19 @@ public class LectViewController {
 	
 	
 	@PostMapping("/courses/{courseId}/tests/{testId}/tasks/add")
-	public String postControllerAddNewTaskForTest(@PathVariable(name ="courseId") long courseId,@PathVariable(name = "testId") long testId, CourseTests courseTest, BindingResult result, Model model) {
+	public String postControllerAddNewTaskForTest(@PathVariable(name ="courseId") long courseId,@PathVariable(name = "testId") long testId, TestTask testTask, BindingResult result, Model model) {
 	    try {
-	        StudyCourses courseFind = courseService.retrieveCourseById(courseId);
-	        courseTest.setCourse(courseFind); 
+	    	CourseTests testFind = testService.retrieveTestById(testId);
+	    	testTask.setTest(testFind); 
 
 	        
 	        if (result.hasErrors()) {
-	            model.addAttribute("course", courseFind);
-	            return "lecturers-create-courseTest";
+	            model.addAttribute("testFind", testFind);
+	            return "lecturers-create-testTask";
 	        }
 
-	        testService.createCourseTest(courseTest.getTestTitle(), courseTest.getTestDescription(), courseTest.getPoints(), courseFind);
-	        return "redirect:/professor/courses/" + courseId + "/tests";
+	        taskService.createTask(testFind, testTask.getTaskDescription(),testTask.getMaxPoints(), testTask.getTaskNotes());
+	        return "redirect:/professor/courses/" + courseId + "/tests/"+ testId +"/tasks";
 	    } catch(Exception e) {
 	        model.addAttribute("package", e.getMessage());
 	        return "show-error";

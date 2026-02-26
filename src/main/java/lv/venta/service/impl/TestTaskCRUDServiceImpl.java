@@ -102,9 +102,9 @@ public class TestTaskCRUDServiceImpl implements ITestTaskCRUDService{
 
 		    ArrayList<TestTask> tasks = taskRepo.findByTest(test);
 
-		    if (tasks.isEmpty()) {
-		        throw new Exception("This test has no tasks");
-		    }
+//		    if (tasks.isEmpty()) {
+//		        throw new Exception("This test has no tasks");
+//		    }
 
 		    return tasks;
 		}

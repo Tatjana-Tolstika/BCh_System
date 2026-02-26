@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
 <head>
-    <title>Course Tests</title>
+    <title>Test Tasks</title>
     <style>
         body {
             font-family: "Segoe UI", Arial, sans-serif;
@@ -44,20 +44,6 @@
         .btn-back:hover {
             background-color: #95a5a6;
         }
-		.btn-add {
-            text-decoration: none;
-            background-color: #7f8c8d;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 6px;
-            font-size: 14px;
-            transition: background 0.2s;
-			
-        }
-
-        .btn-add:hover {
-            background-color: #95a5a6;
-        }
 
         table {
             width: 100%;
@@ -73,6 +59,7 @@
         th, td {
             padding: 12px 15px;
             text-align: left;
+            vertical-align: top;
         }
 
         th {
@@ -89,13 +76,12 @@
             background-color: #f9f9f9;
         }
 
-        /* Stils testa nosaukumam (bez linka) */
-        .test-name {
+        .task-desc {
             color: #2c3e50;
             font-weight: 500;
         }
 
-        .test-info {
+        .task-notes {
             color: #7f8c8d;
             font-size: 0.9em;
         }
@@ -108,24 +94,6 @@
             border: 2px dashed #eee;
             border-radius: 8px;
         }
-		.btn-view {
-		    text-decoration: none;
-		    background-color: #16a085;
-		    color: white;
-		    padding: 8px 12px;
-		    border-radius: 6px;
-		    font-size: 13px;
-		    transition: background 0.2s;
-		    display: inline-block;
-		    white-space: nowrap;
-		}
-		.btn-view:hover {
-		    background-color: #1abc9c;
-		}
-		.students-btn {
-		    text-align: right;
-		    padding-right: 10px;
-		}
     </style>
 </head>
 
@@ -133,45 +101,31 @@
 
 <div class="container">
     <div class="header-area">
-        <h1>Course Tests</h1>
-		<a class="btn-add" th:href="@{/professor/courses/{courseId}/tests/add(courseId=${courseId})}"> + Add Test </a>
-        <a th:href="@{/professor/courses}" class="btn-back">← Back to Courses</a>
+        <h1>Test Tasks</h1>
+        <a th:href="@{/professor/courses/{courseId}/tests(courseId=${courseId})}" class="btn-back">
+            ← Back to Tests
+        </a>
     </div>
 
-    <table th:if="${not #lists.isEmpty(allTests)}">
+    <table th:if="${not #lists.isEmpty(allTasks)}">
         <thead>
             <tr>
-                <th>Test Title</th>
-                <th>Details</th>
-				<th>Students</th>
-				<th>Tasks</th>
+                <th>Description</th>
+                <th>Max Points</th>
+                <th>Notes</th>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="test : ${allTests}">
-                <td>
-                    <span class="test-name" th:text="${test.testTitle}"></span>
-                </td>
-                <td class="test-info">
-                    <span th:text="${test.testDescription ?: 'No description available'}"></span>
-				</td>
-				<td class="students-btn">
-			        <a class="btn-view" th:href="@{/professor/courses/{courseId}/tests/{testId}/students(courseId=${courseId}, testId=${test.testId})}">
-			            View Students
-			        </a>
-			    </td>
-				<td class="students-btn">
-			        <a class="btn-view" th:href="@{/professor/courses/{courseId}/tests/{testId}/tasks(courseId=${courseId}, testId=${test.testId})}">
-			            View Tasks
-			        </a>
-			    </td>
-				
+            <tr th:each="tempTT : ${allTasks}">
+                <td class="task-desc" th:text="${tempTT.taskDescription}"></td>
+                <td th:text="${tempTT.maxPoints}"></td>
+                <td class="task-notes" th:text="${tempTT.taskNotes ?: '—'}"></td>
             </tr>
         </tbody>
     </table>
 
-    <div class="empty" th:if="${#lists.isEmpty(allTests)}">
-        <p>No tests found for this course.</p>
+    <div class="empty" th:if="${#lists.isEmpty(allTasks)}">
+        <p>No tasks found for this test.</p>
     </div>
 </div>
 

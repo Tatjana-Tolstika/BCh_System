@@ -15,10 +15,11 @@ import lv.venta.model.CourseTests;
 import lv.venta.model.Lecturers;
 import lv.venta.model.Students;
 import lv.venta.model.StudyCourses;
-import lv.venta.model.TestResult;
+import lv.venta.model.TestTask;
 import lv.venta.service.ICourseTestCRUDService;
 import lv.venta.service.ICoursesCRUDService;
 import lv.venta.service.ILectViewService;
+import lv.venta.service.ITestTaskCRUDService;
 
 @Controller
 @RequestMapping("/professor")
@@ -29,7 +30,8 @@ public class LectViewController {
 	private ICourseTestCRUDService testService;
 	@Autowired
 	private ICoursesCRUDService courseService;
-	
+	@Autowired
+	private ITestTaskCRUDService taskService;
 	//-------------AllCourses-------------------
 	@GetMapping("/courses") //localhost:8081/professor/courses
 	public String getControllerAllProfessorCourses(Model model) {
@@ -123,6 +125,63 @@ public class LectViewController {
 	}
 		
 	
+	//----------------------------------------------
+	//------------All tasks of the test-------------
+	@GetMapping("/courses/{courseId}/tests/{testId}/tasks") //localhost:8081/professor/courses/1/tests/1/tasks
+	public String getControllerTasksOfTest(@PathVariable(name = "courseId") long courseId,@PathVariable(name = "testId") long testId, Model model) {
+		try {
+			List<TestTask> allTasks = taskService.selectAllTasksByTest(testId);
+			System.out.println("Atrasti taski: " + allTasks.size());
+			model.addAttribute("allTasks", allTasks);
+			model.addAttribute("courseId", courseId);
+			model.addAttribute("testId", testId);
+		    return "lecturers-courseTestTasks";
+	    
+		}catch(Exception e){
+			model.addAttribute("package", e.getMessage());
+			return "show-error";
+		}
+		
+	}
+	//----------------------------------------------
+	//-----------Creating new task for the test-----
+	@GetMapping("/courses/{courseId}/tests/{testId}/tasks/add") //localhost:8081/professor/courses/1/tests/1/tasks/add
+	public String getControllerAddNewTaskForTest(@PathVariable(name ="courseId") long courseId, @PathVariable(name = "testId") long testId,Model model) {
+		
+		try {
+			StudyCourses courseFind = courseService.retrieveCourseById(courseId);
+			System.out.println("Atrasts kurss: " + courseFind);
+		    
+			model.addAttribute("courseTest", new CourseTests());
+			model.addAttribute("course", courseFind);
+			return "lecturers-create-courseTest";
+		} catch (Exception e) {
+			model.addAttribute("package", e.getMessage());
+			return "show-error";
+		}
+	    
+	}
+	
+	
+	@PostMapping("/courses/{courseId}/tests/{testId}/tasks/add")
+	public String postControllerAddNewTaskForTest(@PathVariable(name ="courseId") long courseId,@PathVariable(name = "testId") long testId, CourseTests courseTest, BindingResult result, Model model) {
+	    try {
+	        StudyCourses courseFind = courseService.retrieveCourseById(courseId);
+	        courseTest.setCourse(courseFind); 
+
+	        
+	        if (result.hasErrors()) {
+	            model.addAttribute("course", courseFind);
+	            return "lecturers-create-courseTest";
+	        }
+
+	        testService.createCourseTest(courseTest.getTestTitle(), courseTest.getTestDescription(), courseTest.getPoints(), courseFind);
+	        return "redirect:/professor/courses/" + courseId + "/tests";
+	    } catch(Exception e) {
+	        model.addAttribute("package", e.getMessage());
+	        return "show-error";
+	    }
+	}
 	//----------------------------------------------
 	
 }

@@ -1,17 +1,126 @@
+<!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
-	<body>
-		<p>Students: </p>
-		<table border="1px">
-			<tr th:each="tempS: ${students}">
-			
-				<!-- <td th:text = "${tempS.getStudentId()}"></td> -->
-				<td th:text = "${tempS.getStudentName()}"></td>
-				<td th:text = "${tempS.getStudentSurname()}"></td>
-				<td th:text = "${tempS.getMatriculationNr()}"></td>
-				<td th:text = "${tempS.getEmail()}"></td>
-			</tr>
-		</table>
-	</body>	
+<head>
+    <title>Students of Test</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
 
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
 
+        .header-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .btn-back {
+            text-decoration: none;
+            background-color: #7f8c8d;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .btn-back:hover {
+            background-color: #95a5a6;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        thead {
+            background-color: #2980b9;
+            color: white;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .empty {
+            text-align: center;
+            color: #999;
+            margin-top: 30px;
+            padding: 20px;
+            border: 2px dashed #eee;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="header-area">
+        <h1>Students</h1>
+         
+        <a th:href="@{/professor/courses/{courseId}/tests(courseId=${courseId})}" class="btn-back">
+            ← Back to Tests
+        </a>
+       
+    </div>
+
+    <table th:if="${not #lists.isEmpty(students)}">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Matriculation Nr</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="tempS : ${students}">
+                <td th:text="${tempS.studentName}"></td>
+                <td th:text="${tempS.studentSurname}"></td>
+                <td th:text="${tempS.matriculationNr}"></td>
+                <td th:text="${tempS.email}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="empty" th:if="${#lists.isEmpty(students)}">
+        <p>No students found for this test.</p>
+    </div>
+</div>
+
+</body>
 </html>

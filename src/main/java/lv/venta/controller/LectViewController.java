@@ -68,12 +68,13 @@ public class LectViewController {
 	@GetMapping("/courses/{courseId}/tests/{testId}/students") //localhost:8081/professor/courses/1/tests/1
 	public String getControllerCoursesTestsStudents(@PathVariable(name = "courseId") long courseId,@PathVariable(name = "testId") long testId, Model model) {
 		try {
-			//List<Students> allStudents = lectService.allStudentsOfTest(testId);
-//			System.out.println("Atrasti studenti: " + allStudents.size());
-//			model.addAttribute("students", allStudents);
-			List<TestResult> allResults = lectService.allResultsOfTheTest(testId);
-			model.addAttribute("results", allResults);
-		    return "lecturers-TestsResults";
+			List<Students> allStudents = lectService.allStudentsOfTest(testId);
+			System.out.println("Atrasti studenti: " + allStudents.size());
+			model.addAttribute("students", allStudents);
+			return "students-all";
+//			List<TestResult> allResults = lectService.allResultsOfTheTest(testId);
+//			model.addAttribute("results", allResults);
+//		    return "lecturers-TestsResults";
 	    
 		}catch(Exception e){
 			model.addAttribute("package", e.getMessage());

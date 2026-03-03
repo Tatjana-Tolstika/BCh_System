@@ -113,6 +113,18 @@ public class LectViewServiceImpl implements ILectViewService{
 	    
 	    return null;
 	}
+	
+	@Override
+	public double testPointsCounter(long testId) throws Exception{
+		CourseTests test = testRepo.findById(testId)
+				.orElseThrow(()-> new Exception("Test not found!"));
+		List<TestTask> tasks = test.getTasksForTest();
+		double counter = 0;
+		for(TestTask t : tasks) {
+			counter += t.getMaxPoints();
+		}
+		return counter;
+	}
 	//Update testResult can be taken from CRUD service
 	//Adding new tests to the course can be taken from courseTestCRUD service
 

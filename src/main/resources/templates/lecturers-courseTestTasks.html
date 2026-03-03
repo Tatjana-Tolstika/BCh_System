@@ -107,7 +107,13 @@
         <a th:href="@{/professor/courses/{courseId}/tests(courseId=${courseId})}" class="btn-back">
             ← Back to Tests
         </a>
+		<a type="button" href="#" class="btn-back" onclick="toggleTotal()">
+		    Check points
+		</a>
     </div>
+	<div id="totalBox" class="empty" style="display:none; margin-top: 0;">
+	  Total points: <strong th:text="${totalPoints}">0</strong>
+	</div>
 
     <table th:if="${not #lists.isEmpty(allTasks)}">
         <thead>
@@ -132,4 +138,10 @@
 </div>
 
 </body>
+<script>
+	function toggleTotal() {
+	  const box = document.getElementById("totalBox");
+	  box.style.display = (box.style.display === "none") ? "block" : "none";
+	}
+</script>
 </html>

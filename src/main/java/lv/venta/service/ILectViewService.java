@@ -7,7 +7,6 @@ import lv.venta.model.Lecturers;
 import lv.venta.model.Students;
 import lv.venta.model.StudyCourses;
 import lv.venta.model.TestResult;
-import lv.venta.service.impl.bool;
 
 public interface ILectViewService {
 

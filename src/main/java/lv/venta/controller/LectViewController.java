@@ -131,8 +131,10 @@ public class LectViewController {
 	public String getControllerTasksOfTest(@PathVariable(name = "courseId") long courseId,@PathVariable(name = "testId") long testId, Model model) {
 		try {
 			List<TestTask> allTasks = taskService.selectAllTasksByTest(testId);
+			double totalPoints = lectService.testPointsCounter(testId);
 			System.out.println("Atrasti taski: " + allTasks.size());
 			model.addAttribute("allTasks", allTasks);
+			model.addAttribute("totalPoints", totalPoints);
 			model.addAttribute("courseId", courseId);
 			model.addAttribute("testId", testId);
 		    return "lecturers-courseTestTasks";

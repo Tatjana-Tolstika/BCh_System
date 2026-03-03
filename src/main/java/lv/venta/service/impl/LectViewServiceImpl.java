@@ -114,6 +114,7 @@ public class LectViewServiceImpl implements ILectViewService{
 	    return null;
 	}
 	
+	@Transactional
 	@Override
 	public double testPointsCounter(long testId) throws Exception{
 		CourseTests test = testRepo.findById(testId)

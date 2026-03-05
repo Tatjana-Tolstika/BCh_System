@@ -104,12 +104,9 @@
     <div class="header-area">
         <h1>Test Tasks</h1>
 		<a class="btn-back" th:href="@{/professor/courses/{courseId}/tests/{testId}/tasks/add(courseId=${courseId}, testId=${testId})}"> + Add Task </a>
-        <a th:href="@{/professor/courses/{courseId}/tests(courseId=${courseId})}" class="btn-back">
-            ← Back to Tests
-        </a>
-		<a type="button" href="#" class="btn-back" onclick="toggleTotal()">
-		    Check points
-		</a>
+		<a type="button" href="#" class="btn-back" onclick="toggleTotal()">Check points</a>
+        <a th:href="@{/professor/courses/{courseId}/tests(courseId=${courseId})}" class="btn-back"> ← Back to Tests</a>
+		
     </div>
 	<div id="totalBox" class="empty" style="display:none; margin-top: 0;">
 	  Total points: <strong th:text="${totalPoints}">0</strong>

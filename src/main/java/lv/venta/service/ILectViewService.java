@@ -18,9 +18,10 @@ public interface ILectViewService {
 
 	public abstract Lecturers getAuthorisedId();
 
-	public abstract List<TestResult> allResultsOfTheTest(long testId) throws Exception;
 
 	public abstract double testPointsCounter(long testId) throws Exception;
+
+	public abstract double getStudentResult(long testId, long studentId) throws Exception;
 
 
 }

@@ -1,6 +1,9 @@
 package lv.venta.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +18,7 @@ import lv.venta.model.CourseTests;
 import lv.venta.model.Lecturers;
 import lv.venta.model.Students;
 import lv.venta.model.StudyCourses;
+import lv.venta.model.TestResult;
 import lv.venta.model.TestTask;
 import lv.venta.service.ICourseTestCRUDService;
 import lv.venta.service.ICoursesCRUDService;
@@ -71,12 +75,17 @@ public class LectViewController {
 	public String getControllerCoursesTestsStudents(@PathVariable(name = "courseId") long courseId,@PathVariable(name = "testId") long testId, Model model) {
 		try {
 			List<Students> allStudents = lectService.allStudentsOfTest(testId);
+			Map<Long, Double> allResults = new HashMap<Long, Double>(); //https://www.geeksforgeeks.org/java/map-interface-in-java/
+			//https://www.geeksforgeeks.org/java/map-get-method-in-java-with-examples/
+			for(Students s : allStudents) {
+				allResults.put(s.getStudentId(), lectService.getStudentResult(testId, s.getStudentId()));
+			}
+			System.out.println("Atrasti results: " + allResults);
 			System.out.println("Atrasti studenti: " + allStudents.size());
 			model.addAttribute("students", allStudents);
-			return "students-all";
-//			List<TestResult> allResults = lectService.allResultsOfTheTest(testId);
-//			model.addAttribute("results", allResults);
-//		    return "lecturers-TestsResults";
+			model.addAttribute("results", allResults);
+			
+			return "lecturers-TestsResults";
 	    
 		}catch(Exception e){
 			model.addAttribute("package", e.getMessage());

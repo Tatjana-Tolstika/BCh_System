@@ -83,22 +83,7 @@ public class LectViewServiceImpl implements ILectViewService{
 		
 		return students;
 	}
-	
-	@Transactional
-	@Override
-	public List<TestResult> allResultsOfTheTest(long testId) throws Exception{
-		CourseTests test = testRepo.findById(testId)
-				.orElseThrow(()-> new Exception("Test not found!"));
-		List<TestResult> results = new ArrayList<>();
-		List<TestTask> tasks = test.getTasksForTest();
-		for(TestTask tt : tasks){
-			results = tt.getTestResults();
-		}
-		if (results.isEmpty()) {
-	        throw new Exception("This test has no results!");
-	    }
-		return results;
-	}
+
 	
 	@Override
 	public Lecturers getAuthorisedId() {
@@ -126,6 +111,27 @@ public class LectViewServiceImpl implements ILectViewService{
 		}
 		return counter;
 	}
+	
+	@Transactional
+	@Override
+	public double getStudentResult(long testId, long studentId) throws Exception{
+		double counter = 0;
+		double studentMinus =0;
+		CourseTests test = testRepo.findById(testId)
+				.orElseThrow(()-> new Exception("Test not found!"));
+		List<TestTask> tasks = test.getTasksForTest();
+		for(TestTask t: tasks) {
+			List<TestResult> results = t.getTestResults();
+			for(TestResult r : results) {
+				if(r.getStudentProgramCourse().getStudentProgram().getStudent().getStudentId() == studentId) {
+					studentMinus += r.getMinus();
+				}
+			}
+		}
+		counter = 10 - studentMinus;
+		return counter;
+	}
+	
 	//Update testResult can be taken from CRUD service
 	//Adding new tests to the course can be taken from courseTestCRUD service
 

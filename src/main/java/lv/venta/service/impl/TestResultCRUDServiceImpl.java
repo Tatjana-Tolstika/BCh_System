@@ -1,20 +1,15 @@
 package lv.venta.service.impl;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import lv.venta.model.CourseTests;
 import lv.venta.model.StudentProgramCourse;
-import lv.venta.model.Students;
 import lv.venta.model.TestResult;
 import lv.venta.model.TestTask;
-import lv.venta.repo.ICourseTestRepo;
 import lv.venta.repo.IStudentProgramCourseRepo;
-import lv.venta.repo.IStudentsRepo;
 import lv.venta.repo.ITestResultRepo;
 import lv.venta.repo.ITestTaskRepo;
 import lv.venta.service.ITestResultCRUDService;
@@ -28,10 +23,6 @@ public class TestResultCRUDServiceImpl implements ITestResultCRUDService{
 	private ITestTaskRepo taskRepo;
 	@Autowired
 	private IStudentProgramCourseRepo spcRepo;
-	@Autowired 
-	private IStudentsRepo studentRepo;
-	@Autowired
-	private ICourseTestRepo testRepo;
 	
 	//=======================CRUD====================================================================================
 	
@@ -140,8 +131,7 @@ public class TestResultCRUDServiceImpl implements ITestResultCRUDService{
 	public List<TestResult> selectResultByTestAndStudentId(long testId, long studentId) throws Exception {
 
 	    List<TestResult> results =
-	        resultRepo.findByTask_Test_TestIdAndStudentProgramCourse_StudentProgram_Student_StudentId(
-	            testId, studentId);
+	        resultRepo.findByTaskTestTestIdAndStudentProgramCourseStudentProgramStudentStudentId(testId, studentId);
 
 	    return results;
 	}

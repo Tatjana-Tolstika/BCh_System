@@ -55,7 +55,7 @@ public class SecurityConfig {
 					    "/testTask/crud/**"
 					).hasAuthority("ADMIN")
 				//STUDENT PIEEJAMĀS DAĻAS
-				
+				.requestMatchers("/student/**").hasAuthority("STUDENT")
 				//---------------------------------------------------------------
 				);
 		http.formLogin(form -> form

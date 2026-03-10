@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Student Test Results</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .header-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 12px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-back, .btn-edit {
+            text-decoration: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: background 0.2s;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .btn-back {
+            background-color: #7f8c8d;
+        }
+
+        .btn-back:hover {
+            background-color: #95a5a6;
+        }
+
+        .btn-edit {
+            background-color: #16a085;
+        }
+
+        .btn-edit:hover {
+            background-color: #1abc9c;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        thead {
+            background-color: #2980b9;
+            color: white;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .task-desc {
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .notes {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        .empty {
+            text-align: center;
+            color: #999;
+            margin-top: 30px;
+            padding: 20px;
+            border: 2px dashed #eee;
+            border-radius: 8px;
+        }
+
+        .actions-col {
+            text-align: right;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="header-area">
+        <h1 th:text="${testFind.testTitle} + ' Results'"></h1>
+
+        <div class="header-actions">
+            <a class="btn-back"
+               th:href="@{/student/courses/{courseId}/tests(courseId=${courseId})}">
+                ← Back to Tests
+            </a>
+        </div>
+    </div>
+
+    <table th:if="${not #lists.isEmpty(studentResults)}">
+        <thead>
+            <tr>
+                <th>Task</th>
+                <th>Max Points</th>
+                <th>Comments</th>
+                <th>Minus</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="res : ${studentResults}">
+                <td class="task-desc" th:text="${res.task.taskDescription}"></td>
+                <td th:text="${res.task.maxPoints}"></td>
+                <td class="notes" th:text="${res.comments ?: '—'}"></td>
+                <td th:text="${res.minus}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="empty" th:if="${#lists.isEmpty(studentResults)}">
+        <p>No detailed results found for this student.</p>
+    </div>
+</div>
+
+</body>
+</html>

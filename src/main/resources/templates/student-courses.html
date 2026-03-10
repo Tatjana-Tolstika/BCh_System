@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>My Courses</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: left;
+            color: #2c3e50;
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        thead {
+            background-color: #34495e;
+            color: white;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: center;
+        }
+
+        th {
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        tr {
+            border-bottom: 1px solid #ddd;
+            position: relative;
+            transition: background-color 0.2s;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #eaf2f8;
+        }
+
+        .stretched-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .stretched-link::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: auto;
+        }
+
+        .credits {
+            font-weight: bold;
+            color: #2980b9;
+            position: relative; /*Lai credits teksts būtu "virs" saites*/
+            z-index: 2;
+        }
+
+        .empty {
+            text-align: center;
+            color: #999;
+            margin-top: 20px;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>My Courses</h1>
+
+    <table th:if="${not #lists.isEmpty(courses)}">
+        <thead>
+            <tr>
+                <th>Course Title</th>
+                <th>Credits</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="tempC : ${courses}">
+                <td>
+                    <a th:href="@{/student/courses/{id}/tests(id=${tempC.courseId})}" 
+                       class="stretched-link" 
+                       th:text="${tempC.courseTitle}">
+                    </a>
+                </td>
+                <td class="credits" th:text="${tempC.credits}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="empty" th:if="${#lists.isEmpty(courses)}">
+        No courses assigned to this lecturer.
+    </div>
+</div>
+
+</body>
+</html>

@@ -13,7 +13,7 @@ public interface ITestResultRepo extends CrudRepository<TestResult, Long>{
 
 	public abstract boolean existsByTaskAndStudentProgramCourse(TestTask task, StudentProgramCourse student);
 
-	public abstract List<TestResult> findByTask_Test_TestIdAndStudentProgramCourse_StudentProgram_Student_StudentId(
+	public abstract List<TestResult> findByTaskTestTestIdAndStudentProgramCourseStudentProgramStudentStudentId(
 			long testId, long studentId);
 
 

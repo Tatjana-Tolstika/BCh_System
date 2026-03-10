@@ -53,7 +53,9 @@ public class SecurityConfig {
 					    "/students/crud/**",
 					    "/testResult/crud/**",
 					    "/testTask/crud/**"
-					).hasAnyAuthority("ADMIN")
+					).hasAuthority("ADMIN")
+				//STUDENT PIEEJAMĀS DAĻAS
+				
 				//---------------------------------------------------------------
 				);
 		http.formLogin(form -> form

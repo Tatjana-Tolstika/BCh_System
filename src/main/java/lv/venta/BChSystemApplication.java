@@ -50,7 +50,8 @@ public class BChSystemApplication {
 				//Sistēmai
 				MyAuthority admin = new MyAuthority("ADMIN");
 				MyAuthority lect = new MyAuthority("LECT");
-				roleRepo.saveAll(Arrays.asList(admin,lect));
+				MyAuthority student = new MyAuthority("STUDENT");
+				roleRepo.saveAll(Arrays.asList(admin,lect,student));
 				
 				PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 				//====================================================================================
@@ -81,6 +82,16 @@ public class BChSystemApplication {
 				Students st6 = new Students("Anatolijs", "Berziņš", "23000005", "s22berzanat@venta.lv");
 				studentsRepo.saveAll(Arrays.asList(st1, st2, st3, st4, st5, st6));
 				
+				//USERS FOR STUDENTS==========================================================
+				MyUser stUser1 = new MyUser("TatjanaTolstika",encoder.encode("12345"),student,st1);
+				MyUser stUser2 = new MyUser("KristianaFelsa",encoder.encode("12345"), student,st2);
+				MyUser stUser3 = new MyUser("AmandaRebuka",encoder.encode("12345"), student,st3);
+				MyUser stUser4 = new MyUser("BaibaKvizikevica",encoder.encode("12345"), student,st4);
+				MyUser stUser5 = new MyUser("MartaDzelme",encoder.encode("12345"), student,st5);
+				MyUser stUser6 = new MyUser("AnatolijsBerzins",encoder.encode("12345"), student,st6);
+
+				userRepo.saveAll(Arrays.asList(stUser1, stUser2, stUser3, stUser4, stUser5, stUser6));
+				//=============================================================================
 				StudyCourses course1 = new StudyCourses("Programmēšana tīmeklī JAVA", 6);
 				StudyCourses course2 = new StudyCourses("Datu struktūras un algoritmi", 6);
 				StudyCourses course3 = new StudyCourses("Objektorientēta programmēšana", 6);

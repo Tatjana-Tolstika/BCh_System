@@ -49,12 +49,25 @@ public class MyUser {
 	@JoinColumn(name = "lecturer_id", unique = true)
     private Lecturers lecturer;
 	
+	@OneToOne
+	@JoinColumn(name = "student_id", unique = true)
+    private Students student;
 	
-	public MyUser(String username, String passord, MyAuthority authority, Lecturers lecturer) {
-		setUsername(username);
-		setPassword(passord);
-		setAuthority(authority);
-		setLecturer(lecturer);
+	
+	public MyUser(String username, String password, MyAuthority authority, Lecturers lecturer) {
+	    setUsername(username);
+	    setPassword(password);
+	    setAuthority(authority);
+	    setLecturer(lecturer);
+	    this.student = null;
+	}
+
+	public MyUser(String username, String password, MyAuthority authority, Students student) {
+	    setUsername(username);
+	    setPassword(password);
+	    setAuthority(authority);
+	    setStudent(student);
+	    this.lecturer = null;
 	}
 
 }

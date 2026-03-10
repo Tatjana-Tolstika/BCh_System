@@ -14,6 +14,7 @@ import lv.venta.config.MyUserDetails;
 import lv.venta.model.Lecturers;
 import lv.venta.model.MyAuthority;
 import lv.venta.model.MyUser;
+import lv.venta.model.Students;
 import lv.venta.repo.IMyAuthorityRepo;
 import lv.venta.repo.IMyUserRepo;
 
@@ -89,6 +90,22 @@ public class MyUserDetailsManager implements UserDetailsManager{
 	    if (lecturer != null) {
 	        
 	        user.setLecturer(lecturer);
+	    }
+
+	    userRepo.save(user);
+	}
+	
+	public void createStudentUser(UserDetails userDetails, Students student) {
+	    MyUser user = new MyUser();
+	    user.setUsername(userDetails.getUsername());
+	    user.setPassword(encoder.encode(userDetails.getPassword()));
+	    
+	    String roleName = userDetails.getAuthorities().iterator().next().getAuthority();
+	    user.setAuthority(roleRepo.findByTitle(roleName));
+
+	    if (student != null) {
+	        
+	        user.setStudent(student);
 	    }
 
 	    userRepo.save(user);

@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -57,6 +58,9 @@ public class Students {
 			message = "Invalid email address")
 	@Column(name = "email")
 	private String email;
+	
+	@OneToOne(mappedBy = "student")
+    private MyUser user;
 	
 	//----------2. Table connections---------------------------------------
 	@OneToMany(mappedBy="student", cascade = CascadeType.ALL, orphanRemoval = true)

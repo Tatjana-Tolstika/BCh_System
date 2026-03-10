@@ -105,6 +105,7 @@
                 <th>Surname</th>
                 <th>Matriculation Nr</th>
                 <th>Result</th>
+				<th>Details</th>
             </tr>
         </thead>
         <tbody>
@@ -113,6 +114,14 @@
                 <td th:text="${tempS.studentSurname}"></td>
                 <td th:text="${tempS.matriculationNr}"></td>
                 <td th:text="${results[tempS.studentId]}"></td>
+				<td><a class="btn-back"
+	                   th:href="@{/professor/courses/{courseId}/tests/{testId}/students/{studentId}/results(
+	                       courseId=${courseId},
+	                       testId=${testId},
+	                       studentId=${tempS.studentId})}">
+	                    View Details
+	                </a>
+	            </td>
             </tr>
         </tbody>
     </table>

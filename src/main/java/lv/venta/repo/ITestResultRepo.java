@@ -1,5 +1,7 @@
 package lv.venta.repo;
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 
 import lv.venta.model.StudentProgramCourse;
@@ -11,6 +13,8 @@ public interface ITestResultRepo extends CrudRepository<TestResult, Long>{
 
 	public abstract boolean existsByTaskAndStudentProgramCourse(TestTask task, StudentProgramCourse student);
 
-	public abstract boolean existsByStudentProgramCourseAndTask(StudentProgramCourse spc, TestTask task);
+	public abstract List<TestResult> findByTask_Test_TestIdAndStudentProgramCourse_StudentProgram_Student_StudentId(
+			long testId, long studentId);
+
 
 }

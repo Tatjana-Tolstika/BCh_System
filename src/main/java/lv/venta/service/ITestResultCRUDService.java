@@ -19,4 +19,6 @@ public interface ITestResultCRUDService {
 
 	public abstract List<TestResult> selectAllResults();
 
+	public abstract List<TestResult> selectResultByTestAndStudentId(long testId, long studentId) throws Exception;
+
 }

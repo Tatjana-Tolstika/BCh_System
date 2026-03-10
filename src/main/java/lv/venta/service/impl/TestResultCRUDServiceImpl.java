@@ -1,15 +1,20 @@
 package lv.venta.service.impl;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lv.venta.model.CourseTests;
 import lv.venta.model.StudentProgramCourse;
+import lv.venta.model.Students;
 import lv.venta.model.TestResult;
 import lv.venta.model.TestTask;
+import lv.venta.repo.ICourseTestRepo;
 import lv.venta.repo.IStudentProgramCourseRepo;
+import lv.venta.repo.IStudentsRepo;
 import lv.venta.repo.ITestResultRepo;
 import lv.venta.repo.ITestTaskRepo;
 import lv.venta.service.ITestResultCRUDService;
@@ -23,6 +28,10 @@ public class TestResultCRUDServiceImpl implements ITestResultCRUDService{
 	private ITestTaskRepo taskRepo;
 	@Autowired
 	private IStudentProgramCourseRepo spcRepo;
+	@Autowired 
+	private IStudentsRepo studentRepo;
+	@Autowired
+	private ICourseTestRepo testRepo;
 	
 	//=======================CRUD====================================================================================
 	
@@ -82,13 +91,13 @@ public class TestResultCRUDServiceImpl implements ITestResultCRUDService{
 	    TestTask task = taskRepo.findById(taskId)
 	            .orElseThrow(() -> new Exception("Task not found"));
 
-	    if (
-	        !(result.getStudentProgramCourse().getStudentProgramCourseId() == studentProgramCourseId
-	          && result.getTask().getTaskId() == taskId)
-	        && resultRepo.existsByStudentProgramCourseAndTask(spc, task)
-	    ) {
-	        throw new Exception("This student already has a result for this task");
-	    }
+//	    if (
+//	        !(result.getStudentProgramCourse().getStudentProgramCourseId() == studentProgramCourseId
+//	          && result.getTask().getTaskId() == taskId)
+//	        && resultRepo.existsByTaskAndStudentProgramCourse(task, spc)
+//	    ) {
+//	        throw new Exception("This student already has a result for this task");
+//	    }
 
 	    if (result.getStudentProgramCourse() == null ||
 	        result.getStudentProgramCourse().getStudentProgramCourseId() != studentProgramCourseId) {
@@ -125,6 +134,16 @@ public class TestResultCRUDServiceImpl implements ITestResultCRUDService{
 	@Override
 	public List<TestResult> selectAllResults(){
 		return (List<TestResult>) resultRepo.findAll();
+	}
+	
+	@Override
+	public List<TestResult> selectResultByTestAndStudentId(long testId, long studentId) throws Exception {
+
+	    List<TestResult> results =
+	        resultRepo.findByTask_Test_TestIdAndStudentProgramCourse_StudentProgram_Student_StudentId(
+	            testId, studentId);
+
+	    return results;
 	}
 
 }

@@ -23,6 +23,8 @@ import lv.venta.model.TestTask;
 import lv.venta.service.ICourseTestCRUDService;
 import lv.venta.service.ICoursesCRUDService;
 import lv.venta.service.ILectViewService;
+import lv.venta.service.IStudentsCRUDService;
+import lv.venta.service.ITestResultCRUDService;
 import lv.venta.service.ITestTaskCRUDService;
 
 @Controller
@@ -36,6 +38,10 @@ public class LectViewController {
 	private ICoursesCRUDService courseService;
 	@Autowired
 	private ITestTaskCRUDService taskService;
+	@Autowired
+	private ITestResultCRUDService resultService;
+	@Autowired
+	private IStudentsCRUDService studentService;
 	//-------------AllCourses-------------------
 	@GetMapping("/courses") //localhost:8081/professor/courses
 	public String getControllerAllProfessorCourses(Model model) {
@@ -71,7 +77,7 @@ public class LectViewController {
 	}
 	//-------------------------------------------
 	//-----------AllStudentsOfTheTest---------------
-	@GetMapping("/courses/{courseId}/tests/{testId}/students") //localhost:8081/professor/courses/1/tests/1
+	@GetMapping("/courses/{courseId}/tests/{testId}/students") //localhost:8081/professor/courses/1/tests/1/students
 	public String getControllerCoursesTestsStudents(@PathVariable(name = "courseId") long courseId,@PathVariable(name = "testId") long testId, Model model) {
 		try {
 			List<Students> allStudents = lectService.allStudentsOfTest(testId);
@@ -161,7 +167,7 @@ public class LectViewController {
 		
 		try {
 			CourseTests testFind = testService.retrieveTestById(testId);
-			System.out.println("Atrasts kurss: " + testFind);
+			System.out.println("Atrasts tests: " + testFind);
 		    
 			model.addAttribute("testTask", new TestTask());
 			model.addAttribute("testFind", testFind);
@@ -195,4 +201,87 @@ public class LectViewController {
 	}
 	//----------------------------------------------
 	
+	@GetMapping("/courses/{courseId}/tests/{testId}/students/{studentId}/results")
+	public String getControllerStudentAllTasksResults(@PathVariable(name ="courseId") long courseId, @PathVariable(name = "testId") long testId, @PathVariable(name = "studentId") long studentId, Model model) {
+		try {
+			CourseTests testFind = testService.retrieveTestById(testId);
+			System.out.println("Atrasts tests: " + testFind.getTestTitle());
+		    
+			Students studentFind = studentService.retrieveById(studentId);
+			System.out.println("Atrasts students: " + studentFind.getStudentName()+ studentFind.getStudentSurname());
+			
+			List<TestResult> results = resultService.selectResultByTestAndStudentId(testId, studentId);
+			model.addAttribute("studentResults", results);
+			model.addAttribute("courseId", courseId);
+			model.addAttribute("testId", testId);
+			model.addAttribute("studentId", studentId);
+			model.addAttribute("studentFind", studentFind);
+			return "lecturers-student-results";
+		} catch (Exception e) {
+			model.addAttribute("package", e.getMessage());
+			return "show-error";
+		}
+	}
+	
+	//------------------------------------------------
+	@GetMapping("/courses/{courseId}/tests/{testId}/students/{studentId}/results/{resultId}/update")
+	public String getControllerStudentResultUpdateByTask(@PathVariable(name ="courseId") long courseId, @PathVariable(name = "testId") long testId, @PathVariable(name = "studentId") long studentId,
+			@PathVariable(name = "resultId") long resultId, Model model) {
+		try {
+			TestResult resultForUpdate = resultService.retrieveResultById(resultId);
+
+	        model.addAttribute("taskMaxPoints", resultForUpdate.getTask().getMaxPoints());
+	        model.addAttribute("studentOfTask",
+	                resultForUpdate.getStudentProgramCourse().getStudentProgram().getStudent());
+	        model.addAttribute("testResult", resultForUpdate);
+	        model.addAttribute("courseId", courseId);
+	        model.addAttribute("testId", testId);
+	        model.addAttribute("studentId", studentId);
+	        model.addAttribute("resultId", resultId);
+			return "lecturers-update-testResult";
+		} catch (Exception e) {
+			model.addAttribute("package", e.getMessage());
+			return "show-error";
+		}
+	}
+	
+	@PostMapping("/courses/{courseId}/tests/{testId}/students/{studentId}/results/{resultId}/update")
+	public String postControllerStudentResultUpdateByTask(
+	        @PathVariable long courseId,
+	        @PathVariable long testId,
+	        @PathVariable long studentId,
+	        @PathVariable long resultId,
+	        TestResult testResult,
+	        BindingResult result,
+	        Model model) {
+
+	    try {
+	        TestResult existingResult = resultService.retrieveResultById(resultId);
+
+	        if (result.hasErrors()) {
+	            model.addAttribute("taskMaxPoints", existingResult.getTask().getMaxPoints());
+	            model.addAttribute("studentOfTask",
+	                    existingResult.getStudentProgramCourse().getStudentProgram().getStudent());
+	            model.addAttribute("courseId", courseId);
+	            model.addAttribute("testId", testId);
+	            model.addAttribute("studentId", studentId);
+	            model.addAttribute("resultId", resultId);
+	            return "lecturers-update-testResult";
+	        }
+
+	        existingResult.setComments(testResult.getComments());
+	        existingResult.setMinus(testResult.getMinus());
+
+	        resultService.updateTestResultById(resultId, existingResult.getStudentProgramCourse().getStudentProgramCourseId(), existingResult.getTask().getTaskId() , existingResult.getComments(), existingResult.getMinus());
+
+	        return "redirect:/professor/courses/" + courseId
+	                + "/tests/" + testId
+	                + "/students/" + studentId
+	                + "/results";
+
+	    } catch (Exception e) {
+	        model.addAttribute("package", e.getMessage());
+	        return "show-error";
+	    }
+	}
 }

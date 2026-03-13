@@ -15,11 +15,13 @@ import lv.venta.model.MyUser;
 import lv.venta.model.Students;
 import lv.venta.model.StudyCourses;
 import lv.venta.model.TestResult;
+import lv.venta.model.TestStatus;
 import lv.venta.model.TestTask;
 import lv.venta.repo.ICourseTestRepo;
 import lv.venta.repo.ILecturersRepo;
 import lv.venta.repo.IMyUserRepo;
 import lv.venta.repo.IStudyCourseRepo;
+import lv.venta.repo.ITestTaskRepo;
 import lv.venta.service.ILectViewService;
 
 @Service
@@ -32,6 +34,8 @@ public class LectViewServiceImpl implements ILectViewService{
 	private ICourseTestRepo testRepo;
 	@Autowired
 	private IMyUserRepo userRepo;
+	@Autowired
+	private ITestTaskRepo taskRepo;
 	
 	
 	@Override
@@ -130,6 +134,21 @@ public class LectViewServiceImpl implements ILectViewService{
 		}
 		counter = 10 - studentMinus;
 		return counter;
+	}
+	
+	@Override
+	public void makeTestVissible(long testId) throws Exception{
+		CourseTests test = testRepo.findById(testId)
+				.orElseThrow(()-> new Exception("Test not found!"));
+		List<TestTask> tasks = taskRepo.findByTest(test);
+		double pointCounter = 0;
+		for (TestTask t: tasks) {
+			pointCounter += t.getMaxPoints();
+		}
+		if(pointCounter == 10.0) {
+			test.setStatus(TestStatus.PUBLISHED);
+			testRepo.save(test);
+		}
 	}
 	
 	//Update testResult can be taken from CRUD service

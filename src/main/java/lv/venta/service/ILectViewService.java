@@ -22,5 +22,7 @@ public interface ILectViewService {
 
 	public abstract double getStudentResult(long testId, long studentId) throws Exception;
 
+	public abstract void makeTestVissible(long testId) throws Exception;
+
 
 }

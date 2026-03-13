@@ -7,13 +7,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import lv.venta.model.CourseTests;
 import lv.venta.model.MyUser;
 import lv.venta.model.Students;
 import lv.venta.model.StudyCourses;
 import lv.venta.model.TestResult;
 import lv.venta.repo.IMyUserRepo;
-import lv.venta.repo.IStudentsRepo;
 import lv.venta.repo.IStudyCourseRepo;
 import lv.venta.repo.ITestResultRepo;
 import lv.venta.service.IStudentViewService;
@@ -24,8 +22,6 @@ public class StudentViewServiceImpl implements IStudentViewService{
 	private IStudyCourseRepo courseRepo;
 	@Autowired
 	private IMyUserRepo userRepo;
-	@Autowired
-	private IStudentsRepo studentRepo;
 	@Autowired
 	private ITestResultRepo resultsRepo;
 	

@@ -7,6 +7,8 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -50,6 +52,11 @@ public class CourseTests {
 	@NotNull
 	@Column(name = "total_points")
 	private int points;
+	
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	@Column(name = "test_status")
+	private TestStatus status;
 
 	// ----------Table connection-----------------//
 	@ManyToOne

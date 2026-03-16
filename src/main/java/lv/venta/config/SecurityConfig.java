@@ -39,7 +39,7 @@ public class SecurityConfig {
 				//---------------------------------------------------------------
 				//VISIEM PIEEJAMĀS DAĻAS
 				
-
+				.requestMatchers("/home").permitAll()
 				//PROFESSOR PIEEJAMĀS DAĻAS
 				.requestMatchers("/professor/**").hasAuthority("LECT")
 				//ADMIN PIEEJAMĀS DAĻAS
@@ -60,7 +60,7 @@ public class SecurityConfig {
 				);
 		http.formLogin(form -> form
 			    .permitAll()
-			    .defaultSuccessUrl("/professor/courses", true)
+			    .defaultSuccessUrl("/home", true)
 			);
 	//http.formLogin(auth -> auth.permitAll());
 	return http.build();

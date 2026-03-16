@@ -75,5 +75,6 @@ public class CourseTests {
 		setTestDescription(description);
 		setPoints(points);
 		setCourse(course);
+		setStatus(TestStatus.IN_PROCESS);
 	}
 }

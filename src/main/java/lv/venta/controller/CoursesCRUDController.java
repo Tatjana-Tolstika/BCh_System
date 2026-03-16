@@ -16,7 +16,7 @@ import lv.venta.model.StudyCourses;
 import lv.venta.service.ICoursesCRUDService;
 
 @Controller
-@RequestMapping("/courses/crud")
+@RequestMapping("/admin/courses/crud")
 public class CoursesCRUDController {
 	@Autowired 
 	private ICoursesCRUDService coursesService;

@@ -16,7 +16,7 @@ import lv.venta.model.Students;
 import lv.venta.service.IStudentsCRUDService;
 
 @Controller
-@RequestMapping("/students/crud")
+@RequestMapping("/admin/students/crud")
 public class StudentsCRUDController {
 	@Autowired 
 	private IStudentsCRUDService studentsService;

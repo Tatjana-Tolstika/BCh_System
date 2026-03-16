@@ -21,7 +21,7 @@ import lv.venta.service.IStudentProgramCRUDService;
 import lv.venta.service.IStudentProgramCourseCRUDService;
 
 @Controller
-@RequestMapping("/spc/crud")
+@RequestMapping("/admin/spc/crud")
 public class StudentProgramCourseCRUDController {
 
 	@Autowired 

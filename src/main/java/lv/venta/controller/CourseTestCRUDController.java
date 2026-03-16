@@ -19,7 +19,7 @@ import lv.venta.model.StudyCourses;
 import lv.venta.service.ICourseTestCRUDService;
 
 @Controller
-@RequestMapping("/courseTests/crud")
+@RequestMapping("/admin/courseTests/crud")
 public class CourseTestCRUDController {
 	@Autowired 
 	private ICourseTestCRUDService testService;

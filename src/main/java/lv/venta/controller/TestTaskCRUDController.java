@@ -17,7 +17,7 @@ import lv.venta.model.TestTask;
 import lv.venta.service.ITestTaskCRUDService;
 
 @Controller
-@RequestMapping("/testTask/crud")
+@RequestMapping("/admin/testTask/crud")
 public class TestTaskCRUDController {
 	@Autowired 
 	private ITestTaskCRUDService taskService;

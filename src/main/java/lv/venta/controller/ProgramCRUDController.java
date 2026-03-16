@@ -16,7 +16,7 @@ import lv.venta.model.StudyProgram;
 import lv.venta.service.IProgramCRUDService;
 
 @Controller
-@RequestMapping("/programs/crud")
+@RequestMapping("/admin/programs/crud")
 public class ProgramCRUDController {
 	@Autowired 
 	private IProgramCRUDService programService;

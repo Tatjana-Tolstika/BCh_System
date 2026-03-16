@@ -22,7 +22,7 @@ import lv.venta.service.ITestResultCRUDService;
 import lv.venta.service.ITestTaskCRUDService;
 
 @Controller
-@RequestMapping("/testResult/crud")
+@RequestMapping("/admin/testResult/crud")
 public class TestResultCRUDController {
 	
 	@Autowired

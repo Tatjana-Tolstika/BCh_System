@@ -7,10 +7,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import lv.venta.model.CourseTests;
 import lv.venta.model.MyUser;
 import lv.venta.model.Students;
 import lv.venta.model.StudyCourses;
 import lv.venta.model.TestResult;
+import lv.venta.model.TestStatus;
+import lv.venta.repo.ICourseTestRepo;
 import lv.venta.repo.IMyUserRepo;
 import lv.venta.repo.IStudyCourseRepo;
 import lv.venta.repo.ITestResultRepo;
@@ -24,6 +27,8 @@ public class StudentViewServiceImpl implements IStudentViewService{
 	private IMyUserRepo userRepo;
 	@Autowired
 	private ITestResultRepo resultsRepo;
+	@Autowired
+	private ICourseTestRepo testRepo;
 	
 	@Override
 	public List<StudyCourses> coursesForStudent(long studentId) throws Exception{
@@ -48,10 +53,20 @@ public class StudentViewServiceImpl implements IStudentViewService{
 	
 	@Override
 	public List<TestResult> resultsForStudent(long studentId, long testId) throws Exception{
-
 		List<TestResult> results = resultsRepo.findByTaskTestTestIdAndStudentProgramCourseStudentProgramStudentStudentId(testId, studentId);
 		return results;
 	}
 	
+	@Override
+	public List<CourseTests> allTestsByCourseAndStatus(long courseId) throws Exception{
+		StudyCourses course = courseRepo.findById(courseId)
+				.orElseThrow(()-> new Exception("Course not found!"));
+		List<CourseTests> tests = testRepo.findByCourseAndStatus(course, TestStatus.PUBLISHED);
+//		if(tests.isEmpty()) {
+//			throw new Exception("This course has no tests!");
+//		}
+		return tests;
+		
+	}
 
 }

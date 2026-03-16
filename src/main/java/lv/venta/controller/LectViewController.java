@@ -79,7 +79,7 @@ public class LectViewController {
 	@GetMapping("/courses/{courseId}/tests/{testId}/students") //localhost:8081/professor/courses/1/tests/1/students
 	public String getControllerCoursesTestsStudents(@PathVariable(name = "courseId") long courseId,@PathVariable(name = "testId") long testId, Model model) {
 		try {
-			List<Students> allStudents = lectService.allStudentsOfTest(testId);
+			List<Students> allStudents = lectService.allStudentsOfTestResults(testId);
 			Map<Long, Double> allResults = new HashMap<Long, Double>(); //https://www.geeksforgeeks.org/java/map-interface-in-java/
 			//https://www.geeksforgeeks.org/java/map-get-method-in-java-with-examples/
 			for(Students s : allStudents) {
@@ -144,6 +144,8 @@ public class LectViewController {
 	@GetMapping("/courses/{courseId}/tests/{testId}/tasks") //localhost:8081/professor/courses/1/tests/1/tasks
 	public String getControllerTasksOfTest(@PathVariable(name = "courseId") long courseId,@PathVariable(name = "testId") long testId, Model model) {
 		try {
+			CourseTests testFind = testService.retrieveTestById(testId);
+			
 			List<TestTask> allTasks = taskService.selectAllTasksByTest(testId);
 			double totalPoints = lectService.testPointsCounter(testId);
 			System.out.println("Atrasti taski: " + allTasks.size());
@@ -151,6 +153,7 @@ public class LectViewController {
 			model.addAttribute("totalPoints", totalPoints);
 			model.addAttribute("courseId", courseId);
 			model.addAttribute("testId", testId);
+			model.addAttribute("test", testFind);
 		    return "lecturers-courseTestTasks";
 	    
 		}catch(Exception e){
@@ -283,4 +286,27 @@ public class LectViewController {
 	        return "show-error";
 	    }
 	}
+	//--------------------------------------------------------------------------------------------------------------------------
+	@PostMapping("/courses/{courseId}/tests/{testId}/status")
+	public String toggleTestStatus(@PathVariable long courseId,
+	                               @PathVariable long testId,
+	                               Model model) {
+		try {
+	        String message = lectService.controlTestVisibility(testId);
+
+	        if (message != null) {
+	            List<CourseTests> allTests = lectService.allTestsByCourse(courseId);
+	            model.addAttribute("allTests", allTests);
+	            model.addAttribute("courseId", courseId);
+	            model.addAttribute("errorMsg", message);
+	            return "lecturers-courseTests";
+	        }
+
+	        return "redirect:/professor/courses/" + courseId + "/tests";
+	        } catch (Exception e) {
+	        model.addAttribute("package", e.getMessage());
+	        return "show-error";
+	    }
+	}
+	
 }

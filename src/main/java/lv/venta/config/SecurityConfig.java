@@ -43,17 +43,7 @@ public class SecurityConfig {
 				//PROFESSOR PIEEJAMĀS DAĻAS
 				.requestMatchers("/professor/**").hasAuthority("LECT")
 				//ADMIN PIEEJAMĀS DAĻAS
-				.requestMatchers(
-					    "/courses/CRUD/**",
-					    "/courseTests/crud/**",
-					    "/lecturers/crud/**",
-					    "/programs/crud/**",
-					    "/spc/crud/**",
-					    "/studentProgram/crud/**",
-					    "/students/crud/**",
-					    "/testResult/crud/**",
-					    "/testTask/crud/**"
-					).hasAuthority("ADMIN")
+				.requestMatchers("/admin/**").hasAuthority("ADMIN")
 				//STUDENT PIEEJAMĀS DAĻAS
 				.requestMatchers("/student/**").hasAuthority("STUDENT")
 				//---------------------------------------------------------------

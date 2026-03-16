@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import lv.venta.model.CourseTests;
 import lv.venta.model.StudyCourses;
+import lv.venta.model.TestStatus;
 
 public interface ICourseTestRepo extends CrudRepository<CourseTests, Long>{
 
@@ -13,5 +14,7 @@ public interface ICourseTestRepo extends CrudRepository<CourseTests, Long>{
 			StudyCourses course);
 
 	public abstract List<CourseTests> findByCourse(StudyCourses course);
+
+	public abstract List<CourseTests> findByCourseAndStatus(StudyCourses course, TestStatus published);
 
 }

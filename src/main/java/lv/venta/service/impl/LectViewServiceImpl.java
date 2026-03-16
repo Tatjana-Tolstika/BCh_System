@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lv.venta.model.CourseTests;
 import lv.venta.model.Lecturers;
 import lv.venta.model.MyUser;
+import lv.venta.model.StudentProgramCourse;
 import lv.venta.model.Students;
 import lv.venta.model.StudyCourses;
 import lv.venta.model.TestResult;
@@ -20,7 +21,9 @@ import lv.venta.model.TestTask;
 import lv.venta.repo.ICourseTestRepo;
 import lv.venta.repo.ILecturersRepo;
 import lv.venta.repo.IMyUserRepo;
+import lv.venta.repo.IStudentProgramCourseRepo;
 import lv.venta.repo.IStudyCourseRepo;
+import lv.venta.repo.ITestResultRepo;
 import lv.venta.repo.ITestTaskRepo;
 import lv.venta.service.ILectViewService;
 
@@ -36,6 +39,10 @@ public class LectViewServiceImpl implements ILectViewService{
 	private IMyUserRepo userRepo;
 	@Autowired
 	private ITestTaskRepo taskRepo;
+	@Autowired
+	private IStudentProgramCourseRepo spcRepo;
+	@Autowired
+	private ITestResultRepo resultRepo;
 	
 	
 	@Override
@@ -65,7 +72,7 @@ public class LectViewServiceImpl implements ILectViewService{
 	
 	@Transactional
 	@Override
-	public List<Students> allStudentsOfTest(long testId) throws Exception{
+	public List<Students> allStudentsOfTestResults(long testId) throws Exception{
 		CourseTests test = testRepo.findById(testId)
 				.orElseThrow(()-> new Exception("Test not found!"));
 		List<Students> students = new ArrayList<>();
@@ -136,25 +143,56 @@ public class LectViewServiceImpl implements ILectViewService{
 		return counter;
 	}
 	
+	@Transactional
 	@Override
-	public void makeTestVissible(long testId) throws Exception{
-		CourseTests test = testRepo.findById(testId)
-				.orElseThrow(()-> new Exception("Test not found!"));
-		List<TestTask> tasks = taskRepo.findByTest(test);
-		double pointCounter = 0;
-		for (TestTask t: tasks) {
-			pointCounter += t.getMaxPoints();
-		}
-		if(pointCounter == 10.0) {
-			test.setStatus(TestStatus.PUBLISHED);
-			testRepo.save(test);
-		}
+	public String controlTestVisibility(long testId) throws Exception {
+	    CourseTests test = testRepo.findById(testId)
+	            .orElseThrow(() -> new Exception("Test not found!"));
+
+	    if (test.getStatus() == TestStatus.IN_PROCESS) {
+
+	        List<TestTask> tasks = taskRepo.findByTest(test);
+
+	        double pointCounter = 0;
+	        for (TestTask t : tasks) {
+	            pointCounter += t.getMaxPoints();
+	        }
+
+	        if (pointCounter != 10.0) {
+	        	 return "Test cannot be published. Total points must be exactly 10.";
+	        }
+
+	        StudyCourses course = test.getCourse();
+	        List<StudentProgramCourse> studentCourses = spcRepo.findByCourse(course);
+
+	        for (StudentProgramCourse spc : studentCourses) {
+	            for (TestTask task : tasks) {
+	                boolean exists = resultRepo.existsByTaskAndStudentProgramCourse(task, spc);
+
+	                if (!exists) {
+	                    TestResult newResult = new TestResult();
+	                    newResult.setStudentProgramCourse(spc);
+	                    newResult.setTask(task);
+	                    newResult.setMinus(task.getMaxPoints());
+	                    newResult.setComments("");
+	                    resultRepo.save(newResult);
+	                }
+	            }
+	        }
+
+	        test.setStatus(TestStatus.PUBLISHED);
+	        testRepo.save(test);
+	        
+	    }
+	    else if (test.getStatus() == TestStatus.PUBLISHED) {
+	        test.setStatus(TestStatus.IN_PROCESS);
+	        testRepo.save(test);
+	        
+	    }
+	    return null;
 	}
 	
 	//Update testResult can be taken from CRUD service
 	//Adding new tests to the course can be taken from courseTestCRUD service
 
-	
-	
-	
 }

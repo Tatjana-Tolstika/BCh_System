@@ -53,7 +53,7 @@ public class StudentViewController {
 	@GetMapping("/courses/{courseId}/tests") //localhost:8081/student/courses/1/tests
 	public String getControllerCoursesTests(@PathVariable(name = "courseId") long courseId, Model model) {
 		try {
-			List<CourseTests> allTests = lectService.allTestsByCourse(courseId);
+			List<CourseTests> allTests = studentService.allTestsByCourseAndStatus(courseId);
 			System.out.println("Atrasti testi: " + allTests.size());
 			
 			Students studentFind = studentService.getAuthorisedId();

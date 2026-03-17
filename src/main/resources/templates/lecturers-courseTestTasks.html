@@ -45,7 +45,22 @@
             background-color: #95a5a6;
         }
 
-		
+        .btn-edit {
+            text-decoration: none;
+            background-color: #2980b9;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            transition: background 0.2s;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .btn-edit:hover {
+            background-color: #1f6a97;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -103,18 +118,18 @@
 <div class="container">
     <div class="header-area">
         <h1>Test Tasks</h1>
-		<a class="btn-back"
-		   th:if="${test.status.name() == 'IN_PROCESS'}"
-		   th:href="@{/professor/courses/{courseId}/tests/{testId}/tasks/add(courseId=${courseId}, testId=${testId})}">
-		    + Add Task
-		</a>
-		<a type="button" href="#" class="btn-back" onclick="toggleTotal()">Check points</a>
+        <a class="btn-back"
+           th:if="${test.status.name() == 'IN_PROCESS'}"
+           th:href="@{/professor/courses/{courseId}/tests/{testId}/tasks/add(courseId=${courseId}, testId=${testId})}">
+            + Add Task
+        </a>
+        <a type="button" href="#" class="btn-back" onclick="toggleTotal()">Check points</a>
         <a th:href="@{/professor/courses/{courseId}/tests(courseId=${courseId})}" class="btn-back"> ← Back to Tests</a>
-		
     </div>
-	<div id="totalBox" class="empty" style="display:none; margin-top: 0;">
-	  Total points: <strong th:text="${totalPoints}">0</strong>
-	</div>
+
+    <div id="totalBox" class="empty" style="display:none; margin-top: 0;">
+        Total points: <strong th:text="${totalPoints}">0</strong>
+    </div>
 
     <table th:if="${not #lists.isEmpty(allTasks)}">
         <thead>
@@ -122,6 +137,7 @@
                 <th>Description</th>
                 <th>Max Points</th>
                 <th>Notes</th>
+                <th th:if="${test.status.name() == 'IN_PROCESS'}">Edit</th>
             </tr>
         </thead>
         <tbody>
@@ -129,6 +145,15 @@
                 <td class="task-desc" th:text="${tempTT.taskDescription}"></td>
                 <td th:text="${tempTT.maxPoints}"></td>
                 <td class="task-notes" th:text="${tempTT.taskNotes ?: '—'}"></td>
+                <td th:if="${test.status.name() == 'IN_PROCESS'}">
+                    <a class="btn-edit"
+                       th:href="@{/professor/courses/{courseId}/tests/{testId}/tasks/{taskId}/update(
+                                    courseId=${courseId},
+                                    testId=${testId},
+                                    taskId=${tempTT.taskId})}">
+                        Edit
+                    </a>
+                </td>
             </tr>
         </tbody>
     </table>
@@ -140,9 +165,9 @@
 
 </body>
 <script>
-	function toggleTotal() {
-	  const box = document.getElementById("totalBox");
-	  box.style.display = (box.style.display === "none") ? "block" : "none";
-	}
+    function toggleTotal() {
+      const box = document.getElementById("totalBox");
+      box.style.display = (box.style.display === "none") ? "block" : "none";
+    }
 </script>
 </html>

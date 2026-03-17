@@ -308,5 +308,58 @@ public class LectViewController {
 	        return "show-error";
 	    }
 	}
+	//--------------------------------------------------------------------------------------------------------------------------
+	@GetMapping("/courses/{courseId}/tests/{testId}/tasks/{taskId}/update")
+	public String getControllerUpdateTask(@PathVariable(name = "courseId") long courseId,
+	                                      @PathVariable(name = "testId") long testId,
+	                                      @PathVariable(name = "taskId") long taskId,
+	                                      Model model) {
+	    try {
+	        TestTask taskForUpdate = taskService.retrieveTaskById(taskId);
+
+	        model.addAttribute("testTask", taskForUpdate);
+	        model.addAttribute("courseId", courseId);
+	        model.addAttribute("testId", testId);
+	        model.addAttribute("taskId", taskId);
+
+	        return "lecturers-update-testTask";
+	    } catch (Exception e) {
+	        model.addAttribute("package", e.getMessage());
+	        return "show-error";
+	    }
+	}
+	
+	@PostMapping("/courses/{courseId}/tests/{testId}/tasks/{taskId}/update")
+	public String postControllerUpdateTask(@PathVariable long courseId,
+	                                       @PathVariable long testId,
+	                                       @PathVariable long taskId,
+	                                       TestTask testTask,
+	                                       BindingResult result,
+	                                       Model model) {
+	    try {
+
+	        if (result.hasErrors()) {
+	            model.addAttribute("testTask", testTask);
+	            model.addAttribute("courseId", courseId);
+	            model.addAttribute("testId", testId);
+	            model.addAttribute("taskId", taskId);
+	            return "lecturers-update-testTask";
+	        }
+
+	        taskService.updateTaskById(
+	                taskId,
+	                testId,
+	                testTask.getTaskDescription(),
+	                testTask.getMaxPoints(),
+	                testTask.getTaskNotes()
+	        );
+
+	        return "redirect:/professor/courses/" + courseId + "/tests/" + testId + "/tasks";
+
+	    } catch (Exception e) {
+	        model.addAttribute("package", e.getMessage());
+	        return "show-error";
+	    }
+	}
 	
 }

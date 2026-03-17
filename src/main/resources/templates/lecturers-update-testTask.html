@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Update Test Task</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .header-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .btn-back {
+            text-decoration: none;
+            background-color: #7f8c8d;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .btn-back:hover {
+            background-color: #95a5a6;
+        }
+
+        .info-box {
+            background-color: #f8fafc;
+            border: 1px solid #e3e8ee;
+            border-radius: 10px;
+            padding: 16px 18px;
+            margin-bottom: 24px;
+        }
+
+        .info-box p {
+            margin: 8px 0;
+            color: #2c3e50;
+        }
+
+        .form-grid {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .label {
+            width: 180px;
+            font-weight: 600;
+            color: #2c3e50;
+            padding: 12px 10px 12px 0;
+            vertical-align: top;
+        }
+
+        .field {
+            padding: 12px 0;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            max-width: 520px;
+            padding: 10px 12px;
+            border: 1px solid #dcdfe6;
+            border-radius: 8px;
+            outline: none;
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background: #fff;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        textarea:focus {
+            border-color: #2980b9;
+            box-shadow: 0 0 0 3px rgba(41, 128, 185, 0.15);
+        }
+
+        .hint {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            margin-top: 6px;
+        }
+
+        .error {
+            color: #c0392b;
+            font-size: 0.9em;
+            margin-top: 6px;
+        }
+
+        .actions {
+            margin-top: 22px;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .btn-primary {
+            border: none;
+            background-color: #2980b9;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: #1f6a97;
+        }
+
+        .btn-secondary {
+            text-decoration: none;
+            display: inline-block;
+            background-color: #ecf0f1;
+            color: #2c3e50;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e1e6e8;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="header-area">
+        <h1>Update Test Task</h1>
+        <a th:href="@{/professor/courses/{courseId}/tests/{testId}/tasks(
+                        courseId=${courseId},
+                        testId=${testId})}"
+           class="btn-back">← Back</a>
+    </div>
+
+    <div class="info-box" th:if="${testTask != null}">
+        <p>
+            <strong>Test:</strong>
+            <span th:text="${testTask.test.testTitle}">Test Title</span>
+        </p>
+    </div>
+
+    <form th:action="@{/professor/courses/{courseId}/tests/{testId}/tasks/{taskId}/update(
+                        courseId=${courseId},
+                        testId=${testId},
+                        taskId=${taskId})}"
+          th:object="${testTask}"
+          method="post"
+          onsubmit="return validateForm()">
+
+        <input type="hidden" th:field="*{taskId}" />
+
+        <table class="form-grid">
+            <tr>
+                <td class="label">Task Description</td>
+                <td class="field">
+                    <textarea th:field="*{taskDescription}" id="taskDescription"></textarea>
+                    <div class="hint">Minimum 5 characters</div>
+                    <div id="descriptionError" class="error" style="display:none;">
+                        Please enter task description (min 5 chars)!
+                    </div>
+                    <div th:if="${#fields.hasErrors('taskDescription')}" th:errors="*{taskDescription}" class="error"></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="label">Max Points</td>
+                <td class="field">
+                    <input type="number" th:field="*{maxPoints}" id="maxPoints" step="0.01" min="0" />
+                    <div class="hint">Must be greater than 0</div>
+                    <div id="pointsError" class="error" style="display:none;"></div>
+                    <div th:if="${#fields.hasErrors('maxPoints')}" th:errors="*{maxPoints}" class="error"></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="label">Notes</td>
+                <td class="field">
+                    <input type="text" th:field="*{taskNotes}" id="taskNotes" />
+                    <div class="hint">Optional field</div>
+                    <div th:if="${#fields.hasErrors('taskNotes')}" th:errors="*{taskNotes}" class="error"></div>
+                </td>
+            </tr>
+        </table>
+
+        <div class="actions">
+            <a href="javascript:history.back()" class="btn-secondary">Cancel</a>
+            <button type="submit" class="btn-primary">Save Changes</button>
+        </div>
+
+    </form>
+</div>
+
+<script>
+function validateForm() {
+    let valid = true;
+
+    const description = document.getElementById("taskDescription").value.trim();
+    const maxPoints = parseFloat(document.getElementById("maxPoints").value);
+
+    const descriptionError = document.getElementById("descriptionError");
+    const pointsError = document.getElementById("pointsError");
+
+    if (description.length < 5) {
+        descriptionError.style.display = "block";
+        valid = false;
+    } else {
+        descriptionError.style.display = "none";
+    }
+
+    if (isNaN(maxPoints) || maxPoints <= 0) {
+        pointsError.innerText = "Max points must be greater than 0";
+        pointsError.style.display = "block";
+        valid = false;
+    } else {
+        pointsError.style.display = "none";
+    }
+
+    return valid;
+}
+</script>
+
+</body>
+</html>

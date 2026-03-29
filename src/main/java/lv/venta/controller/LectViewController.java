@@ -361,5 +361,21 @@ public class LectViewController {
 	        return "show-error";
 	    }
 	}
+	//--------------------------------------------------------------------------------------
+	// -------------------------------------------ShowStudentFiles--------------------------
+    @GetMapping("/courses/{courseId}/test/{testId}/student/{studentId}/files")
+    public String viewStudentFiles(@PathVariable long testId, @PathVariable long studentId, @PathVariable long courseId, Model model) {
+        try {
+            List<String> files = lectService.getStudentFiles(testId, studentId);
+            model.addAttribute("files", files);
+            model.addAttribute("testId", testId);
+            model.addAttribute("courseId", courseId);
+            model.addAttribute("studentId", studentId);
+            return "lecturer-student-files"; 
+        } catch (Exception e) {
+            model.addAttribute("package", e.getMessage());
+            return "show-error";
+        }
+    }
 	
 }

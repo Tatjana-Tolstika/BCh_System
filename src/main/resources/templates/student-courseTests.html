@@ -89,7 +89,6 @@
             background-color: #f9f9f9;
         }
 
-        /* Stils testa nosaukumam (bez linka) */
         .test-name {
             color: #2c3e50;
             font-weight: 500;
@@ -144,6 +143,7 @@
                 <th>Details</th>
 				<th>Result</th>
 				<th>More</th>
+				<th>Upload ZIP</th>
             </tr>
         </thead>
         <tbody>
@@ -162,6 +162,15 @@
 	                    View Details
 	                </a>
 	            </td>
+				<td>
+                    <form th:action="@{/student/courses/{courseId}/tests/{testId}/upload(courseId=${courseId}, testId=${test.testId})}"
+                          method="post"
+                          enctype="multipart/form-data">
+                        <input type="file" name="file" accept=".zip" required />
+                        <button type="submit" class="btn-upload">Upload</button>
+
+                    </form>
+                </td>
             </tr>
         </tbody>
     </table>

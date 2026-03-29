@@ -1,5 +1,8 @@
 package lv.venta.service.impl;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -195,4 +198,21 @@ public class LectViewServiceImpl implements ILectViewService{
 	//Update testResult can be taken from CRUD service
 	//Adding new tests to the course can be taken from courseTestCRUD service
 
+	@Override
+	public List<String> getStudentFiles(long testId, long studentId) throws Exception {
+	    String folderName = testId + "_" + studentId + "_files";
+	    Path studentFolder = Paths.get("uploads").resolve(folderName);
+
+	    if (!Files.exists(studentFolder)) {
+	        throw new Exception("Student have not submitted any files for this test");
+	    }
+
+	    // Atrod visus failus un pārvērš tos par tekstu
+	    try (var stream = Files.walk(studentFolder)) {
+	        return stream
+	                .filter(Files::isRegularFile)
+	                .map(path -> studentFolder.relativize(path).toString())
+	                .toList();
+	    }
+	}
 }

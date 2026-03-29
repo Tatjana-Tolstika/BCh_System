@@ -1,0 +1,19 @@
+<div class="container">
+    <h2>Student files</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Path</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="file : ${files}">
+                <td th:text="${file}"></td>
+                
+            </tr>
+        </tbody>
+    </table>
+    <br>
+	<a th:href="@{/professor/courses/{courseId}/tests/{testId}/students(courseId=${courseId}, testId=${testId})}">← Back to Students</a>
+</div>

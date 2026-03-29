@@ -95,7 +95,7 @@ public class BChSystemApplication {
 				StudyCourses course1 = new StudyCourses("Programmēšana tīmeklī JAVA", 6);
 				StudyCourses course2 = new StudyCourses("Datu struktūras un algoritmi", 6);
 				StudyCourses course3 = new StudyCourses("Objektorientēta programmēšana", 6);
-				StudyCourses course4 = new StudyCourses("Programmēšna", 3);
+				StudyCourses course4 = new StudyCourses("Programmēšana", 3);
 				StudyCourses course5 = new StudyCourses("Vizuālas programmēšanas valodas", 3);
 				courseRepo.saveAll(Arrays.asList(course1,course2,course3,course4, course5));
 				

@@ -161,6 +161,8 @@
                            resultId=${res.resultId})}">
                         Edit
                     </a>
+					<a th:href="@{/professor/courses/{courseId}/test/{testId}/student/{studentId}/files(courseId=${courseId},testId=${testId}, studentId=${studentId})}" 
+					   class="btn-view">Files</a>
                 </td>
             </tr>
         </tbody>

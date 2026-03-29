@@ -5,11 +5,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import lv.venta.model.CourseTests;
 import lv.venta.model.Students;
@@ -95,6 +99,23 @@ public class StudentViewController {
 			return "show-error";
 		}
 		
+	}
+	//------------------------------------------
+	//------------FilesSending------------------
+	@PostMapping("/courses/{courseId}/tests/{testId}/upload")
+	public String uploadZip(@PathVariable long testId, @PathVariable long courseId, 
+	                        @RequestParam("file") MultipartFile file,
+	                        Authentication auth,
+	                        Model model) {
+	    try {
+	    	model.addAttribute("courseId", courseId);
+	    	model.addAttribute("testId", testId);
+	        studentService.uploadZip(testId, file, auth.getName());
+	    	return "redirect:/student/courses/" + courseId + "/tests";
+	    } catch (Exception e) {
+	        model.addAttribute("package", e.getMessage());
+	        return "show-error";
+	    }
 	}
 	//------------------------------------------
 	

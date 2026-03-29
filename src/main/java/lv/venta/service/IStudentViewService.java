@@ -2,6 +2,8 @@ package lv.venta.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lv.venta.model.CourseTests;
 import lv.venta.model.Students;
 import lv.venta.model.StudyCourses;
@@ -16,6 +18,8 @@ public interface IStudentViewService {
 	public abstract List<TestResult> resultsForStudent(long studentId, long testId) throws Exception;
 
 	public abstract List<CourseTests> allTestsByCourseAndStatus(long courseId) throws Exception;
+
+	public abstract void uploadZip(long testId, MultipartFile file, String username) throws Exception;
 
 
 }

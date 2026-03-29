@@ -1,11 +1,19 @@
 package lv.venta.service.impl;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import lv.venta.model.CourseTests;
 import lv.venta.model.MyUser;
@@ -67,6 +75,73 @@ public class StudentViewServiceImpl implements IStudentViewService{
 //		}
 		return tests;
 		
+	}
+	
+	private void unzip(Path zipFile, Path targetDir) throws Exception {
+	    try (ZipInputStream zis = new ZipInputStream(Files.newInputStream(zipFile))) {
+	        ZipEntry entry;
+	        while ((entry = zis.getNextEntry()) != null) {
+	            
+	            Path newPath = targetDir.resolve(entry.getName()).normalize();
+	            
+	            if (!newPath.startsWith(targetDir)) {
+	                throw new Exception("Drošības kļūda: ZIP fails mēģina rakstīt ārpus mērķa mapes!");
+	            }
+
+	            if (entry.isDirectory()) {
+	                Files.createDirectories(newPath);
+	            } else {
+	                
+	                if (newPath.getParent() != null) {
+	                    Files.createDirectories(newPath.getParent());
+	                }
+	                Files.copy(zis, newPath, StandardCopyOption.REPLACE_EXISTING);
+	            }
+	            zis.closeEntry();
+	        }
+	    }
+	}
+	
+	@Override
+	public void uploadZip(long testId, MultipartFile file, String username) throws Exception {
+	    if (file.isEmpty()) {
+	        throw new Exception("Fails ir tukšs");
+	    }
+
+	    
+	    MyUser user = userRepo.findByUsername(username);
+	    if (user == null || user.getStudent() == null) {
+	        throw new Exception("Students nav atrasts");
+	    }
+	    //sagatavojam ceļu
+	    long studentId = user.getStudent().getStudentId();
+	    String folderName = testId + "_" + studentId + "_files";
+	    Path uploadPath = Paths.get("uploads");
+	    Path studentFolder = uploadPath.resolve(folderName);
+
+	    // tirišanas Ja mape jau eksistē, izdzēšam visu tās saturu
+	    if (Files.exists(studentFolder)) {
+	        // Šī rinda iziet cauri visiem failiem mapē un tos izdzēš
+	        Files.walk(studentFolder)
+	             .sorted((a, b) -> b.compareTo(a)) // vispirms dzēšam failus, tad mapes
+	             .forEach(path -> {
+	                 try {
+	                     Files.delete(path);
+	                 } catch (IOException e) {
+	                     System.err.println("Neizdevās izdzēst: " + path);
+	                 }
+	             });
+	    }
+
+	    // Izveidojam tukšu mapi no jauna
+	    Files.createDirectories(studentFolder);
+
+	    // Saglabājam ZIP
+	    Path zipPath = studentFolder.resolve("submission.zip");
+	    Files.copy(file.getInputStream(), zipPath, StandardCopyOption.REPLACE_EXISTING);
+
+	    unzip(zipPath, studentFolder);
+	    Files.delete(zipPath);
 	}
 
 }

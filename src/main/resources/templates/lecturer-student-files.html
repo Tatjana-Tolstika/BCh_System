@@ -1,19 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Student Files</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .header-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .btn-back {
+            text-decoration: none;
+            background-color: #7f8c8d;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .btn-back:hover {
+            background-color: #95a5a6;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        thead {
+            background-color: #2980b9;
+            color: white;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .file-link {
+            text-decoration: none;
+            color: #2980b9;
+            font-weight: 500;
+        }
+
+        .file-link:hover {
+            text-decoration: underline;
+        }
+
+        .empty {
+            text-align: center;
+            color: #999;
+            margin-top: 30px;
+            padding: 20px;
+            border: 2px dashed #eee;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
 <div class="container">
-    <h2>Student files</h2>
-    <table>
+    <div class="header-area">
+        <h1>Student Files</h1>
+
+        <a th:href="@{/professor/courses/{courseId}/tests/{testId}/students(
+            courseId=${courseId},
+            testId=${testId}
+        )}" class="btn-back">
+            ← Back to Students
+        </a>
+    </div>
+	<div style="margin-bottom: 15px;">
+	    <form method="get"
+	          th:action="@{/professor/courses/{courseId}/tests/{testId}/student/{studentId}/files(
+	                courseId=${courseId},
+	                testId=${testId},
+	                studentId=${studentId}
+	          )}">
+	        
+	        <label for="type">Filter by type:</label>
+
+	        <select name="type" onchange="this.form.submit()">
+	            <option value="">All</option>
+	            <option value="java" th:selected="${selectedType == 'java'}">.java</option>
+	            <option value="py" th:selected="${selectedType == 'py'}">.py</option>
+	            <option value="js" th:selected="${selectedType == 'js'}">.js</option>
+	            <option value="cs" th:selected="${selectedType == 'cs'}">.cs</option>
+	            <option value="html" th:selected="${selectedType == 'html'}">.html</option>
+	            <option value="css" th:selected="${selectedType == 'css'}">.css</option>
+	        </select>
+	    </form>
+	</div>
+
+    <table th:if="${not #lists.isEmpty(files)}">
         <thead>
             <tr>
-                <th>Path</th>
-                <th>Action</th>
+                <th>File</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="file : ${files}">
-                <td th:text="${file}"></td>
-                
+                <td>
+                    <a class="file-link"
+                       th:href="@{/professor/courses/{courseId}/tests/{testId}/student/{studentId}/file/view(
+                            courseId=${courseId},
+                            testId=${testId},
+                            studentId=${studentId},
+                            fileName=${file}
+                       )}"
+                       target="_blank">
+                        <span th:text="${file}"></span>
+                    </a>
+                </td>
             </tr>
         </tbody>
     </table>
-    <br>
-	<a th:href="@{/professor/courses/{courseId}/tests/{testId}/students(courseId=${courseId}, testId=${testId})}">← Back to Students</a>
+
+    <div class="empty" th:if="${#lists.isEmpty(files)}">
+        <p>No files uploaded by student.</p>
+    </div>
+
 </div>
+
+</body>
+</html>

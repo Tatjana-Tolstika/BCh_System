@@ -201,7 +201,7 @@ public class LectViewServiceImpl implements ILectViewService{
 	@Override
 	public List<String> getStudentFiles(long testId, long studentId) throws Exception {
 	    String folderName = testId + "_" + studentId + "_files";
-	    Path studentFolder = Paths.get("uploads").resolve(folderName);
+	    Path studentFolder = Paths.get("uploads").resolve(folderName).normalize();
 
 	    if (!Files.exists(studentFolder)) {
 	        throw new Exception("Student have not submitted any files for this test");

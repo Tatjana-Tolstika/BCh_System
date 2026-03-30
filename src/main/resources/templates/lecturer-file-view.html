@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>File Viewer</title>
+    <style>
+        body {
+            font-family: Consolas, monospace;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        pre {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-bottom: 15px;
+            text-decoration: none;
+            background-color: #7f8c8d;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        .btn-back:hover {
+            background-color: #95a5a6;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2 th:text="${fileName}"></h2>
+
+    <pre th:text="${content}"></pre>
+</div>
+
+</body>
+</html>

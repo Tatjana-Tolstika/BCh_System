@@ -1,10 +1,14 @@
 package lv.venta.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import lv.venta.model.CourseTests;
 import lv.venta.model.Lecturers;
@@ -363,19 +368,68 @@ public class LectViewController {
 	}
 	//--------------------------------------------------------------------------------------
 	// -------------------------------------------ShowStudentFiles--------------------------
-    @GetMapping("/courses/{courseId}/test/{testId}/student/{studentId}/files")
-    public String viewStudentFiles(@PathVariable long testId, @PathVariable long studentId, @PathVariable long courseId, Model model) {
-        try {
-            List<String> files = lectService.getStudentFiles(testId, studentId);
-            model.addAttribute("files", files);
-            model.addAttribute("testId", testId);
-            model.addAttribute("courseId", courseId);
-            model.addAttribute("studentId", studentId);
-            return "lecturer-student-files"; 
-        } catch (Exception e) {
-            model.addAttribute("package", e.getMessage());
-            return "show-error";
+	@GetMapping("/courses/{courseId}/tests/{testId}/student/{studentId}/files")
+	public String viewStudentFiles(@PathVariable long testId,
+	                               @PathVariable long studentId,
+	                               @PathVariable long courseId,
+	                               @RequestParam(required = false) String type,
+	                               Model model) {
+	    try {
+	        List<String> files = lectService.getStudentFiles(testId, studentId);
+
+	        // filtresana pec noteikta faila tipa
+	        if (type != null && !type.isEmpty()) {
+	            files = files.stream()
+	                    .filter(f -> f.toLowerCase().endsWith("." + type))
+	                    .toList();
+	        }
+
+	        model.addAttribute("files", files);
+	        model.addAttribute("selectedType", type); //lai dropdown saglabatu izveli ar faila tipu 
+	        model.addAttribute("testId", testId);
+	        model.addAttribute("courseId", courseId);
+	        model.addAttribute("studentId", studentId);
+
+	        return "lecturer-student-files";
+
+	    } catch (Exception e) {
+	        model.addAttribute("package", e.getMessage());
+	        return "show-error";
+	    }
+	}
+    
+    @GetMapping("/courses/{courseId}/tests/{testId}/student/{studentId}/file/view")
+    public String openFile(@PathVariable long courseId,
+                           @PathVariable long testId,
+                           @PathVariable long studentId,
+                           @RequestParam String fileName,
+                           Model model) throws Exception {
+
+        Path basePath = Paths.get("uploads")
+                .resolve(testId + "_" + studentId + "_files")
+                .normalize();
+
+        Path filePath = basePath.resolve(fileName).normalize();
+
+        //drosiba
+        if (!filePath.startsWith(basePath)) {
+            throw new Exception("Nederīgs faila ceļš!");
         }
+
+        //parbaude
+        if (!Files.exists(filePath)) {
+            throw new Exception("Fails nav atrasts!");
+        }
+
+        String content = Files.readString(filePath);
+
+        model.addAttribute("fileName", fileName);
+        model.addAttribute("content", content);
+        model.addAttribute("courseId", courseId);
+        model.addAttribute("testId", testId);
+        model.addAttribute("studentId", studentId);
+
+        return "lecturer-file-view"; 
     }
 	
 }

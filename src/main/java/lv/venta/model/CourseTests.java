@@ -2,6 +2,7 @@ package lv.venta.model;
 
 
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -57,6 +58,9 @@ public class CourseTests {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "test_status")
 	private TestStatus status;
+	
+	@Column(name = "test_deadline")
+	private LocalDateTime deadline;
 
 	// ----------Table connection-----------------//
 	@ManyToOne

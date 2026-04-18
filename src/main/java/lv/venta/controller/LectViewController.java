@@ -292,12 +292,14 @@ public class LectViewController {
 	    }
 	}
 	//--------------------------------------------------------------------------------------------------------------------------
+
 	@PostMapping("/courses/{courseId}/tests/{testId}/status")
 	public String toggleTestStatus(@PathVariable long courseId,
 	                               @PathVariable long testId,
+	                               @RequestParam(required = false) String deadline,
 	                               Model model) {
-		try {
-	        String message = lectService.controlTestVisibility(testId);
+	    try {
+	        String message = lectService.controlTestVisibility(testId, deadline);
 
 	        if (message != null) {
 	            List<CourseTests> allTests = lectService.allTestsByCourse(courseId);
@@ -308,7 +310,8 @@ public class LectViewController {
 	        }
 
 	        return "redirect:/professor/courses/" + courseId + "/tests";
-	        } catch (Exception e) {
+
+	    } catch (Exception e) {
 	        model.addAttribute("package", e.getMessage());
 	        return "show-error";
 	    }
@@ -397,7 +400,7 @@ public class LectViewController {
 	        return "show-error";
 	    }
 	}
-    
+    //--------------------------------------------------------------------------------------
     @GetMapping("/courses/{courseId}/tests/{testId}/student/{studentId}/file/view")
     public String openFile(@PathVariable long courseId,
                            @PathVariable long testId,
@@ -411,12 +414,10 @@ public class LectViewController {
 
         Path filePath = basePath.resolve(fileName).normalize();
 
-        //drosiba
         if (!filePath.startsWith(basePath)) {
             throw new Exception("Nederīgs faila ceļš!");
         }
 
-        //parbaude
         if (!Files.exists(filePath)) {
             throw new Exception("Fails nav atrasts!");
         }

@@ -22,9 +22,11 @@ public interface ILectViewService {
 
 	public abstract double getStudentResult(long testId, long studentId) throws Exception;
 
-	public abstract String controlTestVisibility(long testId) throws Exception;
+	public abstract String controlTestVisibility(long testId, String testDeadline) throws Exception;
 
 	public abstract List<String> getStudentFiles(long testId, long studentId) throws Exception;
+
+	
 
 
 

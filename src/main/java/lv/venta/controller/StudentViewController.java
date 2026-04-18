@@ -1,5 +1,6 @@
 package lv.venta.controller;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,6 +87,9 @@ public class StudentViewController {
 			System.out.println("Atrasts students: " + studentFind.getStudentName()+ studentFind.getStudentSurname());
 			
 			CourseTests testFind = testService.retrieveTestById(testId);
+			if (testFind.getDeadline() != null && LocalDateTime.now().isAfter(testFind.getDeadline())) {
+			    throw new Exception("Deadline is over. You cannot upload files anymore.");
+			}
 			
 			List<TestResult> results = resultService.selectResultByTestAndStudentId(testId, studentFind.getStudentId());
 			model.addAttribute("studentResults", results);

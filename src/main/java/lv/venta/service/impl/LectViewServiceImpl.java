@@ -3,6 +3,7 @@ package lv.venta.service.impl;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -148,12 +149,25 @@ public class LectViewServiceImpl implements ILectViewService{
 	
 	@Transactional
 	@Override
-	public String controlTestVisibility(long testId) throws Exception {
+	public String controlTestVisibility(long testId, String testDeadline) throws Exception {
 	    CourseTests test = testRepo.findById(testId)
 	            .orElseThrow(() -> new Exception("Test not found!"));
 
 	    if (test.getStatus() == TestStatus.IN_PROCESS) {
 
+	    	//deadline check-------------------------------
+	    	if (testDeadline == null || testDeadline.isEmpty()) {
+	            return "Please select deadline!";
+	        }
+
+	        LocalDateTime deadline = LocalDateTime.parse(testDeadline);
+
+	        if (deadline.isBefore(LocalDateTime.now())) {
+	            return "Deadline must be in the future!";
+	        }
+	        //------------------------------------------------
+	    	
+	    	
 	        List<TestTask> tasks = taskRepo.findByTest(test);
 
 	        double pointCounter = 0;
@@ -184,6 +198,7 @@ public class LectViewServiceImpl implements ILectViewService{
 	        }
 
 	        test.setStatus(TestStatus.PUBLISHED);
+	        test.setDeadline(deadline);
 	        testRepo.save(test);
 	        
 	    }

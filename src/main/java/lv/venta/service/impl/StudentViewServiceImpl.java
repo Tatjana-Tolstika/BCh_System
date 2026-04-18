@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -104,14 +105,22 @@ public class StudentViewServiceImpl implements IStudentViewService{
 	
 	@Override
 	public void uploadZip(long testId, MultipartFile file, String username) throws Exception {
+		
+		CourseTests test = testRepo.findById(testId)
+		        .orElseThrow(() -> new Exception("Test not found"));
+
+		if (test.getDeadline() != null && LocalDateTime.now().isAfter(test.getDeadline())) {
+		    throw new Exception("Deadline is over!");
+		}
+		
 	    if (file.isEmpty()) {
-	        throw new Exception("Fails ir tukšs");
+	        throw new Exception("The file is empty");
 	    }
 
 	    
 	    MyUser user = userRepo.findByUsername(username);
 	    if (user == null || user.getStudent() == null) {
-	        throw new Exception("Students nav atrasts");
+	        throw new Exception("Student is not founded");
 	    }
 	    //sagatavojam ceļu
 	    long studentId = user.getStudent().getStudentId();
@@ -128,7 +137,7 @@ public class StudentViewServiceImpl implements IStudentViewService{
 	                 try {
 	                     Files.delete(path);
 	                 } catch (IOException e) {
-	                     System.err.println("Neizdevās izdzēst: " + path);
+	                     System.err.println("Cannot be deleted: " + path);
 	                 }
 	             });
 	    }

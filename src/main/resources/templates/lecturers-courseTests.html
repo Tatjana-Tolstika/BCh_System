@@ -241,6 +241,19 @@
                 <td class="action-cell">
                     <form th:action="@{/professor/courses/{courseId}/tests/{testId}/status(courseId=${courseId}, testId=${test.testId})}"
                           method="post">
+						  
+						  <!-- JA tests NAV publicēts -->
+						  <div th:if="${test.status.name() == 'IN_PROCESS'}">
+						      <input type="datetime-local" name="deadline" required />
+						  </div>
+
+						  <!-- JA tests IR publicēts -->
+						  <div th:if="${test.status.name() == 'PUBLISHED'}">
+						      <input type="datetime-local"
+						             name="deadline"
+						             th:value="${#temporals.format(test.deadline, 'yyyy-MM-dd HH:mm')}" />
+						  </div>
+						  
                         <button type="submit"
                                 class="btn-toggle"
                                 th:classappend="${test.status.name() == 'PUBLISHED'} ? ' btn-unpublish' : ' btn-publish'"

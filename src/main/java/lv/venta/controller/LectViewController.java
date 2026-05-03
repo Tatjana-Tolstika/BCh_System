@@ -429,8 +429,49 @@ public class LectViewController {
         model.addAttribute("courseId", courseId);
         model.addAttribute("testId", testId);
         model.addAttribute("studentId", studentId);
+        model.addAttribute("tasks", taskService.selectAllTasksByTest(testId)); // -------------------------------------
 
         return "lecturer-file-view"; 
     }
 	
+    //--------------------------------------------------------------------------------------
+    @PostMapping("/courses/{courseId}/tests/{testId}/student/{studentId}/comments/add")
+    public String addLineComment(@PathVariable long courseId,
+                                 @PathVariable long testId,
+                                 @PathVariable long studentId,
+                                 @RequestParam long taskId,
+                                 @RequestParam String comment,
+                                 @RequestParam int minus,
+                                 @RequestParam String lineRange,
+                                 @RequestParam String fileName,
+                                 Model model) {
+        try {
+            List<TestResult> results = resultService.selectResultByTestAndStudentId(testId, studentId);
+
+            TestResult found = results.stream()
+                    .filter(r -> r.getTask().getTaskId() == taskId)
+                    .findFirst()
+                    .orElseThrow(() -> new Exception("Result not found"));
+            
+            String fullComment = "[Lines " + lineRange + "] " + comment;
+
+            resultService.updateTestResultById(
+                    found.getResultId(),
+                    found.getStudentProgramCourse().getStudentProgramCourseId(),
+                    taskId,
+                    fullComment,
+                    minus
+            );
+
+            return "redirect:/professor/courses/" + courseId
+                    + "/tests/" + testId
+                    + "/student/" + studentId
+                    + "/file/view?fileName=" + fileName;
+
+        } catch (Exception e) {
+            model.addAttribute("package", e.getMessage());
+            return "show-error";
+        }
+    }
+    
 }

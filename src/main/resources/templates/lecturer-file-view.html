@@ -4,7 +4,7 @@
     <title>File Viewer</title>
     <style>
         body {
-            font-family: Consolas, monospace;
+            font-family: "Segoe UI", Arial, sans-serif;
             background-color: #f4f6f9;
             margin: 0;
             padding: 0;
@@ -20,17 +20,14 @@
         }
 
         h2 {
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             color: #2c3e50;
         }
 
-        pre {
-            background-color: #2d2d2d;
-            color: #f8f8f2;
-            padding: 15px;
-            border-radius: 8px;
-            overflow-x: auto;
-            white-space: pre-wrap;
+        .hint {
+            font-size: 13px;
+            color: #7f8c8d;
+            margin-bottom: 15px;
         }
 
         .btn-back {
@@ -41,10 +38,183 @@
             color: white;
             padding: 8px 12px;
             border-radius: 6px;
+            font-size: 14px;
         }
 
         .btn-back:hover {
             background-color: #95a5a6;
+        }
+
+        /* Code block */
+        .code-wrapper {
+            background-color: #2d2d2d;
+            border-radius: 8px;
+            padding: 15px 0;
+            overflow-x: auto;
+        }
+
+        .code-line {
+            display: flex;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            padding: 0 15px;
+            white-space: pre;
+            cursor: default;
+        }
+
+        .code-line:hover {
+            background-color: #3a3a3a;
+        }
+
+        .code-line.highlighted {
+            background-color: #4a4000;
+        }
+
+        .line-number {
+            color: #858585;
+            min-width: 40px;
+            text-align: right;
+            margin-right: 20px;
+            user-select: none;
+        }
+
+        .line-text {
+            color: #f8f8f2;
+        }
+
+        /* Right-click menu */
+        #context-menu {
+            position: fixed;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            display: none;
+            z-index: 999;
+        }
+
+        #context-menu button {
+            display: block;
+            width: 100%;
+            padding: 10px 16px;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 14px;
+            cursor: pointer;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: #2c3e50;
+        }
+
+        #context-menu button:hover {
+            background-color: #f0f4f8;
+        }
+
+        /* Dialog */
+        dialog {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            padding: 0;
+            width: 440px;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        dialog::backdrop {
+            background: rgba(0,0,0,0.4);
+        }
+
+        .dialog-header {
+            background-color: #2980b9;
+            color: white;
+            padding: 15px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .dialog-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .dialog-body label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .dialog-body input,
+        .dialog-body select,
+        .dialog-body textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #2c3e50;
+            box-sizing: border-box;
+        }
+
+        .dialog-body textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .selected-lines-box {
+            background-color: #eaf4fb;
+            color: #1a5276;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: Consolas, monospace;
+        }
+
+        .dialog-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding: 14px 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .btn-cancel {
+            background-color: #ecf0f1;
+            color: #2c3e50;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        .btn-cancel:hover {
+            background-color: #dfe6e9;
+        }
+
+        .btn-save {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        .btn-save:hover {
+            background-color: #229954;
         }
     </style>
 </head>
@@ -53,10 +223,195 @@
 
 <div class="container">
 
-    <h2 th:text="${fileName}"></h2>
+    <a class="btn-back"
+       th:href="@{/professor/courses/{courseId}/tests/{testId}/student/{studentId}/files(
+           courseId=${courseId}, testId=${testId}, studentId=${studentId})}">
+        ← Back to Files
+    </a>
 
-    <pre th:text="${content}"></pre>
+    <h2 th:text="${fileName}"></h2>
+    <p class="hint">Highlight lines, then right-click to add a comment.</p>
+
+    <div class="code-wrapper" id="code-wrapper"></div>
+
 </div>
+
+<!-- Right-click menu -->
+<div id="context-menu">
+    <button id="btn-open-dialog">✎ Add Comment</button>
+</div>
+
+<!-- Dialog -->
+<dialog id="comment-dialog">
+    <div class="dialog-header">Add Comment</div>
+
+    <form th:action="@{/professor/courses/{courseId}/tests/{testId}/student/{studentId}/comments/add(
+              courseId=${courseId}, testId=${testId}, studentId=${studentId})}"
+          method="post">
+
+        <input type="hidden" name="lineRange" id="hidden-line-range"/>
+        <input type="hidden" name="fileName"  id="hidden-file-name"/>
+
+        <div class="dialog-body">
+
+            <div>
+                <label>Selected Lines</label>
+                <div class="selected-lines-box" id="label-lines">—</div>
+            </div>
+
+            <div>
+                <label>Task</label>
+                <select name="taskId" required>
+                    <option value="">- Select a task -</option>
+                    <option th:each="task : ${tasks}"
+                            th:value="${task.taskId}"
+                            th:text="${task.taskDescription}">
+                    </option>
+                </select>
+            </div>
+
+            <div>
+                <label>Minus Points</label>
+                <input type="number" name="minus" min="0" value="0" required/>
+            </div>
+
+            <div>
+                <label>Comment</label>
+                <textarea name="comment" placeholder="Write your comment here..." required></textarea>
+            </div>
+
+        </div>
+
+        <div class="dialog-footer">
+            <button type="button" class="btn-cancel" id="btn-cancel">Cancel</button>
+            <button type="submit" class="btn-save">Save</button>
+        </div>
+
+    </form>
+</dialog>
+
+<script th:inline="javascript">
+
+    // Get koda saturu un faila nosaukumu
+    let fileContent = /*[[${content}]]*/ '';
+    let fileName    = /*[[${fileName}]]*/ '';
+
+    // Sadala kodu pa rindām
+    let lines   = fileContent.split('\n');
+    let wrapper = document.getElementById('code-wrapper');
+
+    //Zīmējam koda rindas ar numuriem 
+
+    for (let i = 0; i < lines.length; i++) {
+
+        let lineNumber = i + 1;
+        let lineText   = lines[i];
+
+        // Aizstāj speciālos simbolus lai tie pareizi parādītos
+        lineText = lineText.replace(/&/g, '&amp;');
+        lineText = lineText.replace(/</g, '&lt;');
+        lineText = lineText.replace(/>/g, '&gt;');
+
+        // Izveido jaunu rindu 
+        let div = document.createElement('div');
+        div.className = 'code-line';
+        div.dataset.line = lineNumber;
+        div.innerHTML = '<span class="line-number">' + lineNumber + '</span>'+ '<span class="line-text">' + lineText + '</span>';
+
+        wrapper.appendChild(div);
+    }
+
+    // Paņemam kuras rindas tika iezīmētas 
+
+    let selectedRange = null;
+
+    document.addEventListener('mouseup', function() {
+
+        let selection = window.getSelection();
+
+        if (!selection || selection.isCollapsed) {
+            selectedRange = null;
+            return;
+        }
+
+        // Atrodam rindu kur sākās un beidzās highlight
+        let startLine = selection.anchorNode.parentElement.closest('.code-line');
+        let endLine   = selection.focusNode.parentElement.closest('.code-line');
+
+        if (!startLine || !endLine) {
+            selectedRange = null;
+            return;
+        }
+
+        let startNumber = parseInt(startLine.dataset.line);
+        let endNumber   = parseInt(endLine.dataset.line);
+
+        selectedRange = {
+            start: Math.min(startNumber, endNumber),
+            end:   Math.max(startNumber, endNumber)
+        };
+
+        // Pārkrāsoja  rindas kuras tika izveletas uz dzeltenu
+        let allLines = document.querySelectorAll('.code-line');
+
+        for (let i = 0; i < allLines.length; i++) {
+            let lineNum = parseInt(allLines[i].dataset.line);
+
+            if (lineNum >= selectedRange.start && lineNum <= selectedRange.end) {
+                allLines[i].classList.add('highlighted');
+            } else {
+                allLines[i].classList.remove('highlighted');
+            }
+        }
+    });
+
+    // labā klikšķa izvēlne
+
+    let contextMenu = document.getElementById('context-menu');
+
+    wrapper.addEventListener('contextmenu', function(e) {
+
+        // Ja neko neiezimejam tad nerāda neko
+        if (!selectedRange) return;
+
+        e.preventDefault(); //noņemam noklusēto labo klikķi
+
+        contextMenu.style.display = 'block';
+        contextMenu.style.left    = e.clientX + 'px';
+        contextMenu.style.top     = e.clientY + 'px';
+    });
+
+    document.addEventListener('click', function() {
+        contextMenu.style.display = 'none';
+    });
+
+    // Atveram dialogu
+
+    document.getElementById('btn-open-dialog').addEventListener('click', function() {
+
+        contextMenu.style.display = 'none';
+
+        if (!selectedRange) return;
+
+        let label = '';
+        if (selectedRange.start === selectedRange.end) {
+            label = 'Line ' + selectedRange.start;
+        } else {
+            label = 'Lines ' + selectedRange.start + ' - ' + selectedRange.end;
+        }
+
+        document.getElementById('label-lines').textContent  = label;
+        document.getElementById('hidden-line-range').value  = selectedRange.start + '-' + selectedRange.end;
+        document.getElementById('hidden-file-name').value   = fileName;
+
+        document.getElementById('comment-dialog').showModal();
+    });
+
+    document.getElementById('btn-cancel').addEventListener('click', function() {
+        document.getElementById('comment-dialog').close();
+    });
+
+</script>
 
 </body>
 </html>

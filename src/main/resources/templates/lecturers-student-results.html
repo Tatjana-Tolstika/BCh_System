@@ -25,6 +25,7 @@
             align-items: center;
             margin-bottom: 25px;
             gap: 12px;
+            flex-wrap: wrap;
         }
 
         h1 {
@@ -36,10 +37,12 @@
             display: flex;
             gap: 10px;
             align-items: center;
+            flex-wrap: wrap;
         }
 
-        .btn-back, .btn-edit {
+        .btn-back {
             text-decoration: none;
+            background-color: #7f8c8d;
             color: white;
             padding: 8px 15px;
             border-radius: 6px;
@@ -49,20 +52,24 @@
             white-space: nowrap;
         }
 
-        .btn-back {
-            background-color: #7f8c8d;
-        }
-
         .btn-back:hover {
             background-color: #95a5a6;
         }
 
-        .btn-edit {
-            background-color: #16a085;
+        .btn-logout {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: "Segoe UI", Arial, sans-serif;
         }
 
-        .btn-edit:hover {
-            background-color: #1abc9c;
+        .btn-logout:hover {
+            background-color: #c0392b;
         }
 
         table {
@@ -79,11 +86,11 @@
         th, td {
             padding: 12px 15px;
             text-align: left;
-            vertical-align: top;
+            vertical-align: middle;
         }
 
         th {
-            font-size: 14px;
+            font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
@@ -96,9 +103,13 @@
             background-color: #f9f9f9;
         }
 
+        tr:hover {
+            background-color: #eaf4fb;
+        }
+
         .task-desc {
             color: #2c3e50;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .notes {
@@ -116,8 +127,62 @@
         }
 
         .actions-col {
-            text-align: right;
             white-space: nowrap;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .btn-edit {
+            text-decoration: none;
+            background-color: #16a085;
+            color: white;
+            padding: 7px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            transition: background 0.2s;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .btn-edit:hover {
+            background-color: #1abc9c;
+        }
+
+        .btn-view {
+            text-decoration: none;
+            background-color: #2980b9;
+            color: white;
+            padding: 7px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            transition: background 0.2s;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .btn-view:hover {
+            background-color: #3498db;
+        }
+
+        .points-badge {
+            display: inline-block;
+            background-color: #eaf4fb;
+            color: #1a5276;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .minus-badge {
+            display: inline-block;
+            background-color: #fdecea;
+            color: #a93226;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
         }
     </style>
 </head>
@@ -126,13 +191,16 @@
 
 <div class="container">
     <div class="header-area">
-        <h1 th:text="${studentFind.studentName + ' ' + studentFind.studentSurname} + ' Results'"></h1>
+        <h1 th:text="${studentFind.studentName + ' ' + studentFind.studentSurname + ' Results'}"></h1>
 
         <div class="header-actions">
             <a class="btn-back"
                th:href="@{/professor/courses/{courseId}/tests/{testId}/students(courseId=${courseId}, testId=${testId})}">
                 ← Back to Students
             </a>
+            <form th:action="@{/logout}" method="post" style="margin: 0;">
+                <button type="submit" class="btn-logout">Logout</button>
+            </form>
         </div>
     </div>
 
@@ -149,20 +217,33 @@
         <tbody>
             <tr th:each="res : ${studentResults}">
                 <td class="task-desc" th:text="${res.task.taskDescription}"></td>
-                <td th:text="${res.task.maxPoints}"></td>
+
+                <td>
+                    <span class="points-badge" th:text="${res.task.maxPoints}"></span>
+                </td>
+
                 <td class="notes" th:text="${res.comments ?: '—'}"></td>
-                <td th:text="${res.minus}"></td>
+
+                <td>
+                    <span class="minus-badge" th:text="${res.minus}"></span>
+                </td>
+
                 <td class="actions-col">
                     <a class="btn-edit"
                        th:href="@{/professor/courses/{courseId}/tests/{testId}/students/{studentId}/results/{resultId}/update(
                            courseId=${courseId},
                            testId=${testId},
-						   studentId=${studentId},
+                           studentId=${studentId},
                            resultId=${res.resultId})}">
                         Edit
                     </a>
-					<a th:href="@{/professor/courses/{courseId}/tests/{testId}/student/{studentId}/files(courseId=${courseId},testId=${testId}, studentId=${studentId})}" 
-					   class="btn-view">Files</a>
+                    <a class="btn-view"
+                       th:href="@{/professor/courses/{courseId}/tests/{testId}/student/{studentId}/files(
+                           courseId=${courseId},
+                           testId=${testId},
+                           studentId=${studentId})}">
+                        Files
+                    </a>
                 </td>
             </tr>
         </tbody>

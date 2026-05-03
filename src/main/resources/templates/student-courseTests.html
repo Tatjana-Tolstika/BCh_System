@@ -134,6 +134,9 @@
     <div class="header-area">
         <h1>Tests Results</h1>
         <a th:href="@{/student/courses}" class="btn-back">← Back to Courses</a>
+		<form th:action="@{/logout}" method="post" style="margin: 0;">
+	        <button type="submit" class="btn-logout"> Logout</button>
+		</form>
     </div>
 
     <table th:if="${not #lists.isEmpty(allTests)}">

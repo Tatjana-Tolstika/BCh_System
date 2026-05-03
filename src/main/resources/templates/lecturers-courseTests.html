@@ -49,16 +49,33 @@
 
         .btn-add {
             text-decoration: none;
-            background-color: #7f8c8d;
+            background-color: #27ae60;
             color: white;
             padding: 8px 15px;
             border-radius: 6px;
             font-size: 14px;
+            font-weight: 600;
             transition: background 0.2s;
         }
 
         .btn-add:hover {
-            background-color: #95a5a6;
+            background-color: #229954;
+        }
+
+        .btn-logout {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        .btn-logout:hover {
+            background-color: #c0392b;
         }
 
         table {
@@ -79,7 +96,7 @@
         }
 
         th {
-            font-size: 14px;
+            font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
@@ -92,9 +109,13 @@
             background-color: #f9f9f9;
         }
 
+        tr:hover {
+            background-color: #eaf4fb;
+        }
+
         .test-name {
             color: #2c3e50;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .test-info {
@@ -113,9 +134,9 @@
 
         .btn-view {
             text-decoration: none;
-            background-color: #16a085;
+            background-color: #2980b9;
             color: white;
-            padding: 8px 12px;
+            padding: 7px 12px;
             border-radius: 6px;
             font-size: 13px;
             transition: background 0.2s;
@@ -124,17 +145,12 @@
         }
 
         .btn-view:hover {
-            background-color: #1abc9c;
-        }
-
-        .students-btn {
-            text-align: right;
-            padding-right: 10px;
+            background-color: #3498db;
         }
 
         .status-badge {
             display: inline-block;
-            padding: 6px 10px;
+            padding: 5px 12px;
             border-radius: 999px;
             font-size: 12px;
             font-weight: 600;
@@ -151,15 +167,35 @@
             color: #ca6f1e;
         }
 
+        .action-cell form {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .action-cell input[type="datetime-local"] {
+            padding: 6px 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #2c3e50;
+        }
+
         .btn-toggle {
             color: white;
             border: none;
-            padding: 8px 12px;
+            padding: 7px 14px;
             border-radius: 6px;
             font-size: 13px;
+            font-weight: 600;
             cursor: pointer;
             transition: background 0.2s;
             white-space: nowrap;
+            font-family: "Segoe UI", Arial, sans-serif;
         }
 
         .btn-publish {
@@ -177,10 +213,6 @@
         .btn-unpublish:hover {
             background-color: #a93226;
         }
-
-        .action-cell form {
-            margin: 0;
-        }
     </style>
 </head>
 
@@ -191,11 +223,16 @@
         <h1>Course Tests</h1>
         <a class="btn-add" th:href="@{/professor/courses/{courseId}/tests/add(courseId=${courseId})}">+ Add Test</a>
         <a th:href="@{/professor/courses}" class="btn-back">← Back to Courses</a>
+        <form th:action="@{/logout}" method="post" style="margin: 0;">
+            <button type="submit" class="btn-logout">Logout</button>
+        </form>
     </div>
-	<div th:if="${errorMsg}" 
-	     style="background-color:#fdecea; color:#c0392b; padding:12px; border-radius:8px; margin-bottom:15px;">
-	    <span th:text="${errorMsg}"></span>
-	</div>
+
+    <div th:if="${errorMsg}"
+         style="background-color:#fdecea; color:#c0392b; padding:12px; border-radius:8px; margin-bottom:15px;">
+        <span th:text="${errorMsg}"></span>
+    </div>
+
     <table th:if="${not #lists.isEmpty(allTests)}">
         <thead>
             <tr>
@@ -217,14 +254,14 @@
                     <span th:text="${test.testDescription ?: 'No description available'}"></span>
                 </td>
 
-                <td class="students-btn">
+                <td>
                     <a class="btn-view"
                        th:href="@{/professor/courses/{courseId}/tests/{testId}/students(courseId=${courseId}, testId=${test.testId})}">
                         View Students
                     </a>
                 </td>
 
-                <td class="students-btn">
+                <td>
                     <a class="btn-view"
                        th:href="@{/professor/courses/{courseId}/tests/{testId}/tasks(courseId=${courseId}, testId=${test.testId})}">
                         View Tasks
@@ -241,19 +278,19 @@
                 <td class="action-cell">
                     <form th:action="@{/professor/courses/{courseId}/tests/{testId}/status(courseId=${courseId}, testId=${test.testId})}"
                           method="post">
-						  
-						  <!-- JA tests NAV publicēts -->
-						  <div th:if="${test.status.name() == 'IN_PROCESS'}">
-						      <input type="datetime-local" name="deadline" required />
-						  </div>
 
-						  <!-- JA tests IR publicēts -->
-						  <div th:if="${test.status.name() == 'PUBLISHED'}">
-						      <input type="datetime-local"
-						             name="deadline"
-						             th:value="${#temporals.format(test.deadline, 'yyyy-MM-dd HH:mm')}" />
-						  </div>
-						  
+                        <!-- If test is NOT published -->
+                        <div th:if="${test.status.name() == 'IN_PROCESS'}">
+                            <input type="datetime-local" name="deadline" required />
+                        </div>
+
+                        <!-- If test IS published -->
+                        <div th:if="${test.status.name() == 'PUBLISHED'}">
+                            <input type="datetime-local"
+                                   name="deadline"
+                                   th:value="${#temporals.format(test.deadline, 'yyyy-MM-dd HH:mm')}" />
+                        </div>
+
                         <button type="submit"
                                 class="btn-toggle"
                                 th:classappend="${test.status.name() == 'PUBLISHED'} ? ' btn-unpublish' : ' btn-publish'"

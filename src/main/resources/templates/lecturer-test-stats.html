@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Test Stats</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .header-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .btn-back {
+            text-decoration: none;
+            background-color: #7f8c8d;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .btn-back:hover {
+            background-color: #95a5a6;
+        }
+
+        .stat-box {
+            background-color: #eaf4fb;
+            border: 1px solid #aed6f1;
+            border-radius: 10px;
+            padding: 20px 25px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 42px;
+            font-weight: 700;
+            color: #1a5276;
+        }
+
+        .test-name {
+            font-size: 15px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="header-area">
+        <h1>Test Statistics</h1>
+        <a class="btn-back"
+           th:href="@{/professor/courses/{courseId}/tests(courseId=${courseId})}">
+            ← Back to Tests
+        </a>
+    </div>
+
+    <p class="test-name" th:text="${test.testTitle}"></p>
+
+    <div class="stat-box">
+        <div class="stat-label">Average Score</div>
+        <div class="stat-value" th:text="${average}"></div>
+    </div>
+</div>
+
+</body>
+</html>

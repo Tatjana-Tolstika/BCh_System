@@ -26,6 +26,8 @@ public interface ILectViewService {
 
 	public abstract List<String> getStudentFiles(long testId, long studentId) throws Exception;
 
+	public abstract double getAverageMark(long testId) throws Exception;
+
 	
 
 

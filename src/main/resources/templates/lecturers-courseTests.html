@@ -242,6 +242,7 @@
                 <th>Tasks</th>
                 <th>Status</th>
                 <th>Publish / Unpublish</th>
+				<th>Statistics</th>
             </tr>
         </thead>
         <tbody>
@@ -267,6 +268,7 @@
                         View Tasks
                     </a>
                 </td>
+				
 
                 <td>
                     <span class="status-badge"
@@ -298,6 +300,12 @@
                         </button>
                     </form>
                 </td>
+				<td>
+				    <a class="btn-view"
+				       th:href="@{/professor/courses/{courseId}/tests/{testId}/stats(courseId=${courseId}, testId=${test.testId})}">
+				        View Stats
+				    </a>
+				</td>
             </tr>
         </tbody>
     </table>

@@ -473,5 +473,25 @@ public class LectViewController {
             return "show-error";
         }
     }
-    
+    // -------------------------STATISTIKAI-------------------------------------------------
+    @GetMapping("/courses/{courseId}/tests/{testId}/stats")
+    public String getTestStats(@PathVariable long courseId,
+                               @PathVariable long testId,
+                               Model model) {
+        try {
+            double average = lectService.getAverageMark(testId);
+            CourseTests test = testService.retrieveTestById(testId);
+
+            model.addAttribute("average",  Math.round(average * 10.0) / 10.0);
+            model.addAttribute("test",     test);
+            model.addAttribute("courseId", courseId);
+            model.addAttribute("testId",   testId);
+
+            return "lecturer-test-stats";
+
+        } catch (Exception e) {
+            model.addAttribute("package", e.getMessage());
+            return "show-error";
+        }
+    }
 }

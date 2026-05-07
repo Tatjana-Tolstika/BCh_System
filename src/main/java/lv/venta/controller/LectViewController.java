@@ -407,7 +407,7 @@ public class LectViewController {
                            @PathVariable long studentId,
                            @RequestParam String fileName,
                            Model model) throws Exception {
-
+    	
         Path basePath = Paths.get("uploads")
                 .resolve(testId + "_" + studentId + "_files")
                 .normalize();
@@ -462,11 +462,12 @@ public class LectViewController {
                     fullComment,
                     minus
             );
-
+            String safeFileName = fileName.replace("\\", "%5C");
+            
             return "redirect:/professor/courses/" + courseId
                     + "/tests/" + testId
                     + "/student/" + studentId
-                    + "/file/view?fileName=" + fileName;
+                    + "/file/view?fileName=" + safeFileName;
 
         } catch (Exception e) {
             model.addAttribute("package", e.getMessage());

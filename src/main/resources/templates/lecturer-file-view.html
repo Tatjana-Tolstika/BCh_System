@@ -263,10 +263,12 @@
                 <label>Task</label>
                 <select name="taskId" required>
                     <option value="">- Select a task -</option>
-                    <option th:each="task : ${tasks}"
-                            th:value="${task.taskId}"
-                            th:text="${task.taskDescription}">
-                    </option>
+					<option th:each="task : ${tasks}"
+				            th:value="${task.taskId}"
+				            th:data-max="${task.maxPoints}"
+				            th:text="${task.taskDescription}">
+				    </option>
+					
                 </select>
             </div>
 
@@ -377,8 +379,8 @@
         e.preventDefault(); //noņemam noklusēto labo klikķi
 
         contextMenu.style.display = 'block';
-        contextMenu.style.left    = e.clientX + 'px';
-        contextMenu.style.top     = e.clientY + 'px';
+        contextMenu.style.left = e.clientX + 'px';
+        contextMenu.style.top = e.clientY + 'px';
     });
 
     document.addEventListener('click', function() {

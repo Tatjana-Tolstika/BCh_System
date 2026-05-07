@@ -26,7 +26,6 @@ import lv.venta.repo.ICourseTestRepo;
 import lv.venta.repo.ILecturersRepo;
 import lv.venta.repo.IMyUserRepo;
 import lv.venta.repo.IStudentProgramCourseRepo;
-import lv.venta.repo.IStudentsRepo;
 import lv.venta.repo.IStudyCourseRepo;
 import lv.venta.repo.ITestResultRepo;
 import lv.venta.repo.ITestTaskRepo;
@@ -48,8 +47,7 @@ public class LectViewServiceImpl implements ILectViewService{
 	private IStudentProgramCourseRepo spcRepo;
 	@Autowired
 	private ITestResultRepo resultRepo;
-	@Autowired
-	private IStudentsRepo studentsRepo;
+	
 	@Autowired
 	private CourseTestCRUDServiceImpl courseTestService;
 	
@@ -240,18 +238,25 @@ public class LectViewServiceImpl implements ILectViewService{
 	@Override 
 	public double getAverageMark(long testId) throws Exception{
 		StudyCourses foundCourse = courseTestService.selectCourseByTest(testId);
-		List<StudentProgramCourse> foundedStudents = spcRepo.findByCourse(foundCourse);
-		List<Double> results = new ArrayList<>();
-		int counter = 0;
-		double sum = 0;
-		
-		for(StudentProgramCourse spc : foundedStudents) {
-			results.add(getStudentResult(testId, spc.getStudentProgram().getStudent().getStudentId() ));
-			sum += getStudentResult(testId, spc.getStudentProgram().getStudent().getStudentId() );
-			counter++;
+		CourseTests foundTest = testRepo.findById(testId)
+				.orElseThrow(() -> new Exception("Test not found!"));
+		if(foundTest.getStatus() == TestStatus.IN_PROCESS) {
+			return 0;
 		}
-		
-		return sum / counter;
+		else {
+			List<StudentProgramCourse> foundedStudents = spcRepo.findByCourse(foundCourse);
+			List<Double> results = new ArrayList<>();
+			int counter = 0;
+			double sum = 0;
+			
+			for(StudentProgramCourse spc : foundedStudents) {
+				results.add(getStudentResult(testId, spc.getStudentProgram().getStudent().getStudentId() ));
+				sum += getStudentResult(testId, spc.getStudentProgram().getStudent().getStudentId() );
+				counter++;
+			}
+			
+			return sum / counter;
+		}
 		
 	}
 }

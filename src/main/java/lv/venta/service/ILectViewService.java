@@ -2,6 +2,8 @@ package lv.venta.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lv.venta.model.CourseTests;
 import lv.venta.model.Lecturers;
 import lv.venta.model.Students;
@@ -27,6 +29,8 @@ public interface ILectViewService {
 	public abstract List<String> getStudentFiles(long testId, long studentId) throws Exception;
 
 	public abstract double getAverageMark(long testId) throws Exception;
+
+	public abstract void uploadZipTests(long testId, MultipartFile file) throws Exception;
 
 	
 

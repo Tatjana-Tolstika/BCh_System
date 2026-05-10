@@ -1,5 +1,6 @@
 package lv.venta.service.impl;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import lv.venta.model.CourseTests;
 import lv.venta.model.Lecturers;
@@ -259,4 +261,35 @@ public class LectViewServiceImpl implements ILectViewService{
 		}
 		
 	}
+	//------------------------------------------------------------------------------------
+	@Override
+	public void uploadZipTests(long testId, MultipartFile file) throws Exception {
+		
+		CourseTests test = testRepo.findById(testId)
+		        .orElseThrow(() -> new Exception("Test not found"));
+
+		
+	    if (file.isEmpty()) {
+	        throw new Exception("The file is empty");
+	    }
+
+	    //sagatavojam ceļu
+	    String folderName = testId + "_files";
+	    Path uploadPath = Paths.get("tests_jUnit");
+	    Path testFolder = uploadPath.resolve(folderName);
+
+	    // tirišanas Ja mape jau eksistē, izdzēšam visu tās saturu
+	    if (Files.exists(testFolder)) {
+	        // Šī rinda iziet cauri visiem failiem mapē un tos izdzēš
+	        Files.walk(testFolder)
+	             .sorted((a, b) -> b.compareTo(a)) // vispirms dzēšam failus, tad mapes
+	             .forEach(path -> {
+	                 try {
+	                     Files.delete(path);
+	                 } catch (IOException e) {
+	                     System.err.println("Cannot be deleted: " + path);
+	                 }
+	             });
+	    }
+	    }
 }

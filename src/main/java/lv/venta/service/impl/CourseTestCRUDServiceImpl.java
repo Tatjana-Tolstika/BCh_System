@@ -95,7 +95,6 @@ private IStudyCourseRepo courseRepo;
 		}
 	//=========================================================================
   //-----------------ADDITIONAL----------------------------------------------
-		 //  atgriežam visu sarakstu ar StudyCourses objektiem
 		@Override
 		public List<StudyCourses> selectAllCourse() {
 		    return (List<StudyCourses>) courseRepo.findAll();

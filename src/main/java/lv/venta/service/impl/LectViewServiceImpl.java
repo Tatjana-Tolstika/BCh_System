@@ -4,9 +4,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -223,11 +227,11 @@ public class LectViewServiceImpl implements ILectViewService{
 	    String folderName = testId + "_" + studentId + "_files";
 	    Path studentFolder = Paths.get("uploads").resolve(folderName).normalize();
 
-	    if (!Files.exists(studentFolder)) {
-	        throw new Exception("Student have not submitted any files for this test");
-	    }
+//	    if (!Files.exists(studentFolder)) {
+//	        throw new Exception("Student have not submitted any files for this test");
+//	    }
 
-	    // Atrod visus failus un pārvērš tos par tekstu
+	    // Find files and make them as texts
 	    try (var stream = Files.walk(studentFolder)) {
 	        return stream
 	                .filter(Files::isRegularFile)
@@ -261,7 +265,7 @@ public class LectViewServiceImpl implements ILectViewService{
 		}
 		
 	}
-	//------------------------------------------------------------------------------------
+	//----------------------------Testst files---------------------------------------------
 	@Override
 	public void uploadZipTests(long testId, MultipartFile file) throws Exception {
 		
@@ -273,16 +277,17 @@ public class LectViewServiceImpl implements ILectViewService{
 	        throw new Exception("The file is empty");
 	    }
 
-	    //sagatavojam ceļu
+	    //making paths
 	    String folderName = testId + "_files";
 	    Path uploadPath = Paths.get("tests_jUnit");
 	    Path testFolder = uploadPath.resolve(folderName);
 
-	    // tirišanas Ja mape jau eksistē, izdzēšam visu tās saturu
+	    //????????????DOES IT NEEDED????????????????
+	    // if the folder already exists, delete everything that is inside 
 	    if (Files.exists(testFolder)) {
-	        // Šī rinda iziet cauri visiem failiem mapē un tos izdzēš
+	        
 	        Files.walk(testFolder)
-	             .sorted((a, b) -> b.compareTo(a)) // vispirms dzēšam failus, tad mapes
+	             .sorted((a, b) -> b.compareTo(a)) 
 	             .forEach(path -> {
 	                 try {
 	                     Files.delete(path);
@@ -291,5 +296,98 @@ public class LectViewServiceImpl implements ILectViewService{
 	                 }
 	             });
 	    }
+	    
+	    Files.createDirectories(testFolder);
+
+	    // Save ZIP
+	    Path zipPath = testFolder.resolve("tests.zip");
+	    Files.copy(file.getInputStream(), zipPath, StandardCopyOption.REPLACE_EXISTING);
+
+	    // Open ZIP
+	    unzip(zipPath, testFolder);
+	    Files.delete(zipPath);
+	  }
+	
+	
+	private void unzip(Path zipFile, Path targetDir) throws Exception {
+	    try (ZipInputStream zis = new ZipInputStream(Files.newInputStream(zipFile))) {
+	        ZipEntry entry;
+	        while ((entry = zis.getNextEntry()) != null) {
+	            
+	            Path newPath = targetDir.resolve(entry.getName()).normalize();
+	            
+	            if (!newPath.startsWith(targetDir)) {
+	                throw new Exception("Security error!");
+	            }
+
+	            if (entry.isDirectory()) {
+	                Files.createDirectories(newPath);
+	            } else {
+	                
+	                if (newPath.getParent() != null) {
+	                    Files.createDirectories(newPath.getParent());
+	                }
+	                Files.copy(zis, newPath, StandardCopyOption.REPLACE_EXISTING);
+	            }
+	            zis.closeEntry();
+	        }
 	    }
+	}
+	
+	//---------------for jUnit tests-----------------------------------------------------------
+
+
+	@Override
+	public String runTestsForStudent(long testId, long studentId) throws Exception {
+
+	    Path studentFiles = Paths.get("uploads/" + testId + "_" + studentId + "_files");
+	    Path testFiles = Paths.get("tests_jUnit/" + testId + "_files");
+	    Path junitJar = Paths.get("libs/junit-platform-console-standalone-1.11.4.jar");
+	    Path outputDir = Files.createTempDirectory("junit_out_");
+
+	    
+	    List<String> javaFiles = new ArrayList<>();
+	    Files.walk(studentFiles)
+	         .filter(p -> p.toString().endsWith(".java"))
+	         .map(Path::toString)
+	         .forEach(javaFiles::add);
+	    Files.walk(testFiles)
+	         .filter(p -> p.toString().endsWith(".java"))
+	         .map(Path::toString)
+	         .forEach(javaFiles::add);
+
+	    // Compilatiopn
+	    String compileCmd = "javac -cp " + junitJar.toAbsolutePath()
+	            + " -d " + outputDir.toAbsolutePath()
+	            + " " + String.join(" ", javaFiles);
+
+	    String compileResult = runCommand(compileCmd);
+	    if (!compileResult.isBlank()) {
+	        return "Kompilācijas kļūda: " + compileResult;
+	    }
+
+	    // Tests execution
+	    String testCmd = "java -jar " + junitJar.toAbsolutePath()
+	            + " execute --scan-classpath=" + outputDir.toAbsolutePath()
+	            + " --disable-ansi-colors";
+
+	    return runCommand(testCmd);
+	}
+
+	private String runCommand(String cmd) throws Exception {
+
+	    ProcessBuilder pb;
+
+	    if (System.getProperty("os.name").toLowerCase().contains("win")) { //Check operatingsystem
+	        pb = new ProcessBuilder("cmd.exe", "/c", cmd);
+	    } else {
+	        pb = new ProcessBuilder("bash", "-c", cmd);
+	    }
+
+	    pb.redirectErrorStream(true);
+	    Process process = pb.start();
+	    process.waitFor(30, TimeUnit.SECONDS);
+
+	    return new String(process.getInputStream().readAllBytes());
+	}
 }

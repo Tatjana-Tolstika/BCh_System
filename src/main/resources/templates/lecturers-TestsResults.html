@@ -83,6 +83,43 @@
             border: 2px dashed #eee;
             border-radius: 8px;
         }
+
+        /* Action buttons */
+        .actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .btn-details {
+            text-decoration: none;
+            background-color: #2980b9;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            white-space: nowrap;
+            transition: background 0.2s;
+        }
+
+        .btn-details:hover {
+            background-color: #2471a3;
+        }
+
+        .btn-run {
+            text-decoration: none;
+            background-color: #27ae60;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            white-space: nowrap;
+            transition: background 0.2s;
+        }
+
+        .btn-run:hover {
+            background-color: #229954;
+        }
     </style>
 </head>
 
@@ -91,11 +128,9 @@
 <div class="container">
     <div class="header-area">
         <h1>Students</h1>
-         
         <a th:href="@{/professor/courses/{courseId}/tests(courseId=${courseId})}" class="btn-back">
             ← Back to Tests
         </a>
-       
     </div>
 
     <table th:if="${not #lists.isEmpty(results)}">
@@ -105,7 +140,7 @@
                 <th>Surname</th>
                 <th>Matriculation Nr</th>
                 <th>Result</th>
-				<th>Details</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -114,14 +149,22 @@
                 <td th:text="${tempS.studentSurname}"></td>
                 <td th:text="${tempS.matriculationNr}"></td>
                 <td th:text="${results[tempS.studentId]}"></td>
-				<td><a class="btn-back"
-	                   th:href="@{/professor/courses/{courseId}/tests/{testId}/students/{studentId}/results(
-	                       courseId=${courseId},
-	                       testId=${testId},
-	                       studentId=${tempS.studentId})}">
-	                    View Details
-	                </a>
-	            </td>
+                <td>
+                    <div class="actions">
+                        <a class="btn-details"
+                           th:href="@{/professor/courses/{courseId}/tests/{testId}/students/{studentId}/results(
+                               courseId=${courseId},
+                               testId=${testId},
+                               studentId=${tempS.studentId})}">
+                            View Details
+                        </a>
+                        <a class="btn-run"
+                           th:href="@{/professor/courses/{courseId}/tests/{testId}/students/{studentId}/run-tests(
+                               courseId=${courseId}, testId=${testId}, studentId=${tempS.studentId})}">
+                            Run Tests
+                        </a>
+                    </div>
+                </td>
             </tr>
         </tbody>
     </table>
@@ -129,7 +172,7 @@
     <div class="empty" th:if="${#lists.isEmpty(students)}">
         <p>No students found for this test.</p>
     </div>
-	
+
 </div>
 
 </body>

@@ -1,6 +1,5 @@
 package lv.venta.service;
 
-import java.nio.file.Path;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;

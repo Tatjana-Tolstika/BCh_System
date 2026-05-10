@@ -27,6 +27,7 @@
 		<url/>
 	</scm>
 	<profiles>
+	<!-- For SonarQube -->
 		<profile>
 			<id>coverage</id>
 			<build>
@@ -58,6 +59,7 @@
 				</plugins>
 			</build>
 		</profile>
+		<!-- +++++++++++++++++++++++++ -->
 </profiles>
 	<properties>
 		<java.version>17</java.version>

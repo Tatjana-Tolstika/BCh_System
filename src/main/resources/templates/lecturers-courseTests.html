@@ -11,7 +11,7 @@
         }
 
         .container {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 50px auto;
             background: white;
             padding: 30px;
@@ -19,6 +19,7 @@
             box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
 
+        /* Header  */
         .header-area {
             display: flex;
             justify-content: space-between;
@@ -31,63 +32,60 @@
         h1 {
             color: #2c3e50;
             margin: 0;
+            flex: 1;
         }
 
-        .btn-back {
+        .header-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /*button */
+        .btn {
+            display: inline-block;
             text-decoration: none;
-            background-color: #7f8c8d;
-            color: white;
             padding: 8px 15px;
             border-radius: 6px;
             font-size: 14px;
-            transition: background 0.2s;
-        }
-
-        .btn-back:hover {
-            background-color: #95a5a6;
-        }
-
-        .btn-add {
-            text-decoration: none;
-            background-color: #27ae60;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 600;
-            transition: background 0.2s;
-        }
-
-        .btn-add:hover {
-            background-color: #229954;
-        }
-
-        .btn-logout {
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 6px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background 0.2s;
             font-family: "Segoe UI", Arial, sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s;
+            white-space: nowrap;
         }
 
-        .btn-logout:hover {
-            background-color: #c0392b;
-        }
+        .btn-back    { background-color: #7f8c8d; color: white; }
+        .btn-back:hover { background-color: #95a5a6; }
 
+        .btn-add     { background-color: #27ae60; color: white; }
+        .btn-add:hover { background-color: #229954; }
+
+        .btn-logout  { background-color: #e74c3c; color: white; }
+        .btn-logout:hover { background-color: #c0392b; }
+
+        .btn-view    { background-color: #2980b9; color: white; font-size: 13px; padding: 6px 12px; }
+        .btn-view:hover { background-color: #3498db; }
+
+        .btn-publish   { background-color: #27ae60; color: white; font-size: 13px; padding: 6px 12px; }
+        .btn-publish:hover { background-color: #229954; }
+
+        .btn-unpublish { background-color: #c0392b; color: white; font-size: 13px; padding: 6px 12px; }
+        .btn-unpublish:hover { background-color: #a93226; }
+
+        .btn-upload  { background-color: #8e44ad; color: white; font-size: 13px; padding: 6px 12px; }
+        .btn-upload:hover { background-color: #7d3c98; }
+
+        /*  Table  */
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
         }
 
-        thead {
-            background-color: #2980b9;
-            color: white;
-        }
+        thead { background-color: #2980b9; color: white; }
 
         th, td {
             padding: 12px 15px;
@@ -101,26 +99,57 @@
             letter-spacing: 0.05em;
         }
 
-        tr {
-            border-bottom: 1px solid #ddd;
-        }
+        tr { border-bottom: 1px solid #ddd; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        tr:hover { background-color: #eaf4fb; }
 
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
+        .test-name { color: #2c3e50; font-weight: 600; }
+        .test-info { color: #7f8c8d; font-size: 0.9em; }
 
-        tr:hover {
-            background-color: #eaf4fb;
-        }
-
-        .test-name {
-            color: #2c3e50;
+        /* Status */
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 999px;
+            font-size: 12px;
             font-weight: 600;
+            white-space: nowrap;
+        }
+        .status-published  { background-color: #e8f8f1; color: #1e8449; }
+        .status-in-process { background-color: #fef5e7; color: #ca6f1e; }
+
+        /* Publish form*/
+        .publish-form {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            align-items: flex-start;
         }
 
-        .test-info {
-            color: #7f8c8d;
-            font-size: 0.9em;
+        .publish-form input[type="datetime-local"] {
+            padding: 5px 8px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 12px;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #2c3e50;
+            width: 170px;
+        }
+
+        /*Upload form */
+        .upload-form {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            align-items: flex-start;
+        }
+
+        .upload-form input[type="file"] {
+            font-size: 12px;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: #2c3e50;
+            max-width: 160px;
         }
 
         .empty {
@@ -132,86 +161,12 @@
             border-radius: 8px;
         }
 
-        .btn-view {
-            text-decoration: none;
-            background-color: #2980b9;
-            color: white;
-            padding: 7px 12px;
-            border-radius: 6px;
-            font-size: 13px;
-            transition: background 0.2s;
-            display: inline-block;
-            white-space: nowrap;
-        }
-
-        .btn-view:hover {
-            background-color: #3498db;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 5px 12px;
-            border-radius: 999px;
-            font-size: 12px;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .status-published {
-            background-color: #e8f8f1;
-            color: #1e8449;
-        }
-
-        .status-in-process {
-            background-color: #fef5e7;
-            color: #ca6f1e;
-        }
-
-        .action-cell form {
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .action-cell input[type="datetime-local"] {
-            padding: 6px 10px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 13px;
-            font-family: "Segoe UI", Arial, sans-serif;
-            background-color: #f9f9f9;
-            color: #2c3e50;
-        }
-
-        .btn-toggle {
-            color: white;
-            border: none;
-            padding: 7px 14px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-            white-space: nowrap;
-            font-family: "Segoe UI", Arial, sans-serif;
-        }
-
-        .btn-publish {
-            background-color: #27ae60;
-        }
-
-        .btn-publish:hover {
-            background-color: #229954;
-        }
-
-        .btn-unpublish {
-            background-color: #c0392b;
-        }
-
-        .btn-unpublish:hover {
-            background-color: #a93226;
+        .error-banner {
+            background-color: #fdecea;
+            color: #c0392b;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
         }
     </style>
 </head>
@@ -219,17 +174,21 @@
 <body>
 
 <div class="container">
+
     <div class="header-area">
         <h1>Course Tests</h1>
-        <a class="btn-add" th:href="@{/professor/courses/{courseId}/tests/add(courseId=${courseId})}">+ Add Test</a>
-        <a th:href="@{/professor/courses}" class="btn-back">← Back to Courses</a>
-        <form th:action="@{/logout}" method="post" style="margin: 0;">
-            <button type="submit" class="btn-logout">Logout</button>
-        </form>
+        <div class="header-buttons">
+            <a class="btn btn-add"
+               th:href="@{/professor/courses/{courseId}/tests/add(courseId=${courseId})}">+ Add Test</a>
+            <a class="btn btn-back"
+               th:href="@{/professor/courses}">← Back to Courses</a>
+            <form th:action="@{/logout}" method="post" style="margin:0;">
+                <button type="submit" class="btn btn-logout">Logout</button>
+            </form>
+        </div>
     </div>
 
-    <div th:if="${errorMsg}"
-         style="background-color:#fdecea; color:#c0392b; padding:12px; border-radius:8px; margin-bottom:15px;">
+    <div class="error-banner" th:if="${errorMsg}">
         <span th:text="${errorMsg}"></span>
     </div>
 
@@ -242,33 +201,34 @@
                 <th>Tasks</th>
                 <th>Status</th>
                 <th>Publish / Unpublish</th>
-				<th>Statistics</th>
+                <th>Statistics</th>
+                <th>jUnit</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="test : ${allTests}">
-                <td>
-                    <span class="test-name" th:text="${test.testTitle}"></span>
-                </td>
+
+                <td><span class="test-name" th:text="${test.testTitle}"></span></td>
 
                 <td class="test-info">
                     <span th:text="${test.testDescription ?: 'No description available'}"></span>
                 </td>
 
                 <td>
-                    <a class="btn-view"
-                       th:href="@{/professor/courses/{courseId}/tests/{testId}/students(courseId=${courseId}, testId=${test.testId})}">
+                    <a class="btn btn-view"
+                       th:href="@{/professor/courses/{courseId}/tests/{testId}/students(
+                           courseId=${courseId}, testId=${test.testId})}">
                         View Students
                     </a>
                 </td>
 
                 <td>
-                    <a class="btn-view"
-                       th:href="@{/professor/courses/{courseId}/tests/{testId}/tasks(courseId=${courseId}, testId=${test.testId})}">
+                    <a class="btn btn-view"
+                       th:href="@{/professor/courses/{courseId}/tests/{testId}/tasks(
+                           courseId=${courseId}, testId=${test.testId})}">
                         View Tasks
                     </a>
                 </td>
-				
 
                 <td>
                     <span class="status-badge"
@@ -277,35 +237,45 @@
                     </span>
                 </td>
 
-                <td class="action-cell">
-                    <form th:action="@{/professor/courses/{courseId}/tests/{testId}/status(courseId=${courseId}, testId=${test.testId})}"
+                <td>
+                    <form class="publish-form"
+                          th:action="@{/professor/courses/{courseId}/tests/{testId}/status(
+                              courseId=${courseId}, testId=${test.testId})}"
                           method="post">
 
-                        <!-- If test is NOT published -->
-                        <div th:if="${test.status.name() == 'IN_PROCESS'}">
-                            <input type="datetime-local" name="deadline" required />
-                        </div>
-
-                        <!-- If test IS published -->
-                        <div th:if="${test.status.name() == 'PUBLISHED'}">
-                            <input type="datetime-local"
-                                   name="deadline"
-                                   th:value="${#temporals.format(test.deadline, 'yyyy-MM-dd HH:mm')}" />
-                        </div>
+                        <input type="datetime-local" name="deadline"
+                               th:required="${test.status.name() == 'IN_PROCESS'}"
+                               th:value="${test.status.name() == 'PUBLISHED'} ?
+                                   ${#temporals.format(test.deadline, 'yyyy-MM-dd HH:mm')} : ''" />
 
                         <button type="submit"
-                                class="btn-toggle"
+                                class="btn"
                                 th:classappend="${test.status.name() == 'PUBLISHED'} ? ' btn-unpublish' : ' btn-publish'"
                                 th:text="${test.status.name() == 'PUBLISHED'} ? 'Unpublish' : 'Publish'">
                         </button>
                     </form>
                 </td>
-				<td>
-				    <a class="btn-view"
-				       th:href="@{/professor/courses/{courseId}/tests/{testId}/stats(courseId=${courseId}, testId=${test.testId})}">
-				        View Stats
-				    </a>
-				</td>
+
+                <td>
+                    <a class="btn btn-view"
+                       th:href="@{/professor/courses/{courseId}/tests/{testId}/stats(
+                           courseId=${courseId}, testId=${test.testId})}">
+                        View Stats
+                    </a>
+                </td>
+
+                <td>
+                    <form class="upload-form"
+                          th:action="@{/professor/courses/{courseId}/tests/{testId}/upload-tests(
+                              courseId=${courseId}, testId=${test.testId})}"
+                          method="post" enctype="multipart/form-data">
+                        <input type="file" name="file" accept=".zip" required />
+                        <button type="submit" class="btn btn-upload">Upload</button>
+                    </form>
+					
+                </td>
+				
+
             </tr>
         </tbody>
     </table>
@@ -313,6 +283,7 @@
     <div class="empty" th:if="${#lists.isEmpty(allTests)}">
         <p>No tests found for this course.</p>
     </div>
+
 </div>
 
 </body>

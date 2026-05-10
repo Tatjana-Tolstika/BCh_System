@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
 <head>
-    <title>Course Tests</title>
+    <title>Test Results</title>
     <style>
         body {
             font-family: "Segoe UI", Arial, sans-serif;
@@ -11,7 +11,7 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 50px auto;
             background: white;
             padding: 30px;
@@ -19,84 +19,101 @@
             box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
 
+        /*  Header  */
         .header-area {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 25px;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
-        h1 {
-            color: #2c3e50;
-            margin: 0;
+        h1 { color: #2c3e50; margin: 0; flex: 1; }
+
+        .header-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
         }
 
-        .btn-back {
+        /* Buttons*/
+        .btn {
+            display: inline-block;
             text-decoration: none;
-            background-color: #7f8c8d;
-            color: white;
             padding: 8px 15px;
             border-radius: 6px;
             font-size: 14px;
+            font-family: "Segoe UI", Arial, sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
             transition: background 0.2s;
+            white-space: nowrap;
+            line-height: 1.4;
         }
 
-        .btn-back:hover {
-            background-color: #95a5a6;
-        }
-		
-		.btn-add {
-	        text-decoration: none;
-	        background-color: #7f8c8d;
-	        color: white;
-	        padding: 8px 15px;
-	        border-radius: 6px;
-	        font-size: 14px;
-	        transition: background 0.2s;
-			
-	    }
-	
-	    .btn-add:hover {
-	        background-color: #95a5a6;
-	    }
+        .btn-back    { background-color: #7f8c8d; color: white; }
+        .btn-back:hover { background-color: #95a5a6; }
+
+        .btn-logout  { background-color: #e74c3c; color: white; }
+        .btn-logout:hover { background-color: #c0392b; }
+
+        .btn-view    { background-color: #2980b9; color: white; font-size: 13px; padding: 6px 12px; }
+        .btn-view:hover { background-color: #3498db; }
+
+        .btn-upload  { background-color: #8e44ad; color: white; font-size: 13px; padding: 6px 12px; }
+        .btn-upload:hover { background-color: #7d3c98; }
+
+        /*  Table  */
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
         }
 
-        thead {
-            background-color: #2980b9;
-            color: white;
-        }
+        thead { background-color: #2980b9; color: white; }
 
         th, td {
             padding: 12px 15px;
             text-align: left;
+            vertical-align: middle;
+            white-space: nowrap;
         }
 
         th {
-            font-size: 14px;
+            font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
 
-        tr {
-            border-bottom: 1px solid #ddd;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        .test-name {
-            color: #2c3e50;
-            font-weight: 500;
-        }
-
-        .test-info {
+        td.col-desc {
+            white-space: normal;
+            max-width: 200px;
+            font-size: 13px;
             color: #7f8c8d;
-            font-size: 0.9em;
+        }
+
+        tr { border-bottom: 1px solid #ddd; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        tr:hover { background-color: #eaf4fb; }
+
+        .test-name { color: #2c3e50; font-weight: 600; }
+
+        /*  upload form  */
+        .inline-form {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 6px;
+            margin: 0;
+        }
+
+        .inline-form input[type="file"] {
+            font-size: 12px;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: #2c3e50;
+            max-width: 160px;
         }
 
         .empty {
@@ -107,36 +124,21 @@
             border: 2px dashed #eee;
             border-radius: 8px;
         }
-		.btn-view {
-		    text-decoration: none;
-		    background-color: #16a085;
-		    color: white;
-		    padding: 8px 12px;
-		    border-radius: 6px;
-		    font-size: 13px;
-		    transition: background 0.2s;
-		    display: inline-block;
-		    white-space: nowrap;
-		}
-		.btn-view:hover {
-		    background-color: #1abc9c;
-		}
-		.students-btn {
-		    text-align: right;
-		    padding-right: 10px;
-		}
     </style>
 </head>
 
 <body>
 
 <div class="container">
+
     <div class="header-area">
-        <h1>Tests Results</h1>
-        <a th:href="@{/student/courses}" class="btn-back">← Back to Courses</a>
-		<form th:action="@{/logout}" method="post" style="margin: 0;">
-	        <button type="submit" class="btn-logout"> Logout</button>
-		</form>
+        <h1>Test Results</h1>
+        <div class="header-buttons">
+            <a class="btn btn-back" th:href="@{/student/courses}">← Back to Courses</a>
+            <form th:action="@{/logout}" method="post" style="margin:0;">
+                <button type="submit" class="btn btn-logout">Logout</button>
+            </form>
+        </div>
     </div>
 
     <table th:if="${not #lists.isEmpty(allTests)}">
@@ -144,36 +146,39 @@
             <tr>
                 <th>Test Title</th>
                 <th>Details</th>
-				<th>Result</th>
-				<th>More</th>
-				<th>Upload ZIP</th>
+                <th>Result</th>
+                <th>More</th>
+                <th>Upload ZIP</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="test : ${allTests}">
-                <td>
-                    <span class="test-name" th:text="${test.testTitle}"></span>
-                </td>
-                <td class="test-info">
-                    <span th:text="${test.testDescription ?: 'No description available'}"></span>
-				</td>
-				<td th:text="${results[test.testId]}"></td>
-				<td><a class="btn-view"
-	                   th:href="@{/student/courses/{courseId}/tests/{testId}/results(
-	                       courseId=${courseId},
-	                       testId=${test.testId})}">
-	                    View Details
-	                </a>
-	            </td>
-				<td>
-                    <form th:action="@{/student/courses/{courseId}/tests/{testId}/upload(courseId=${courseId}, testId=${test.testId})}"
-                          method="post"
-                          enctype="multipart/form-data">
-                        <input type="file" name="file" accept=".zip" required />
-                        <button type="submit" class="btn-upload">Upload</button>
 
+                <td><span class="test-name" th:text="${test.testTitle}"></span></td>
+
+                <td class="col-desc"
+                    th:text="${test.testDescription ?: 'No description available'}"></td>
+
+                <td th:text="${results[test.testId]}"></td>
+
+                <td>
+                    <a class="btn btn-view"
+                       th:href="@{/student/courses/{courseId}/tests/{testId}/results(
+                           courseId=${courseId}, testId=${test.testId})}">
+                        View Details
+                    </a>
+                </td>
+
+                <td>
+                    <form class="inline-form"
+                          th:action="@{/student/courses/{courseId}/tests/{testId}/upload(
+                              courseId=${courseId}, testId=${test.testId})}"
+                          method="post" enctype="multipart/form-data">
+                        <input type="file" name="file" accept=".zip" required />
+                        <button type="submit" class="btn btn-upload">Upload</button>
                     </form>
                 </td>
+
             </tr>
         </tbody>
     </table>
@@ -181,6 +186,7 @@
     <div class="empty" th:if="${#lists.isEmpty(allTests)}">
         <p>No tests found for this course.</p>
     </div>
+
 </div>
 
 </body>

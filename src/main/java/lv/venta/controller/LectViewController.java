@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import lv.venta.model.CourseTests;
 import lv.venta.model.Lecturers;
@@ -474,7 +474,7 @@ public class LectViewController {
             return "show-error";
         }
     }
-    // -------------------------STATISTIKAI-------------------------------------------------
+    // -------------------------STATICS-------------------------------------------------
     @GetMapping("/courses/{courseId}/tests/{testId}/stats")
     public String getTestStats(@PathVariable long courseId,
                                @PathVariable long testId,
@@ -495,4 +495,40 @@ public class LectViewController {
             return "show-error";
         }
     }
+    //------------------------------------------------------------------------------------
+    //---------------------jUnit TESTS----------------------------------------------------
+ // ZIP augšupielāde
+    @PostMapping("/courses/{courseId}/tests/{testId}/upload-tests")
+    public String uploadJUnitTests(@PathVariable long courseId,
+                                   @PathVariable long testId,
+                                   @RequestParam("file") MultipartFile file,
+                                   Model model) {
+        try {
+            lectService.uploadZipTests(testId, file);
+            return "redirect:/professor/courses/" + courseId + "/tests";
+        } catch (Exception e) {
+            model.addAttribute("package", e.getMessage());
+            return "show-error";
+        }
+    }
+
+    // Testu izpilde
+    @GetMapping("/courses/{courseId}/tests/{testId}/students/{studentId}/run-tests")
+    public String runJUnitTests(@PathVariable long courseId,
+                                @PathVariable long testId,
+                                @PathVariable long studentId,
+                                Model model) {
+        try {
+            String output = lectService.runTestsForStudent(testId, studentId);
+            model.addAttribute("junitOutput", output);
+            model.addAttribute("courseId", courseId);
+            model.addAttribute("testId", testId);
+            model.addAttribute("studentId", studentId);
+            return "lecturer-junit-results";
+        } catch (Exception e) {
+            model.addAttribute("package", e.getMessage());
+            return "show-error";
+        }
+    }
+    //------------------------------------------------------------------------------------
 }

@@ -32,6 +32,8 @@ public interface ILectViewService {
 
 	public abstract void uploadZipTests(long testId, MultipartFile file) throws Exception;
 
+	public abstract String runTestsForStudent(long testId, long studentId) throws Exception;
+
 	
 
 

@@ -88,7 +88,7 @@ public class StudentViewServiceImpl implements IStudentViewService{
 	            Path newPath = targetDir.resolve(entry.getName()).normalize();
 	            
 	            if (!newPath.startsWith(targetDir)) {
-	                throw new Exception("Drošības kļūda: ZIP fails mēģina rakstīt ārpus mērķa mapes!");
+	                throw new Exception("Security error!");
 	            }
 
 	            if (entry.isDirectory()) {
@@ -124,17 +124,16 @@ public class StudentViewServiceImpl implements IStudentViewService{
 	    if (user == null || user.getStudent() == null) {
 	        throw new Exception("Student is not founded");
 	    }
-	    //sagatavojam ceļu
+	    //making paths
 	    long studentId = user.getStudent().getStudentId();
 	    String folderName = testId + "_" + studentId + "_files";
 	    Path uploadPath = Paths.get("uploads");
 	    Path studentFolder = uploadPath.resolve(folderName);
 
-	    // tirišanas Ja mape jau eksistē, izdzēšam visu tās saturu
 	    if (Files.exists(studentFolder)) {
-	        // Šī rinda iziet cauri visiem failiem mapē un tos izdzēš
+	        
 	        Files.walk(studentFolder)
-	             .sorted((a, b) -> b.compareTo(a)) // vispirms dzēšam failus, tad mapes
+	             .sorted((a, b) -> b.compareTo(a)) //Firstly delete files then folder
 	             .forEach(path -> {
 	                 try {
 	                     Files.delete(path);
@@ -144,10 +143,10 @@ public class StudentViewServiceImpl implements IStudentViewService{
 	             });
 	    }
 
-	    // Izveidojam tukšu mapi no jauna
+	    // Making new folder 
 	    Files.createDirectories(studentFolder);
 
-	    // Saglabājam ZIP
+	    // save ZIP
 	    Path zipPath = studentFolder.resolve("submission.zip");
 	    Files.copy(file.getInputStream(), zipPath, StandardCopyOption.REPLACE_EXISTING);
 

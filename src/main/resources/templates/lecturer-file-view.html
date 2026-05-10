@@ -245,7 +245,7 @@
 <dialog id="comment-dialog">
     <div class="dialog-header">Add Comment</div>
 
-    <form th:action="@{/professor/courses/{courseId}/tests/{testId}/student/{studentId}/comments/add(
+    <form id="comment-form" th:action="@{/professor/courses/{courseId}/tests/{testId}/student/{studentId}/comments/add(
               courseId=${courseId}, testId=${testId}, studentId=${studentId})}"
           method="post">
 
@@ -261,20 +261,21 @@
 
             <div>
                 <label>Task</label>
-                <select name="taskId" required>
+               
+				<select name="taskId" id="select-task" required>
                     <option value="">- Select a task -</option>
-					<option th:each="task : ${tasks}"
-				            th:value="${task.taskId}"
-				            th:data-max="${task.maxPoints}"
-				            th:text="${task.taskDescription}">
-				    </option>
-					
+                    <option th:each="task : ${tasks}"
+                            th:value="${task.taskId}"
+                            th:data-max="${task.maxPoints}"
+                            th:text="${task.taskDescription}">
+                    </option>
                 </select>
             </div>
 
             <div>
                 <label>Minus Points</label>
-                <input type="number" name="minus" min="0" value="0" required/>
+				<input type="number" name="minus" id="input-minus" min="0" value="0" required/>
+				<span id="minus-error" class="error-text"></span>
             </div>
 
             <div>
@@ -294,27 +295,27 @@
 
 <script th:inline="javascript">
 
-    // Get koda saturu un faila nosaukumu
+    // Get file name and code content
     let fileContent = /*[[${content}]]*/ '';
     let fileName    = /*[[${fileName}]]*/ '';
 
-    // Sadala kodu pa rindām
+    // split code by lines 
     let lines   = fileContent.split('\n');
     let wrapper = document.getElementById('code-wrapper');
 
-    //Zīmējam koda rindas ar numuriem 
+    //Code lines with numbers 
 
     for (let i = 0; i < lines.length; i++) {
 
         let lineNumber = i + 1;
         let lineText   = lines[i];
 
-        // Aizstāj speciālos simbolus lai tie pareizi parādītos
+        // Change special symbols
         lineText = lineText.replace(/&/g, '&amp;');
         lineText = lineText.replace(/</g, '&lt;');
         lineText = lineText.replace(/>/g, '&gt;');
 
-        // Izveido jaunu rindu 
+        // Make new line 
         let div = document.createElement('div');
         div.className = 'code-line';
         div.dataset.line = lineNumber;
@@ -323,7 +324,7 @@
         wrapper.appendChild(div);
     }
 
-    // Paņemam kuras rindas tika iezīmētas 
+    // Take highlighted lines
 
     let selectedRange = null;
 
@@ -336,7 +337,7 @@
             return;
         }
 
-        // Atrodam rindu kur sākās un beidzās highlight
+        // Start and End of the selecction
         let startLine = selection.anchorNode.parentElement.closest('.code-line');
         let endLine   = selection.focusNode.parentElement.closest('.code-line');
 
@@ -353,7 +354,7 @@
             end:   Math.max(startNumber, endNumber)
         };
 
-        // Pārkrāsoja  rindas kuras tika izveletas uz dzeltenu
+        // Make highlighted lines yellow
         let allLines = document.querySelectorAll('.code-line');
 
         for (let i = 0; i < allLines.length; i++) {
@@ -367,16 +368,16 @@
         }
     });
 
-    // labā klikšķa izvēlne
+    // right click choice
 
     let contextMenu = document.getElementById('context-menu');
 
     wrapper.addEventListener('contextmenu', function(e) {
 
-        // Ja neko neiezimejam tad nerāda neko
+        // If nothing is highlighted
         if (!selectedRange) return;
 
-        e.preventDefault(); //noņemam noklusēto labo klikķi
+        e.preventDefault(); //Take off default right click 
 
         contextMenu.style.display = 'block';
         contextMenu.style.left = e.clientX + 'px';
@@ -387,7 +388,7 @@
         contextMenu.style.display = 'none';
     });
 
-    // Atveram dialogu
+    // Open dialog
 
     document.getElementById('btn-open-dialog').addEventListener('click', function() {
 
@@ -412,6 +413,47 @@
     document.getElementById('btn-cancel').addEventListener('click', function() {
         document.getElementById('comment-dialog').close();
     });
+	
+	// Validate form before submit
+	    document.getElementById('comment-form').addEventListener('submit', function(e) {
+	 
+	        let valid = true;
+	 
+	        // Get selected task and its max points
+	        let selectTask     = document.getElementById('select-task');
+	        let selectedOption = selectTask.options[selectTask.selectedIndex];
+	        let maxPoints      = parseFloat(selectedOption.getAttribute('data-max'));
+	 
+	        // Get minus value
+	        let minusValue  = parseFloat(document.getElementById('input-minus').value);
+	        let minusError  = document.getElementById('minus-error');
+	 
+	        // Get comment
+	        let commentText  = document.getElementById('input-comment').value.trim();
+	        let commentError = document.getElementById('comment-error');
+	 
+	        // Check minus points
+	        if (isNaN(minusValue) || minusValue < 0 || minusValue > maxPoints) {
+	            minusError.innerText     = 'Minus points must be between 0 and ' + maxPoints;
+	            minusError.style.display = 'block';
+	            valid = false;
+	        } else {
+	            minusError.style.display = 'none';
+	        }
+	 
+	        // Check comment length
+	        if (commentText.length < 5) {
+	            commentError.style.display = 'block';
+	            valid = false;
+	        } else {
+	            commentError.style.display = 'none';
+	        }
+	 
+	        // If not valid - stop form submit
+	        if (!valid) {
+	            e.preventDefault();
+	        }
+	    });
 
 </script>
 

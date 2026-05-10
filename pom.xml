@@ -26,6 +26,39 @@
 		<tag/>
 		<url/>
 	</scm>
+	<profiles>
+		<profile>
+			<id>coverage</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+						<version>0.8.7</version>
+						<executions>
+						<execution>
+						<id>prepare-agent</id>
+						<goals>
+						<goal>prepare-agent</goal>
+						</goals>
+						</execution>
+						<execution>
+						<id>report</id>
+						<goals>
+						<goal>report</goal>
+						</goals>
+						<configuration>
+						<formats>
+						<format>XML</format>
+						</formats>
+						</configuration>
+						</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+</profiles>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -100,6 +133,14 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			
+ 
+	      <plugin>
+	        <groupId>org.sonarsource.scanner.maven</groupId>
+	        <artifactId>sonar-maven-plugin</artifactId>
+	        <version>3.4.0.905</version>
+	      </plugin>
+    
 		</plugins>
 	</build>
 

@@ -380,6 +380,8 @@ public class LectViewServiceImpl implements ILectViewService{
 	         .map(Path::toString)
 	         .forEach(javaFiles::add);
 
+	    checkDangerousCode(studentFiles);
+	    
 	    // Compilatiopn
 	    String compileCmd = "javac -cp " + junitJar.toAbsolutePath()
 	            + " -d " + outputDir.toAbsolutePath()
@@ -413,5 +415,29 @@ public class LectViewServiceImpl implements ILectViewService{
 	    process.waitFor(30, TimeUnit.SECONDS);
 
 	    return new String(process.getInputStream().readAllBytes());
+	}
+	
+	//Checking code safety
+	private void checkDangerousCode(Path folder) throws Exception {
+	    
+	    List<String> forbidden = List.of(
+	        "Runtime", "ProcessBuilder", "exec",
+	        "shutdown", "Files.delete", "format"
+	    );
+
+	    List<Path> javaFiles = new ArrayList<>();
+	    Files.walk(folder)
+	         .filter(p -> p.toString().endsWith(".java"))
+	         .forEach(javaFiles::add);
+
+	    
+	    for (Path file : javaFiles) {
+	        String content = Files.readString(file);
+	        for (String word : forbidden) {
+	            if (content.contains(word)) {
+	                throw new Exception("Dangerous place in code: " + word);
+	            }
+	        }
+	    }
 	}
 }

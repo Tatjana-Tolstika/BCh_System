@@ -482,9 +482,11 @@ public class LectViewController {
         try {
             double average = lectService.getAverageMark(testId);
             CourseTests test = testService.retrieveTestById(testId);
+            List<Double> allMarks = lectService.getAllMarksForTest(testId);
 
             model.addAttribute("average",  Math.round(average * 10.0) / 10.0);
             model.addAttribute("test",     test);
+            model.addAttribute("allMarks", allMarks);
             model.addAttribute("courseId", courseId);
             model.addAttribute("testId",   testId);
 
@@ -497,7 +499,7 @@ public class LectViewController {
     }
     //------------------------------------------------------------------------------------
     //---------------------jUnit TESTS----------------------------------------------------
- // ZIP augšupielāde
+ // ZIP uploading
     @PostMapping("/courses/{courseId}/tests/{testId}/upload-tests")
     public String uploadJUnitTests(@PathVariable long courseId,
                                    @PathVariable long testId,
@@ -512,7 +514,7 @@ public class LectViewController {
         }
     }
 
-    // Testu izpilde
+    // Tests executing
     @GetMapping("/courses/{courseId}/tests/{testId}/students/{studentId}/run-tests")
     public String runJUnitTests(@PathVariable long courseId,
                                 @PathVariable long testId,

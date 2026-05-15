@@ -34,6 +34,8 @@ public interface ILectViewService {
 
 	public abstract String runTestsForStudent(long testId, long studentId) throws Exception;
 
+	public abstract List<Double> getAllMarksForTest(long testId) throws Exception;
+
 	
 
 

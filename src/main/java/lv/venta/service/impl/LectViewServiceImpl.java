@@ -240,6 +240,7 @@ public class LectViewServiceImpl implements ILectViewService{
 	    }
 	}
 	
+//-----------------STATS--------------------------------------------
 	@Transactional
 	@Override 
 	public double getAverageMark(long testId) throws Exception{
@@ -265,6 +266,29 @@ public class LectViewServiceImpl implements ILectViewService{
 		}
 		
 	}
+	
+	@Transactional
+	@Override
+	public List<Double> getAllMarksForTest(long testId) throws Exception {
+	    StudyCourses foundCourse = courseTestService.selectCourseByTest(testId);
+	    CourseTests foundTest = testRepo.findById(testId)
+	            .orElseThrow(() -> new Exception("Test not found!"));
+
+	    if (foundTest.getStatus() == TestStatus.IN_PROCESS) {
+	        return new ArrayList<>();
+	    }
+
+	    List<StudentProgramCourse> foundedStudents = spcRepo.findByCourse(foundCourse);
+	    List<Double> results = new ArrayList<>();
+
+	    for (StudentProgramCourse spc : foundedStudents) {
+	        results.add(getStudentResult(testId,
+	                spc.getStudentProgram().getStudent().getStudentId()));
+	    }
+
+	    return results;
+	}
+	//-------------------------------------------------------------------------------------
 	//----------------------------Testst files---------------------------------------------
 	@Override
 	public void uploadZipTests(long testId, MultipartFile file) throws Exception {

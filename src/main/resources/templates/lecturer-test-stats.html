@@ -2,6 +2,7 @@
 <html xmlns:th="https://www.thymeleaf.org">
 <head>
     <title>Test Stats</title>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: "Segoe UI", Arial, sans-serif;
@@ -96,6 +97,38 @@
         <div class="stat-value" th:text="${average}"></div>
     </div>
 </div>
+<div class="container">
+
+    <canvas id="marksChart" width="500" height="300"></canvas>
+	<!--<p th:text="'Atzīmju skaits: ' + ${#lists.size(allMarks)}">0</p>
+	<p th:text="'Dati: ' + ${allMarks}">nav</p>  DATA CHECKING--> 
+
+</div>
+
+<script th:inline="javascript">
+    const marks = /*[[${allMarks}]]*/ []; //taking all marks
+
+    // Countign how many times the mark appears
+    const counter = {};
+    marks.forEach(a => {
+        const key = Math.floor(a); // 
+        counter[key] = (counter[key] || 0) + 1;
+    });
+
+    //Graph
+    new Chart(document.getElementById("marksChart"), {
+        type: "bar", 
+        data: {
+            labels: Object.keys(counter),   // x : marks
+            datasets: [{
+                label: "Students",
+                data: Object.values(counter), // y : how many students
+                backgroundColor: "rgba(52, 152, 219, 0.7)"
+            }]
+        }
+		
+    });
+</script>
 
 </body>
 </html>

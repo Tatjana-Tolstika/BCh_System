@@ -37,7 +37,7 @@ public class Students {
 	private long studentId;
 	
 	@NotNull
-	@Pattern(regexp="^[A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+([\\s-][A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+)*$",
+	@Pattern(regexp="^[A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+([\\s-][A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]++)*$",
 			  message = "Name must start with a capital letter and contain only letters")
 	@Column(name = "name")
 	private String studentName;

@@ -53,10 +53,8 @@ public class TestResultCRUDServiceImpl implements ITestResultCRUDService{
 		if(id < 0) {
 			throw new Exception("Choose correct ID!");
 		}
-		if(!resultRepo.existsById(id)) {
-			throw new Exception("Result with ID [ " + id + " ] doesn't exists!");
-		}
-		TestResult retrievedResult = resultRepo.findById(id).get();
+		TestResult retrievedResult = resultRepo.findById(id)
+				.orElseThrow(() -> new Exception("Result with ID [ " + id + " ] doesn't exist!"));
 		
 		return retrievedResult;
 	}

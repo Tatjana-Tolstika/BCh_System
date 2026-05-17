@@ -37,10 +37,8 @@ private IStudyCourseRepo courseRepo;
 			if(id < 0) {
 				throw new Exception("Choose correect ID!");
 			}
-			if(!courseRepo.existsById(id)) {
-				throw new Exception("Course with ID [ " + id + " ] doesn't exists!");
-			}
-			StudyCourses retrievedCourse = courseRepo.findById(id).get();
+			StudyCourses retrievedCourse = courseRepo.findById(id)
+					.orElseThrow(() -> new Exception("Course with ID [ " + id + " ] doesn't exist!"));
 			
 			return retrievedCourse;
 		}

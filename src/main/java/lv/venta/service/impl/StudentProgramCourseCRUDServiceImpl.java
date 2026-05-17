@@ -50,10 +50,8 @@ public class StudentProgramCourseCRUDServiceImpl implements IStudentProgramCours
 		if(id < 0) {
 			throw new Exception("Choose correct ID!");
 		}
-		if(!spcRepo.existsById(id)) {
-			throw new Exception("student program course with ID [ " + id + " ] doesn't exists!");
-		}
-		StudentProgramCourse retrievedResult = spcRepo.findById(id).get();
+		StudentProgramCourse retrievedResult = spcRepo.findById(id)
+				.orElseThrow(() -> new Exception("Student Program Course with ID [ " + id + " ] doesn't exist!"));
 		
 		return retrievedResult;
 	}

@@ -19,7 +19,7 @@ public class LecturersCRUDServicecImpl implements ILecturersCRUDService{
 		@Override
 		public void createLecturer(String name, String surname, String degree ) throws Exception {
 			if(name == null || surname == null || degree == null 
-					|| !name.matches("^[A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+([\\s-][A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+)*$")
+					|| !name.matches("^[A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+([\\s-][A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]++)*$")
 					|| !surname.matches("[A-Z]{1}[a-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž]+")){
 				throw new Exception("Incorrect input parameters!");
 			}
@@ -39,10 +39,8 @@ public class LecturersCRUDServicecImpl implements ILecturersCRUDService{
 			if(id < 0) {
 				throw new Exception("Choose correct ID!");
 			}
-			if(!lecturersRepo.existsById(id)) {
-				throw new Exception("Lecturer with ID [ " + id + " ] doesn't exists!");
-			}
-			Lecturers retrievedLecturer = lecturersRepo.findById(id).get();
+			Lecturers retrievedLecturer = lecturersRepo.findById(id)
+					.orElseThrow(() -> new Exception("Lecturer with ID [ " + id + " ] doesn't exist!"));
 			
 			return retrievedLecturer;
 		}
@@ -51,7 +49,7 @@ public class LecturersCRUDServicecImpl implements ILecturersCRUDService{
 		@Override 
 		public void updateLecturerById(long id,String name, String surname, String degree) throws Exception{
 			Lecturers lecturerForUpdate = retrieveLecturerById(id);
-			if(name == null || surname == null ||!name.matches("[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž]+")
+			if(name == null || surname == null ||!name.matches("^[A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+([\\s-][A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]++)*$")
 					|| !surname.matches("[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž]+") || degree == null ) {
 				throw new Exception ("Incorrect input parameters!");
 			}

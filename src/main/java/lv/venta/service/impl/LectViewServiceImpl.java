@@ -1,6 +1,7 @@
 package lv.venta.service.impl;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -57,6 +59,9 @@ public class LectViewServiceImpl implements ILectViewService{
 	@Autowired
 	private CourseTestCRUDServiceImpl courseTestService;
 	
+	private static String filesForFunc = "_files";
+	private static String javaForFunc = ".java";
+	
 	
 	@Override
 	public List<StudyCourses> allCoursesForLecturer(long lectId) throws Exception{
@@ -64,10 +69,7 @@ public class LectViewServiceImpl implements ILectViewService{
 	        .orElseThrow(() -> new Exception("Lecturer not found!"));
 	
 	    List<StudyCourses> courses = coursesRepo.findByLecturers(lecturer);
-	
-//	    if(courses.isEmpty())
-//	        throw new Exception("This lecturer has no courses");
-	
+
 	    return courses;
 	}
 	
@@ -76,9 +78,7 @@ public class LectViewServiceImpl implements ILectViewService{
 		StudyCourses course = coursesRepo.findById(courseId)
 				.orElseThrow(()-> new Exception("Course not found!"));
 		List<CourseTests> tests = testRepo.findByCourse(course);
-//		if(tests.isEmpty()) {
-//			throw new Exception("This course has no tests!");
-//		}
+
 		return tests;
 		
 	}
@@ -101,9 +101,7 @@ public class LectViewServiceImpl implements ILectViewService{
 				}
 			}
 		}
-//		if (students.isEmpty()) {
-//	        throw new Exception("No students have taken this test");
-//	    }
+
 		
 		return students;
 	}
@@ -224,12 +222,9 @@ public class LectViewServiceImpl implements ILectViewService{
 
 	@Override
 	public List<String> getStudentFiles(long testId, long studentId) throws Exception {
-	    String folderName = testId + "_" + studentId + "_files";
+	    String folderName = testId + "_" + studentId + filesForFunc;
 	    Path studentFolder = Paths.get("uploads").resolve(folderName).normalize();
 
-//	    if (!Files.exists(studentFolder)) {
-//	        throw new Exception("Student have not submitted any files for this test");
-//	    }
 
 	    // Find files and make them as texts
 	    try (var stream = Files.walk(studentFolder)) {
@@ -269,10 +264,15 @@ public class LectViewServiceImpl implements ILectViewService{
 	
 	@Transactional
 	@Override
-	public List<Double> getAllMarksForTest(long testId) throws Exception {
-	    StudyCourses foundCourse = courseTestService.selectCourseByTest(testId);
+	public List<Double> getAllMarksForTest(long testId) throws IOException {
+		StudyCourses foundCourse;
+		try {
+			 foundCourse = courseTestService.selectCourseByTest(testId);
+		} catch (Exception e) {
+		    throw new IOException("Course not found for test: " + testId, e);
+		}
 	    CourseTests foundTest = testRepo.findById(testId)
-	            .orElseThrow(() -> new Exception("Test not found!"));
+	            .orElseThrow(() -> new IOException("Test not found!"));
 
 	    if (foundTest.getStatus() == TestStatus.IN_PROCESS) {
 	        return new ArrayList<>();
@@ -282,8 +282,12 @@ public class LectViewServiceImpl implements ILectViewService{
 	    List<Double> results = new ArrayList<>();
 
 	    for (StudentProgramCourse spc : foundedStudents) {
-	        results.add(getStudentResult(testId,
-	                spc.getStudentProgram().getStudent().getStudentId()));
+	        try {
+				results.add(getStudentResult(testId,
+				        spc.getStudentProgram().getStudent().getStudentId()));
+			} catch (Exception e) {
+				throw new IOException("Failed to get student result", e);
+			}
 	    }
 
 	    return results;
@@ -291,34 +295,31 @@ public class LectViewServiceImpl implements ILectViewService{
 	//-------------------------------------------------------------------------------------
 	//----------------------------Testst files---------------------------------------------
 	@Override
-	public void uploadZipTests(long testId, MultipartFile file) throws Exception {
+	public void uploadZipTests(long testId, MultipartFile file) throws IOException {
 		
-		CourseTests test = testRepo.findById(testId)
-		        .orElseThrow(() -> new Exception("Test not found"));
-
 		
 	    if (file.isEmpty()) {
-	        throw new Exception("The file is empty");
+	        throw new IOException("The file is empty");
 	    }
 
 	    //making paths
-	    String folderName = testId + "_files";
+	    String folderName = testId + filesForFunc;
 	    Path uploadPath = Paths.get("tests_jUnit");
 	    Path testFolder = uploadPath.resolve(folderName);
 
-	    //????????????DOES IT NEEDED????????????????
-	    // if the folder already exists, delete everything that is inside 
 	    if (Files.exists(testFolder)) {
 	        
-	        Files.walk(testFolder)
-	             .sorted((a, b) -> b.compareTo(a)) 
-	             .forEach(path -> {
-	                 try {
-	                     Files.delete(path);
-	                 } catch (IOException e) {
-	                     System.err.println("Cannot be deleted: " + path);
-	                 }
-	             });
+	    	try (Stream<Path> stream = Files.walk(testFolder)) {
+	            stream.sorted((a, b) -> b.compareTo(a))
+	                  .forEach(path -> {
+	                      try {
+	                          Files.delete(path);
+	                      } catch (IOException e) {
+	                          throw new UncheckedIOException(
+	                              "Cannot be deleted: " + path, e);
+	                      }
+	                  });
+	        }
 	    }
 	    
 	    Files.createDirectories(testFolder);
@@ -333,17 +334,18 @@ public class LectViewServiceImpl implements ILectViewService{
 	  }
 	
 	
-	private void unzip(Path zipFile, Path targetDir) throws Exception {
+	private void unzip(Path zipFile, Path targetDir) throws IOException {
 	    try (ZipInputStream zis = new ZipInputStream(Files.newInputStream(zipFile))) {
 	        ZipEntry entry;
 	        while ((entry = zis.getNextEntry()) != null) {
 	            
 	            Path newPath = targetDir.resolve(entry.getName()).normalize();
 	            
-	            if (!newPath.startsWith(targetDir)) {
-	                throw new Exception("Security error!");
+	            if (!newPath.startsWith(targetDir.normalize())) {
+	            	throw new SecurityException(
+	                        "Zip Slip attack detected: " + entry.getName());
 	            }
-
+	          
 	            if (entry.isDirectory()) {
 	                Files.createDirectories(newPath);
 	            } else {
@@ -362,24 +364,30 @@ public class LectViewServiceImpl implements ILectViewService{
 
 
 	@Override
-	public String runTestsForStudent(long testId, long studentId) throws Exception {
+	public String runTestsForStudent(long testId, long studentId) throws IOException, InterruptedException {
 
-	    Path studentFiles = Paths.get("uploads/" + testId + "_" + studentId + "_files");
-	    Path testFiles = Paths.get("tests_jUnit/" + testId + "_files");
+	    Path studentFiles = Paths.get("uploads/" + testId + "_" + studentId + filesForFunc);
+	    Path testFiles = Paths.get("tests_jUnit/" + testId + filesForFunc);
 	    Path junitJar = Paths.get("libs/junit-platform-console-standalone-1.11.4.jar");
 	    Path outputDir = Files.createTempDirectory("junit_out_");
 
-	    
 	    List<String> javaFiles = new ArrayList<>();
-	    Files.walk(studentFiles)
-	         .filter(p -> p.toString().endsWith(".java"))
-	         .map(Path::toString)
-	         .forEach(javaFiles::add);
-	    Files.walk(testFiles)
-	         .filter(p -> p.toString().endsWith(".java"))
-	         .map(Path::toString)
-	         .forEach(javaFiles::add);
 
+
+	    try (Stream<Path> studentStream = Files.walk(studentFiles);
+	    	     Stream<Path> testStream = Files.walk(testFiles)) {
+
+	    	    studentStream
+	    	        .filter(p -> p.toString().endsWith(javaForFunc))
+	    	        .map(p -> p.toAbsolutePath().toString())
+	    	        .forEach(javaFiles::add);
+
+	    	    testStream
+	    	        .filter(p -> p.toString().endsWith(javaForFunc))
+	    	        .map(p -> p.toAbsolutePath().toString())
+	    	        .forEach(javaFiles::add);
+	    	}
+	    
 	    checkDangerousCode(studentFiles);
 	    
 	    // Compilatiopn
@@ -400,7 +408,7 @@ public class LectViewServiceImpl implements ILectViewService{
 	    return runCommand(testCmd);
 	}
 
-	private String runCommand(String cmd) throws Exception {
+	private String runCommand(String cmd) throws InterruptedException, IOException {
 
 	    ProcessBuilder pb;
 
@@ -418,7 +426,7 @@ public class LectViewServiceImpl implements ILectViewService{
 	}
 	
 	//Checking code safety
-	private void checkDangerousCode(Path folder) throws Exception {
+	private void checkDangerousCode(Path folder) throws IOException {
 	    
 	    List<String> forbidden = List.of(
 	        "Runtime", "ProcessBuilder", "exec",
@@ -426,16 +434,16 @@ public class LectViewServiceImpl implements ILectViewService{
 	    );
 
 	    List<Path> javaFiles = new ArrayList<>();
-	    Files.walk(folder)
-	         .filter(p -> p.toString().endsWith(".java"))
-	         .forEach(javaFiles::add);
-
+	    try (Stream<Path> stream = Files.walk(folder)) {
+	        stream.filter(p -> p.toString().endsWith(javaForFunc))
+	              .forEach(javaFiles::add);
+	    }
 	    
 	    for (Path file : javaFiles) {
 	        String content = Files.readString(file);
 	        for (String word : forbidden) {
 	            if (content.contains(word)) {
-	                throw new Exception("Dangerous place in code: " + word);
+	                throw new SecurityException("Dangerous place in code: " + word);
 	            }
 	        }
 	    }

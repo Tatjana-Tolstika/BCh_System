@@ -1,5 +1,6 @@
 package lv.venta.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -30,11 +31,11 @@ public interface ILectViewService {
 
 	public abstract double getAverageMark(long testId) throws Exception;
 
-	public abstract void uploadZipTests(long testId, MultipartFile file) throws Exception;
+	public abstract void uploadZipTests(long testId, MultipartFile file) throws IOException;
 
-	public abstract String runTestsForStudent(long testId, long studentId) throws Exception;
+	public abstract String runTestsForStudent(long testId, long studentId) throws IOException, InterruptedException;
 
-	public abstract List<Double> getAllMarksForTest(long testId) throws Exception;
+	public abstract List<Double> getAllMarksForTest(long testId) throws IOException;
 
 	
 

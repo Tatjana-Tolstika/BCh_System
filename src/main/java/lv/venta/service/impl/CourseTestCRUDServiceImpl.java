@@ -42,10 +42,9 @@ private IStudyCourseRepo courseRepo;
 			if(id < 0) {
 				throw new Exception("Choose correct ID!");
 			}
-			CourseTests retrievedTest = testRepo.findById(id)
-					.orElseThrow(() -> new Exception("Test with ID [ " + id + " ] doesn't exist!"));
 			
-			return retrievedTest;
+			return testRepo.findById(id)
+					.orElseThrow(() -> new Exception("Test with ID [ " + id + " ] doesn't exist!"));
 		}
 	//------------------------------------------------------------------------------------
 	//---------------UPDATE---------------------------------------------------------------

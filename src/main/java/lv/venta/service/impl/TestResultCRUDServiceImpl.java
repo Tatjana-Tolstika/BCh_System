@@ -53,10 +53,9 @@ public class TestResultCRUDServiceImpl implements ITestResultCRUDService{
 		if(id < 0) {
 			throw new Exception("Choose correct ID!");
 		}
-		TestResult retrievedResult = resultRepo.findById(id)
-				.orElseThrow(() -> new Exception("Result with ID [ " + id + " ] doesn't exist!"));
 		
-		return retrievedResult;
+		return resultRepo.findById(id)
+				.orElseThrow(() -> new Exception("Result with ID [ " + id + " ] doesn't exist!"));
 	}
 	
 	
@@ -80,13 +79,6 @@ public class TestResultCRUDServiceImpl implements ITestResultCRUDService{
 	    TestTask task = taskRepo.findById(taskId)
 	            .orElseThrow(() -> new Exception("Task not found"));
 
-//	    if (
-//	        !(result.getStudentProgramCourse().getStudentProgramCourseId() == studentProgramCourseId
-//	          && result.getTask().getTaskId() == taskId)
-//	        && resultRepo.existsByTaskAndStudentProgramCourse(task, spc)
-//	    ) {
-//	        throw new Exception("This student already has a result for this task");
-//	    }
 
 	    if (result.getStudentProgramCourse() == null ||
 	        result.getStudentProgramCourse().getStudentProgramCourseId() != studentProgramCourseId) {

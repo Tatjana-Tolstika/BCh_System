@@ -47,10 +47,8 @@ public class TestTaskCRUDServiceImpl implements ITestTaskCRUDService{
 			if(!taskRepo.existsById(id)) {
 				throw new Exception("Task with ID [ " + id + " ] doesn't exists!");
 			}
-			TestTask retrievedTask = taskRepo.findById(id)
+			return taskRepo.findById(id)
 					.orElseThrow(() -> new Exception("Task with ID [ " + id + " ] doesn't exist!"));
-			
-			return retrievedTask;
 		}
 		//------------------------------------------------------------------------------------
 		//---------------UPDATE---------------------------------------------------------------
@@ -103,9 +101,6 @@ public class TestTaskCRUDServiceImpl implements ITestTaskCRUDService{
 
 		    ArrayList<TestTask> tasks = taskRepo.findByTest(test);
 
-//		    if (tasks.isEmpty()) {
-//		        throw new Exception("This test has no tasks");
-//		    }
 
 		    return tasks;
 		}

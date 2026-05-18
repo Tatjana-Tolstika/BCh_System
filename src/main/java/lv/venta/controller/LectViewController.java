@@ -46,6 +46,9 @@ public class LectViewController {
 	private ITestResultCRUDService resultService;
 	@Autowired
 	private IStudentsCRUDService studentService;
+	
+	private static  String redirectLink = "redirect:/professor/courses/";
+	private static  String testForLink = "/tests";
 	//-------------AllCourses-------------------
 	@GetMapping("/courses") //localhost:8081/professor/courses
 	public String getControllerAllProfessorCourses(Model model) {
@@ -136,7 +139,7 @@ public class LectViewController {
 	        }
 
 	        testService.createCourseTest(courseTest.getTestTitle(), courseTest.getTestDescription(), courseTest.getPoints(), courseFind);
-	        return "redirect:/professor/courses/" + courseId + "/tests";
+	        return redirectLink + courseId + testForLink;
 	    } catch(Exception e) {
 	        model.addAttribute("package", e.getMessage());
 	        return "show-error";
@@ -281,7 +284,7 @@ public class LectViewController {
 
 	        resultService.updateTestResultById(resultId, existingResult.getStudentProgramCourse().getStudentProgramCourseId(), existingResult.getTask().getTaskId() , existingResult.getComments(), existingResult.getMinus());
 
-	        return "redirect:/professor/courses/" + courseId
+	        return redirectLink + courseId
 	                + "/tests/" + testId
 	                + "/students/" + studentId
 	                + "/results";
@@ -309,7 +312,7 @@ public class LectViewController {
 	            return "lecturers-courseTests";
 	        }
 
-	        return "redirect:/professor/courses/" + courseId + "/tests";
+	        return redirectLink + courseId + testForLink;
 
 	    } catch (Exception e) {
 	        model.addAttribute("package", e.getMessage());
@@ -362,7 +365,7 @@ public class LectViewController {
 	                testTask.getTaskNotes()
 	        );
 
-	        return "redirect:/professor/courses/" + courseId + "/tests/" + testId + "/tasks";
+	        return redirectLink + courseId + "/tests/" + testId + "/tasks";
 
 	    } catch (Exception e) {
 	        model.addAttribute("package", e.getMessage());
@@ -464,7 +467,7 @@ public class LectViewController {
             );
             String safeFileName = fileName.replace("\\", "%5C");
             
-            return "redirect:/professor/courses/" + courseId
+            return redirectLink + courseId
                     + "/tests/" + testId
                     + "/student/" + studentId
                     + "/file/view?fileName=" + safeFileName;
@@ -507,7 +510,7 @@ public class LectViewController {
                                    Model model) {
         try {
             lectService.uploadZipTests(testId, file);
-            return "redirect:/professor/courses/" + courseId + "/tests";
+            return redirectLink + courseId + "/tests";
         } catch (Exception e) {
             model.addAttribute("package", e.getMessage());
             return "show-error";
@@ -527,8 +530,12 @@ public class LectViewController {
             model.addAttribute("testId", testId);
             model.addAttribute("studentId", studentId);
             return "lecturer-junit-results";
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            model.addAttribute("error", "Test execution was interrupted");
+            return "show-error";
         } catch (Exception e) {
-            model.addAttribute("package", e.getMessage());
+            model.addAttribute("error", e.getMessage());
             return "show-error";
         }
     }

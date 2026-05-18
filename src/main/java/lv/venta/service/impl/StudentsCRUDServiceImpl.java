@@ -39,12 +39,9 @@ public class StudentsCRUDServiceImpl implements IStudentsCRUDService {
 		if(id < 0) {
 			throw new Exception("Choose correct ID!");
 		}
-		if(!studentsRepo.existsByStudentId(id)) {
-			throw new Exception("Student with ID [ " + id + " ] doesn't exists!");
-		}
-		Students retrievedStudent = studentsRepo.findById(id).get();
 		
-		return retrievedStudent;
+		return studentsRepo.findById(id)
+				.orElseThrow(() -> new Exception("Student with ID [ " + id + " ] doesn't exist!"));
 	}
 	//------------------------------------------------------------------------------------
 	//---------------UPDATE---------------------------------------------------------------

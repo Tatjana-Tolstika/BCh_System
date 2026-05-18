@@ -53,10 +53,9 @@ public class StudentProgramCRUDServiceImpl implements IStudentProgramCRUDService
 				if(id < 0) {
 					throw new Exception("Choose correct ID!");
 				}
-				StudentProgram retrievedStudentProgram = studentPrRepo.findById(id)
-						.orElseThrow(() -> new Exception("Student in program with ID [ " + id + " ] doesn't exist!"));
 				
-				return retrievedStudentProgram;
+				return studentPrRepo.findById(id)
+						.orElseThrow(() -> new Exception("Student in program with ID [ " + id + " ] doesn't exist!"));
 			}
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++

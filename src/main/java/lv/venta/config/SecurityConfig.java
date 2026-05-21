@@ -46,14 +46,14 @@ public class SecurityConfig {
 		http.authorizeHttpRequests(auth -> auth
 
 				//---------------------------------------------------------------
-				//VISIEM PIEEJAMĀS DAĻAS
+				//ACCESSING PARTS FOR EVERYONE AFTER LOGGING
 				
 				.requestMatchers("/home").permitAll()
-				//PROFESSOR PIEEJAMĀS DAĻAS
+				//PROFESSOR ACCESSING PARTS
 				.requestMatchers("/professor/**").hasAuthority("LECT")
-				//ADMIN PIEEJAMĀS DAĻAS
+				//ADMIN ACCESSING PARTS
 				.requestMatchers("/admin/**").hasAuthority("ADMIN")
-				//STUDENT PIEEJAMĀS DAĻAS
+				//STUDENT ACCESSING PARTS
 				.requestMatchers("/student/**").hasAuthority("STUDENT")
 				//---------------------------------------------------------------
 				);
@@ -61,7 +61,6 @@ public class SecurityConfig {
 			    .permitAll()
 			    .defaultSuccessUrl("/home", true)
 			);
-	//http.formLogin(auth -> auth.permitAll());
 	return http.build();
 	}
 	

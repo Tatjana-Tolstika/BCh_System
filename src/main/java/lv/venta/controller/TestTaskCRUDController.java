@@ -2,7 +2,6 @@ package lv.venta.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,8 +18,9 @@ import lv.venta.service.ITestTaskCRUDService;
 @Controller
 @RequestMapping("/admin/testTask/crud")
 public class TestTaskCRUDController {
-	@Autowired 
+
 	private ITestTaskCRUDService taskService;
+	public TestTaskCRUDController (ITestTaskCRUDService taskService) {this.taskService = taskService;}
 	
 	
 	//----------------------ADD---------------------------------------

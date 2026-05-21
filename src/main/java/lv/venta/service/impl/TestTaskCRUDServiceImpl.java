@@ -3,7 +3,6 @@ package lv.venta.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lv.venta.model.CourseTests;
@@ -13,11 +12,14 @@ import lv.venta.repo.ITestTaskRepo;
 import lv.venta.service.ITestTaskCRUDService;
 @Service
 public class TestTaskCRUDServiceImpl implements ITestTaskCRUDService{
-	@Autowired
-	private ITestTaskRepo taskRepo;
 	
-	@Autowired
+	private ITestTaskRepo taskRepo;
 	private ICourseTestRepo testRepo;
+	
+	public TestTaskCRUDServiceImpl (ITestTaskRepo taskRepo, ICourseTestRepo testRepo) 
+		{this.taskRepo = taskRepo;
+		this.testRepo = testRepo;}
+	
 	
 	//=======================CRUD====================================================================================
 	

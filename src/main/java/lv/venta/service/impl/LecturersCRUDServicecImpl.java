@@ -2,7 +2,6 @@ package lv.venta.service.impl;
 
 import java.util.ArrayList;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lv.venta.model.Lecturers;
@@ -11,8 +10,9 @@ import lv.venta.service.ILecturersCRUDService;
 
 @Service
 public class LecturersCRUDServicecImpl implements ILecturersCRUDService{
-	@Autowired
+	
 	private ILecturersRepo lecturersRepo;
+	public LecturersCRUDServicecImpl (ILecturersRepo lecturersRepo) {this.lecturersRepo = lecturersRepo;}
 	
 	private static String nameRegex = "^[A-ZĀČĒĢĪĶĻŅŠŪŽ][a-zāčēģīķļņšūž]++((?:[\\s-][A-ZĀČĒĢĪĶĻŅŠŪŽ][a-zāčēģīķļņšūž]++)*)$";
 	private static String surnameRegex = "[A-Za-zĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž]++";

@@ -14,7 +14,6 @@ import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -41,26 +40,28 @@ import lv.venta.service.ILectViewService;
 
 @Service
 public class LectViewServiceImpl implements ILectViewService{
-	@Autowired
-	private ILecturersRepo lecturersRepo;
-	@Autowired 
-	private IStudyCourseRepo coursesRepo;
-	@Autowired
-	private ICourseTestRepo testRepo;
-	@Autowired
-	private IMyUserRepo userRepo;
-	@Autowired
-	private ITestTaskRepo taskRepo;
-	@Autowired
-	private IStudentProgramCourseRepo spcRepo;
-	@Autowired
-	private ITestResultRepo resultRepo;
 	
-	@Autowired
+	private ILecturersRepo lecturersRepo;
+	private IStudyCourseRepo coursesRepo;
+	private ICourseTestRepo testRepo;
+	private IMyUserRepo userRepo;
+	private ITestTaskRepo taskRepo;
+	private IStudentProgramCourseRepo spcRepo;
+	private ITestResultRepo resultRepo;
 	private CourseTestCRUDServiceImpl courseTestService;
 	
-	private static String filesForFunc = "_files";
-	private static String javaForFunc = ".java";
+	public LectViewServiceImpl (ILecturersRepo lecturersRepo, IStudyCourseRepo coursesRepo, ICourseTestRepo testRepo, IMyUserRepo userRepo, ITestTaskRepo taskRepo, IStudentProgramCourseRepo spcRepo, ITestResultRepo resultRepo, CourseTestCRUDServiceImpl courseTestService) 
+		{this.lecturersRepo = lecturersRepo;
+		this.coursesRepo = coursesRepo;
+		this.testRepo = testRepo;
+		this.userRepo = userRepo;
+		this.taskRepo = taskRepo;
+		this.spcRepo = spcRepo;
+		this.resultRepo = resultRepo;
+		this.courseTestService = courseTestService;}
+	
+	private static final String FILE_FUNC = "_files";
+	private static final String JAVA_FUNC = ".java";
 	
 	
 	@Override
@@ -222,7 +223,7 @@ public class LectViewServiceImpl implements ILectViewService{
 
 	@Override
 	public List<String> getStudentFiles(long testId, long studentId) throws Exception {
-	    String folderName = testId + "_" + studentId + filesForFunc;
+	    String folderName = testId + "_" + studentId + FILE_FUNC;
 	    Path studentFolder = Paths.get("uploads").resolve(folderName).normalize();
 
 
@@ -303,7 +304,7 @@ public class LectViewServiceImpl implements ILectViewService{
 	    }
 
 	    //making paths
-	    String folderName = testId + filesForFunc;
+	    String folderName = testId + FILE_FUNC;
 	    Path uploadPath = Paths.get("tests_jUnit");
 	    Path testFolder = uploadPath.resolve(folderName);
 
@@ -366,8 +367,8 @@ public class LectViewServiceImpl implements ILectViewService{
 	@Override
 	public String runTestsForStudent(long testId, long studentId) throws IOException, InterruptedException {
 
-	    Path studentFiles = Paths.get("uploads/" + testId + "_" + studentId + filesForFunc);
-	    Path testFiles = Paths.get("tests_jUnit/" + testId + filesForFunc);
+	    Path studentFiles = Paths.get("uploads/" + testId + "_" + studentId + FILE_FUNC);
+	    Path testFiles = Paths.get("tests_jUnit/" + testId + FILE_FUNC);
 	    Path junitJar = Paths.get("libs/junit-platform-console-standalone-1.11.4.jar");
 	    Path outputDir = Files.createTempDirectory("junit_out_");
 
@@ -378,12 +379,12 @@ public class LectViewServiceImpl implements ILectViewService{
 	    	     Stream<Path> testStream = Files.walk(testFiles)) {
 
 	    	    studentStream
-	    	        .filter(p -> p.toString().endsWith(javaForFunc))
+	    	        .filter(p -> p.toString().endsWith(JAVA_FUNC))
 	    	        .map(p -> p.toAbsolutePath().toString())
 	    	        .forEach(javaFiles::add);
 
 	    	    testStream
-	    	        .filter(p -> p.toString().endsWith(javaForFunc))
+	    	        .filter(p -> p.toString().endsWith(JAVA_FUNC))
 	    	        .map(p -> p.toAbsolutePath().toString())
 	    	        .forEach(javaFiles::add);
 	    	}
@@ -435,7 +436,7 @@ public class LectViewServiceImpl implements ILectViewService{
 
 	    List<Path> javaFiles = new ArrayList<>();
 	    try (Stream<Path> stream = Files.walk(folder)) {
-	        stream.filter(p -> p.toString().endsWith(javaForFunc))
+	        stream.filter(p -> p.toString().endsWith(JAVA_FUNC))
 	              .forEach(javaFiles::add);
 	    }
 	    

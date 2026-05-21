@@ -2,7 +2,6 @@ package lv.venta.service.impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lv.venta.model.StudentProgram;
@@ -16,12 +15,15 @@ import lv.venta.service.IStudentProgramCRUDService;
 @Service
 public class StudentProgramCRUDServiceImpl implements IStudentProgramCRUDService{
 	
-	@Autowired
+	
 	private IStudentProgramRepo studentPrRepo;
-	@Autowired
 	private IStudyProgramRepo programRepo;
-	@Autowired
 	private IStudentsRepo studentRepo;
+	public StudentProgramCRUDServiceImpl (IStudentProgramRepo studentPrRepo, IStudyProgramRepo programRepo, IStudentsRepo studentRepo) 
+		{this.studentPrRepo = studentPrRepo;
+		this.programRepo = programRepo;
+		this.studentRepo = studentRepo;}
+	
 	
 	//=======================CRUD====================================================================================
 	

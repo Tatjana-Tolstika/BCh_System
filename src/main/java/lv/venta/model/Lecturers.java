@@ -37,12 +37,12 @@ public class Lecturers {
 
 	
 	@NotNull
-	@Pattern(regexp="^[A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+([\\s-][A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]++)*$")
+	@Pattern(regexp="^[A-ZĀČĒĢĪĶĻŅŠŪŽ][a-zāčēģīķļņšūž]++((?:[\\s-][A-ZĀČĒĢĪĶĻŅŠŪŽ][a-zāčēģīķļņšūž]++)*+)$")
 	@Column(name = "lecturer_name")
 	private String lecturerName;
 	
 	@NotNull
-	@Pattern(regexp="^[A-ZĀČĒĢĪĶĻŅŠŪŽ]{1}[a-zāčēģīķļņšūž]+")
+	@Pattern(regexp="^[A-ZĀČĒĢĪĶĻŅŠŪŽ][a-zāčēģīķļņšūž]+")
 	@Column(name = "lecturer_surname")
 	private String lecturerSurname;
 	

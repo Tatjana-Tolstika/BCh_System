@@ -2,7 +2,6 @@ package lv.venta.controller;
 
 import java.util.ArrayList;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,8 +17,9 @@ import lv.venta.service.IStudentsCRUDService;
 @Controller
 @RequestMapping("/admin/students/crud")
 public class StudentsCRUDController {
-	@Autowired 
+	
 	private IStudentsCRUDService studentsService;
+	public StudentsCRUDController (IStudentsCRUDService studentsService) {this.studentsService = studentsService;}
 	
 	@GetMapping("/all") //localhost:8081/students/crud/all
 	public String getConstrollerGetAllStudents(Model model) {

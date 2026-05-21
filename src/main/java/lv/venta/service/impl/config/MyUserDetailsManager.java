@@ -1,6 +1,6 @@
 package lv.venta.service.impl.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,11 +21,14 @@ import lv.venta.repo.IMyUserRepo;
 @Service
 public class MyUserDetailsManager implements UserDetailsManager{
 
-	@Autowired
+
 	private IMyUserRepo userRepo;
-	
-	@Autowired
 	private IMyAuthorityRepo roleRepo;
+	
+	public MyUserDetailsManager (IMyUserRepo userRepo, IMyAuthorityRepo roleRepo) 
+		{this.userRepo = userRepo;
+		this.roleRepo = roleRepo;}
+	
 	private PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	
 	@Override

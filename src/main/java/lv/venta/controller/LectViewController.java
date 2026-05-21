@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,18 +33,22 @@ import lv.venta.service.ITestTaskCRUDService;
 @Controller
 @RequestMapping("/professor")
 public class LectViewController {
-	@Autowired
 	private ILectViewService lectService;
-	@Autowired
 	private ICourseTestCRUDService testService;
-	@Autowired
 	private ICoursesCRUDService courseService;
-	@Autowired
 	private ITestTaskCRUDService taskService;
-	@Autowired
 	private ITestResultCRUDService resultService;
-	@Autowired
 	private IStudentsCRUDService studentService;
+	
+	public LectViewController (ILectViewService lectService, ICourseTestCRUDService testService, ICoursesCRUDService courseService, ITestTaskCRUDService taskService,
+			ITestResultCRUDService resultService,IStudentsCRUDService studentService) 
+			{this.lectService = lectService;
+			this.testService = testService;
+			this.courseService = courseService;
+			this.taskService = taskService;
+			this.resultService = resultService;
+			this.studentService = studentService;}
+
 	
 	private static  String redirectLink = "redirect:/professor/courses/";
 	private static  String testForLink = "/tests";

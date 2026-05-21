@@ -2,7 +2,6 @@ package lv.venta.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,12 +22,15 @@ import lv.venta.service.IStudentsCRUDService;
 @Controller
 @RequestMapping("/admin/studentProgram/crud")
 public class StudentProgramCRUDController {
-	@Autowired
+
 	private IStudentProgramCRUDService stService;
-	@Autowired
 	private IStudentsCRUDService studentService;
-	@Autowired
 	private IProgramCRUDService programService;
+	public StudentProgramCRUDController (IStudentProgramCRUDService stService, IStudentsCRUDService studentService, IProgramCRUDService programService) 
+		{this.stService = stService;
+		this.studentService = studentService;
+		this.programService = programService;}
+
 	
 	//----------------------ADD---------------------------------------
 			@GetMapping("/add") //localhost:8081/studentProgram/crud/add

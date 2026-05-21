@@ -2,7 +2,6 @@ package lv.venta.controller;
 
 import java.util.ArrayList;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,8 +17,9 @@ import lv.venta.service.IProgramCRUDService;
 @Controller
 @RequestMapping("/admin/programs/crud")
 public class ProgramCRUDController {
-	@Autowired 
+
 	private IProgramCRUDService programService;
+	public ProgramCRUDController (IProgramCRUDService programService) {this.programService = programService;}
 	
 	@GetMapping("/all") //localhost:8081/programs/crud/all
 	public String getConstrollerGetAllPrograms(Model model) {

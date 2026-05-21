@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,14 +27,17 @@ import lv.venta.service.ITestResultCRUDService;
 @Controller
 @RequestMapping("/student")
 public class StudentViewController {
-	@Autowired
+
 	private IStudentViewService studentService;
-	@Autowired
 	private ILectViewService lectService;
-	@Autowired
 	private ITestResultCRUDService resultService;
-	@Autowired
 	private ICourseTestCRUDService testService;
+	public StudentViewController (IStudentViewService studentService, ILectViewService lectService, ITestResultCRUDService resultService, ICourseTestCRUDService testService) 
+		{this.studentService = studentService;
+		this.lectService = lectService;
+		this.resultService = resultService;
+		this.testService = testService;}
+
 	
 	//-------------AllCourses-------------------
 	@GetMapping("/courses") //localhost:8081/student/courses

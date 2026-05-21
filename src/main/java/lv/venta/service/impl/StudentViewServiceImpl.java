@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -30,14 +29,18 @@ import lv.venta.service.IStudentViewService;
 @Service
 public class StudentViewServiceImpl implements IStudentViewService{
 
-	@Autowired
+
 	private IStudyCourseRepo courseRepo;
-	@Autowired
 	private IMyUserRepo userRepo;
-	@Autowired
 	private ITestResultRepo resultsRepo;
-	@Autowired
 	private ICourseTestRepo testRepo;
+	
+	public StudentViewServiceImpl (IStudyCourseRepo courseRepo, IMyUserRepo userRepo, ITestResultRepo resultsRepo, ICourseTestRepo testRepo) 
+	{this.courseRepo = courseRepo;
+	this.userRepo = userRepo;
+	this.resultsRepo = resultsRepo;
+	this.testRepo = testRepo;}
+
 	
 	@Override
 	public List<StudyCourses> coursesForStudent(long studentId) throws Exception{

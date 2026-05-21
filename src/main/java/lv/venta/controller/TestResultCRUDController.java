@@ -2,7 +2,6 @@ package lv.venta.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,14 +24,17 @@ import lv.venta.service.ITestTaskCRUDService;
 @RequestMapping("/admin/testResult/crud")
 public class TestResultCRUDController {
 	
-	@Autowired
+
 	private ITestResultCRUDService resultService;
-	@Autowired
 	private IStudentProgramCourseCRUDService spcService;
-	@Autowired 
 	private ITestTaskCRUDService taskService;
-	@Autowired 
 	private ICourseTestCRUDService testService;
+	public TestResultCRUDController (ITestResultCRUDService resultService, IStudentProgramCourseCRUDService spcService, ITestTaskCRUDService taskService, ICourseTestCRUDService testService) 
+		{this.resultService = resultService;
+		this.spcService = spcService;
+		this.taskService = taskService;
+		this.testService = testService;}
+
 	
 	
 	//----------------------ADD---------------------------------------

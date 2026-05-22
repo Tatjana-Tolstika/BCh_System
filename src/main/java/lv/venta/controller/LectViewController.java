@@ -386,7 +386,7 @@ public class LectViewController {
 	    try {
 	        List<String> files = lectService.getStudentFiles(testId, studentId);
 
-	        // filtresana pec noteikta faila tipa
+	        // files filtering by file type
 	        if (type != null && !type.isEmpty()) {
 	            files = files.stream()
 	                    .filter(f -> f.toLowerCase().endsWith("." + type))
@@ -394,7 +394,7 @@ public class LectViewController {
 	        }
 
 	        model.addAttribute("files", files);
-	        model.addAttribute("selectedType", type); //lai dropdown saglabatu izveli ar faila tipu 
+	        model.addAttribute("selectedType", type); //for dropdown to save the file type choice
 	        model.addAttribute("testId", testId);
 	        model.addAttribute("courseId", courseId);
 	        model.addAttribute("studentId", studentId);

@@ -216,6 +216,12 @@
         .btn-save:hover {
             background-color: #229954;
         }
+		.error-text {
+		    color: #e74c3c;
+		    font-size: 12px;
+		    display: none;
+		    margin-top: 4px;
+		}
     </style>
 </head>
 
@@ -414,46 +420,41 @@
         document.getElementById('comment-dialog').close();
     });
 	
-	// Validate form before submit
-	    document.getElementById('comment-form').addEventListener('submit', function(e) {
-	 
-	        let valid = true;
-	 
-	        // Get selected task and its max points
-	        let selectTask     = document.getElementById('select-task');
-	        let selectedOption = selectTask.options[selectTask.selectedIndex];
-	        let maxPoints      = parseFloat(selectedOption.getAttribute('data-max'));
-	 
-	        // Get minus value
-	        let minusValue  = parseFloat(document.getElementById('input-minus').value);
-	        let minusError  = document.getElementById('minus-error');
-	 
-	        // Get comment
-	        let commentText  = document.getElementById('input-comment').value.trim();
-	        let commentError = document.getElementById('comment-error');
-	 
-	        // Check minus points
-	        if (isNaN(minusValue) || minusValue < 0 || minusValue > maxPoints) {
-	            minusError.innerText     = 'Minus points must be between 0 and ' + maxPoints;
-	            minusError.style.display = 'block';
-	            valid = false;
-	        } else {
-	            minusError.style.display = 'none';
-	        }
-	 
-	        // Check comment length
-	        if (commentText.length < 5) {
-	            commentError.style.display = 'block';
-	            valid = false;
-	        } else {
-	            commentError.style.display = 'none';
-	        }
-	 
-	        // If not valid - stop form submit
-	        if (!valid) {
-	            e.preventDefault();
-	        }
-	    });
+	// Data validation form before submit
+	document.getElementById('comment-form').addEventListener('submit', function(e) {
+
+	    let valid = true;
+
+	    // Get selected task and its max points
+	    let selectTask     = document.getElementById('select-task');
+	    let selectedOption = selectTask.options[selectTask.selectedIndex];
+	    let maxPoints      = parseFloat(selectedOption.getAttribute('data-max'));
+
+	    // Get minus value
+	    let minusValue = parseFloat(document.getElementById('input-minus').value);
+	    let minusError = document.getElementById('minus-error');
+
+	  //If task selected checking
+	    if (isNaN(maxPoints)) {
+	        minusError.innerText     = 'Please select a task first';
+	        minusError.style.display = 'block';
+	        valid = false;
+
+	    
+	    } else if (minusValue < 0 || minusValue > maxPoints) {
+	        minusError.innerText     = 'Minus points must be between 0 and ' + maxPoints;
+	        minusError.style.display = 'block';
+	        valid = false;
+
+	    } else {
+	        minusError.style.display = 'none';
+	    }
+
+	   
+	    if (!valid) {
+	        e.preventDefault();
+	    }
+	});
 
 </script>
 

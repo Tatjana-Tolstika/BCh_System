@@ -24,6 +24,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 25px;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         h1 {
@@ -45,20 +47,36 @@
             background-color: #95a5a6;
         }
 
-        .btn-edit {
+        .btn-add {
+            text-decoration: none;
+            background-color: #27ae60;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .btn-add:hover {
+            background-color: #229954;
+        }
+
+        .btn-check {
             text-decoration: none;
             background-color: #2980b9;
             color: white;
-            padding: 6px 12px;
+            padding: 8px 15px;
             border-radius: 6px;
-            font-size: 13px;
+            font-size: 14px;
             transition: background 0.2s;
-            display: inline-block;
-            white-space: nowrap;
+            cursor: pointer;
+            border: none;
+            font-family: "Segoe UI", Arial, sans-serif;
         }
 
-        .btn-edit:hover {
-            background-color: #1f6a97;
+        .btn-check:hover {
+            background-color: #3498db;
         }
 
         table {
@@ -75,11 +93,11 @@
         th, td {
             padding: 12px 15px;
             text-align: left;
-            vertical-align: top;
+            vertical-align: middle;
         }
 
         th {
-            font-size: 14px;
+            font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
@@ -92,6 +110,10 @@
             background-color: #f9f9f9;
         }
 
+        tr:hover {
+            background-color: #eaf4fb;
+        }
+
         .task-desc {
             color: #2c3e50;
             font-weight: 500;
@@ -102,6 +124,16 @@
             font-size: 0.9em;
         }
 
+        .points-badge {
+            display: inline-block;
+            background-color: #eaf4fb;
+            color: #1a5276;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
         .empty {
             text-align: center;
             color: #999;
@@ -109,6 +141,55 @@
             padding: 20px;
             border: 2px dashed #eee;
             border-radius: 8px;
+        }
+
+        .total-box {
+            display: none;
+            background-color: #eaf4fb;
+            border: 1px solid #aed6f1;
+            border-radius: 10px;
+            padding: 14px 20px;
+            margin-bottom: 15px;
+            font-size: 15px;
+            color: #1a5276;
+        }
+
+        .action-cell {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .btn-edit {
+            text-decoration: none;
+            background-color: #2980b9;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            transition: background 0.2s;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .btn-edit:hover {
+            background-color: #3498db;
+        }
+
+        .btn-delete {
+            text-decoration: none;
+            background-color: #e74c3c;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            transition: background 0.2s;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .btn-delete:hover {
+            background-color: #c0392b;
         }
     </style>
 </head>
@@ -118,16 +199,21 @@
 <div class="container">
     <div class="header-area">
         <h1>Test Tasks</h1>
-        <a class="btn-back"
+
+        <a class="btn-add"
            th:if="${test.status.name() == 'IN_PROCESS'}"
            th:href="@{/professor/courses/{courseId}/tests/{testId}/tasks/add(courseId=${courseId}, testId=${testId})}">
             + Add Task
         </a>
-        <a type="button" href="#" class="btn-back" onclick="toggleTotal()">Check points</a>
-        <a th:href="@{/professor/courses/{courseId}/tests(courseId=${courseId})}" class="btn-back"> ← Back to Tests</a>
+
+        <button class="btn-check" onclick="toggleTotal()">Check Points</button>
+
+        <a th:href="@{/professor/courses/{courseId}/tests(courseId=${courseId})}" class="btn-back">
+            ← Back to Tests
+        </a>
     </div>
 
-    <div id="totalBox" class="empty" style="display:none; margin-top: 0;">
+    <div id="totalBox" class="total-box">
         Total points: <strong th:text="${totalPoints}">0</strong>
     </div>
 
@@ -137,40 +223,54 @@
                 <th>Description</th>
                 <th>Max Points</th>
                 <th>Notes</th>
-                <th th:if="${test.status.name() == 'IN_PROCESS'}">Edit</th>
+                <th th:if="${test.status.name() == 'IN_PROCESS'}">Actions</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="tempTT : ${allTasks}">
                 <td class="task-desc" th:text="${tempTT.taskDescription}"></td>
-                <td th:text="${tempTT.maxPoints}"></td>
-                <td class="task-notes" th:text="${tempTT.taskNotes ?: '—'}"></td>
-                <td th:if="${test.status.name() == 'IN_PROCESS'}">
-                    <a class="btn-edit"
-                       th:href="@{/professor/courses/{courseId}/tests/{testId}/tasks/{taskId}/update(
-                                    courseId=${courseId},
-                                    testId=${testId},
-                                    taskId=${tempTT.taskId})}">
-                        Edit
-                    </a>
+
+                <td>
+                    <span class="points-badge" th:text="${tempTT.maxPoints}"></span>
                 </td>
-				
+
+                <td class="task-notes" th:text="${tempTT.taskNotes ?: '—'}"></td>
+
+                <td th:if="${test.status.name() == 'IN_PROCESS'}">
+                    <div class="action-cell">
+                        <a class="btn-edit"
+                           th:href="@{/professor/courses/{courseId}/tests/{testId}/tasks/{taskId}/update(
+                                        courseId=${courseId},
+                                        testId=${testId},
+                                        taskId=${tempTT.taskId})}">
+                            Edit
+                        </a>
+
+                        <a class="btn-delete"
+                           th:href="@{/professor/courses/{courseId}/tests/{testId}/tasks/{taskId}/delete(
+                                        courseId=${courseId},
+                                        testId=${testId},
+                                        taskId=${tempTT.taskId})}"
+                           onclick="return confirm('Are you sure you want to delete this task?')">
+                            Delete
+                        </a>
+                    </div>
+                </td>
             </tr>
         </tbody>
     </table>
-
-	
 
     <div class="empty" th:if="${#lists.isEmpty(allTasks)}">
         <p>No tasks found for this test.</p>
     </div>
 </div>
 
-</body>
 <script>
     function toggleTotal() {
-      const box = document.getElementById("totalBox");
-      box.style.display = (box.style.display === "none") ? "block" : "none";
+        const box = document.getElementById("totalBox");
+        box.style.display = (box.style.display === "none") ? "block" : "none";
     }
 </script>
+
+</body>
 </html>

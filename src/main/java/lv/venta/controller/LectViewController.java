@@ -480,6 +480,22 @@ public class LectViewController {
             return "show-error";
         }
     }
+    
+    //-------------------------Delette task---------------------------------------------
+    @GetMapping("/courses/{courseId}/tests/{testId}/tasks/{taskId}/delete")
+    public String deleteTask(@PathVariable long courseId,
+                             @PathVariable long testId,
+                             @PathVariable long taskId,
+                             Model model) {
+        try {
+            taskService.deleteTaskById(taskId);
+            return "redirect:/professor/courses/" + courseId + "/tests/" + testId + "/tasks";
+
+        } catch (Exception e) {
+            model.addAttribute("package", e.getMessage());
+            return "show-error";
+        }
+    }
     // -------------------------STATICS-------------------------------------------------
     @GetMapping("/courses/{courseId}/tests/{testId}/stats")
     public String getTestStats(@PathVariable long courseId,

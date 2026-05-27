@@ -54,7 +54,7 @@ public class StudentsCRUDController {
 			model.addAttribute("package", e.getMessage());
 			return "show-error";
 		}
-		return "redirect:/students/crud/all";
+		return "redirect:/admin/students/crud/all";
 	}
 	//----------------------------------------------------------------
 	//------------------UPDATE----------------------------------------
@@ -104,7 +104,7 @@ public class StudentsCRUDController {
 		try {
 			studentsService.deleteStudentById(id);
 			model.addAttribute("package", studentsService.selectAllStudents());
-			return "redirect:/students/crud/all";
+			return "redirect:/admin/students/crud/all";
 			
 		} catch (Exception e) {
 			model.addAttribute("package", e.getMessage());

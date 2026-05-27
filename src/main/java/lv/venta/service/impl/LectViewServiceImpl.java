@@ -132,7 +132,7 @@ public class LectViewServiceImpl implements ILectViewService{
 		for(TestTask t : tasks) {
 			counter += t.getMaxPoints();
 		}
-		return counter;
+		return Math.round(counter * 100.0) / 100.0;
 	}
 	
 	@Transactional

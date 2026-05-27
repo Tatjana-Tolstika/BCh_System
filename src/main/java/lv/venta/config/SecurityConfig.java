@@ -45,17 +45,13 @@ public class SecurityConfig {
 	public SecurityFilterChain createConfigForEndpoints (HttpSecurity http) throws Exception{
 		http.authorizeHttpRequests(auth -> auth
 
-				//---------------------------------------------------------------
-				//ACCESSING PARTS FOR EVERYONE AFTER LOGGING
-				
 				.requestMatchers("/home").permitAll()
-				//PROFESSOR ACCESSING PARTS
+			
 				.requestMatchers("/professor/**").hasAuthority("LECT")
-				//ADMIN ACCESSING PARTS
+			
 				.requestMatchers("/admin/**").hasAuthority("ADMIN")
-				//STUDENT ACCESSING PARTS
+			
 				.requestMatchers("/student/**").hasAuthority("STUDENT")
-				//---------------------------------------------------------------
 				);
 		http.formLogin(form -> form
 			    .permitAll()

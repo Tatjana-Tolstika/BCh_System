@@ -74,20 +74,20 @@ public class BChSystemApplication {
 				userRepo.saveAll(Arrays.asList(lectUser1, lectUser2, lectUser3, lectUser4, lectUser5));
 				//=============================================================================
 				
-				Students st1 = new Students("Tatjana", "Tolstika", "230000001", "s23tolstatj@venta.lv");
-				Students st2 = new Students("Kristiana", "Felša", "230000002", "s23felskrist@venta.lv");
-				Students st3 = new Students("Amanda","Rebuka", "23000003","s23rebuaman@venta.lv");
-				Students st4 = new Students("Baiba", "Kvizikeviča", "23000004", "s23kvizibaib@venta.lv");
-				Students st5 = new Students("Marta", "Dzelme", "23000005", "s23dzelmart@venta.lv");
-				Students st6 = new Students("Anatolijs", "Berziņš", "23000005", "s22berzanat@venta.lv");
+				Students st1 = new Students("Marks", "Bērziņš", "230001", "s23marber@venta.lv");
+				Students st2 = new Students("Markus", "Priede", "230002", "s23marpri@venta.lv");
+				Students st3 = new Students("Samanta","Lāce", "230003","s23samlac@venta.lv");
+				Students st4 = new Students("Maija", "Aboliņa", "2300004", "s23maiabo@venta.lv");
+				Students st5 = new Students("Marta", "Feldmane", "230005", "s23marfel@venta.lv");
+				Students st6 = new Students("Anatolijs", "Bērziņš", "230005", "s22berzanat@venta.lv");
 				studentsRepo.saveAll(Arrays.asList(st1, st2, st3, st4, st5, st6));
 				
 				//USERS FOR STUDENTS==========================================================
-				MyUser stUser1 = new MyUser("TatjanaTolstika",encoder.encode("12345"),student,st1);
-				MyUser stUser2 = new MyUser("KristianaFelsa",encoder.encode("222222"), student,st2);
-				MyUser stUser3 = new MyUser("AmandaRebuka",encoder.encode("333333"), student,st3);
-				MyUser stUser4 = new MyUser("BaibaKvizikevica",encoder.encode("444444"), student,st4);
-				MyUser stUser5 = new MyUser("MartaDzelme",encoder.encode("555555"), student,st5);
+				MyUser stUser1 = new MyUser("MarksBerzins",encoder.encode("12345"),student,st1);
+				MyUser stUser2 = new MyUser("MarkusPriede",encoder.encode("222222"), student,st2);
+				MyUser stUser3 = new MyUser("SamantaLace",encoder.encode("333333"), student,st3);
+				MyUser stUser4 = new MyUser("MaijaAbolina",encoder.encode("444444"), student,st4);
+				MyUser stUser5 = new MyUser("MartaFeldmane",encoder.encode("555555"), student,st5);
 				MyUser stUser6 = new MyUser("AnatolijsBerzins",encoder.encode("54321"), student,st6);
 
 				userRepo.saveAll(Arrays.asList(stUser1, stUser2, stUser3, stUser4, stUser5, stUser6));

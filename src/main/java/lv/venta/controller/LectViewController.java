@@ -50,8 +50,9 @@ public class LectViewController {
 			this.studentService = studentService;}
 
 	
-	private static  String redirectLink = "redirect:/professor/courses/";
-	private static  String testForLink = "/tests";
+	private static final String REDIRECT_LINK = "redirect:/professor/courses/";
+	private static final String TEST_FOR_LINK = "/tests";
+	private static final String TASKS_FOR_LINK = "/tasks";
 	//-------------AllCourses-------------------
 	@GetMapping("/courses") //localhost:8081/professor/courses
 	public String getControllerAllProfessorCourses(Model model) {
@@ -142,7 +143,7 @@ public class LectViewController {
 	        }
 
 	        testService.createCourseTest(courseTest.getTestTitle(), courseTest.getTestDescription(), courseTest.getPoints(), courseFind);
-	        return redirectLink + courseId + testForLink;
+	        return REDIRECT_LINK + courseId + TEST_FOR_LINK;
 	    } catch(Exception e) {
 	        model.addAttribute("package", e.getMessage());
 	        return "show-error";
@@ -206,7 +207,7 @@ public class LectViewController {
 	        }
 
 	        taskService.createTask(testFind, testTask.getTaskDescription(),testTask.getMaxPoints(), testTask.getTaskNotes());
-	        return "redirect:/professor/courses/" + courseId + "/tests/"+ testId +"/tasks";
+	        return REDIRECT_LINK + courseId + "/tests/"+ testId + TASKS_FOR_LINK;
 	    } catch(Exception e) {
 	        model.addAttribute("package", e.getMessage());
 	        return "show-error";
@@ -287,8 +288,8 @@ public class LectViewController {
 
 	        resultService.updateTestResultById(resultId, existingResult.getStudentProgramCourse().getStudentProgramCourseId(), existingResult.getTask().getTaskId() , existingResult.getComments(), existingResult.getMinus());
 
-	        return redirectLink + courseId
-	                + "/tests/" + testId
+	        return REDIRECT_LINK + courseId
+	                + TEST_FOR_LINK + "/" + testId
 	                + "/students/" + studentId
 	                + "/results";
 
@@ -315,7 +316,7 @@ public class LectViewController {
 	            return "lecturers-courseTests";
 	        }
 
-	        return redirectLink + courseId + testForLink;
+	        return REDIRECT_LINK + courseId + TEST_FOR_LINK;
 
 	    } catch (Exception e) {
 	        model.addAttribute("package", e.getMessage());
@@ -368,7 +369,7 @@ public class LectViewController {
 	                testTask.getTaskNotes()
 	        );
 
-	        return redirectLink + courseId + "/tests/" + testId + "/tasks";
+	        return REDIRECT_LINK + courseId + TEST_FOR_LINK + "/" + testId + TASKS_FOR_LINK;
 
 	    } catch (Exception e) {
 	        model.addAttribute("package", e.getMessage());
@@ -470,8 +471,8 @@ public class LectViewController {
             );
             String safeFileName = fileName.replace("\\", "%5C");
             
-            return redirectLink + courseId
-                    + "/tests/" + testId
+            return REDIRECT_LINK + courseId
+            		+ TEST_FOR_LINK + "/" + testId
                     + "/student/" + studentId
                     + "/file/view?fileName=" + safeFileName;
 
@@ -489,7 +490,7 @@ public class LectViewController {
                              Model model) {
         try {
             taskService.deleteTaskById(taskId);
-            return "redirect:/professor/courses/" + courseId + "/tests/" + testId + "/tasks";
+            return REDIRECT_LINK + courseId + "/tests/" + testId + TASKS_FOR_LINK;
 
         } catch (Exception e) {
             model.addAttribute("package", e.getMessage());
@@ -529,7 +530,7 @@ public class LectViewController {
                                    Model model) {
         try {
             lectService.uploadZipTests(testId, file);
-            return redirectLink + courseId + "/tests";
+            return REDIRECT_LINK + courseId + TEST_FOR_LINK;
         } catch (Exception e) {
             model.addAttribute("package", e.getMessage());
             return "show-error";

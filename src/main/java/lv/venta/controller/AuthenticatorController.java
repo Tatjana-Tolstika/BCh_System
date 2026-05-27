@@ -14,7 +14,7 @@ public class AuthenticatorController {
 	    String role = auth.getAuthorities().iterator().next().getAuthority();
 
 	    if("ADMIN".equals(role)) {
-	        return "redirect:/admin/courses/crud";
+	        return "redirect:/admin/courses/crud/all";
 	    }
 
 	    if("LECT".equals(role)) {

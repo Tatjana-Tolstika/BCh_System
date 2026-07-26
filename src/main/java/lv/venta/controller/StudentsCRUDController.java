@@ -1,6 +1,8 @@
 package lv.venta.controller;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.validation.Valid;
+import lv.venta.dto.StudentsDTO;
 import lv.venta.model.Students;
 import lv.venta.service.IStudentsCRUDService;
 
@@ -21,11 +24,14 @@ public class StudentsCRUDController {
 	private IStudentsCRUDService studentsService;
 	public StudentsCRUDController (IStudentsCRUDService studentsService) {this.studentsService = studentsService;}
 	
-	@GetMapping("/all") //localhost:8081/students/crud/all
+	@GetMapping("/all") //localhost:8081/admin/students/crud/all
 	public String getConstrollerGetAllStudents(Model model) {
 		try {
 			ArrayList<Students> allStudents = studentsService.selectAllStudents();
-			model.addAttribute("students", allStudents);
+			List<StudentsDTO> dtoList = allStudents.stream()
+	                .map(StudentsDTO::new)  
+	                .collect(Collectors.toList());
+	        model.addAttribute("students", dtoList);
 			return "students-all";
 		}
 		catch(Exception e) {
@@ -34,7 +40,7 @@ public class StudentsCRUDController {
 		}
 	}
 	//----------------------ADD---------------------------------------
-	@GetMapping("/add") //localhost:8081/students/crud/add
+	@GetMapping("/add") //localhost:8081/admin/students/crud/add
 	public String getControllerAddNewStudent(Model model) {
 		
 		model.addAttribute("students", new Students());
@@ -58,17 +64,18 @@ public class StudentsCRUDController {
 	}
 	//----------------------------------------------------------------
 	//------------------UPDATE----------------------------------------
-	@GetMapping("/update/{id}") //localhost:8081/students/crud/update/5
+	@GetMapping("/update/{id}") //localhost:8081/admin/students/crud/update/5
 	public String getControllerUpdateStudentById(@PathVariable(name = "id") long id, Model model) {
 		try {
-		Students studentToUpdate = studentsService.retrieveById(id);
-		model.addAttribute("student", studentToUpdate);
-		return "update-student";
-		}
-		catch (Exception e) {
-			model.addAttribute("package", e.getMessage());
-			return "show-error";
-		}
+	        Students studentToUpdate = studentsService.retrieveById(id);
+	        StudentsDTO dto = new StudentsDTO(studentToUpdate);
+	        model.addAttribute("student", dto);
+	        return "update-student";
+	    }
+	    catch (Exception e) {
+	        model.addAttribute("package", e.getMessage());
+	        return "show-error";
+	    }
 	}
 	
 	@PostMapping("/update/{id}")

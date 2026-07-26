@@ -79,7 +79,7 @@ public class BChSystemApplication {
 				Students st3 = new Students("Samanta","Lāce", "230003","s23samlac@venta.lv");
 				Students st4 = new Students("Maija", "Aboliņa", "2300004", "s23maiabo@venta.lv");
 				Students st5 = new Students("Marta", "Feldmane", "230005", "s23marfel@venta.lv");
-				Students st6 = new Students("Anatolijs", "Bērziņš", "230005", "s22berzanat@venta.lv");
+				Students st6 = new Students("Anatolijs", "Bērziņš", "2300005", "s22berzanat@venta.lv");
 				studentsRepo.saveAll(Arrays.asList(st1, st2, st3, st4, st5, st6));
 				
 				//USERS FOR STUDENTS==========================================================

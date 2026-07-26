@@ -49,7 +49,7 @@ public class Students {
 	private String studentSurname;
 	
 	@NotNull
-	@Column(name = "matriculation_nr")
+	@Column(name = "matriculation_nr", unique = true)
 	@Pattern(regexp="[0-9]{4,10}")
 	private String matriculationNr;
 	
